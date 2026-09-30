@@ -457,4 +457,137 @@ class BasketHelperTest extends TestCase
 
         $this->assertSame(18.00, $rowTotal, 'Explicit $inclTax = true must override the config default');
     }
+
+    /**
+     * Cart item price-fallback fix: getItemUnitPrice() must return the per-unit price (row
+     * total ÷ qty), not the row total itself - otherwise the cart item "Price" cell duplicates
+     * the "Subtotal" cell for any item with qty > 1.
+     */
+    public function testGetItemUnitPriceDividesRowTotalByQty(): void
+    {
+        $item = $this->createMock(QuoteItem::class);
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getSku')->willReturn('SKU-1');
+        $item->method('getQty')->willReturn(2.0);
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->with('uom')->willReturn('PCS');
+        $item->method('getProduct')->willReturn($product);
+
+        $line = $this->createOrderLine(15.00, 18.00, 30.00, 6.00, 2.0);
+
+        $this->basketHelper->expects($this->once())
+            ->method('getOneListCalculation')
+            ->willReturnCallback(function () use ($line) {
+                $basketData = (new ReflectionClass(RootMobileTransaction::class))->newInstanceWithoutConstructor();
+                $basketData->setMobiletransactionline([$line]);
+                return $basketData;
+            });
+        $this->itemHelper->method('isValid')->willReturn(true);
+
+        $unitPrice = $this->basketHelper->getItemUnitPrice($item, false);
+
+        $this->assertSame(
+            15.00,
+            $unitPrice,
+            'getItemUnitPrice() must be the row total (30.00 for qty 2) divided by qty, not the row total itself'
+        );
+    }
+
+    /**
+     * getItemUnitPriceIncludeCustomOptions() is the per-unit counterpart to
+     * getItemPriceIncludeCustomOptions() (getPrice()), used for the strikethrough
+     * original-price display alongside getItemUnitPrice() - it must also be qty-divided so both
+     * values shown together in the "Price" cell are on the same per-unit scale.
+     */
+    public function testGetItemUnitPriceIncludeCustomOptionsDividesPriceByQty(): void
+    {
+        $item = $this->createMock(QuoteItem::class);
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getSku')->willReturn('SKU-1');
+        $item->method('getQty')->willReturn(2.0);
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->with('uom')->willReturn('PCS');
+        $item->method('getProduct')->willReturn($product);
+
+        $line = $this->createOrderLine(15.00, 18.00, 30.00, 6.00, 2.0);
+
+        $this->basketHelper->expects($this->once())
+            ->method('getOneListCalculation')
+            ->willReturnCallback(function () use ($line) {
+                $basketData = (new ReflectionClass(RootMobileTransaction::class))->newInstanceWithoutConstructor();
+                $basketData->setMobiletransactionline([$line]);
+                return $basketData;
+            });
+        $this->itemHelper->method('isValid')->willReturn(true);
+        $this->basketHelper->basketHelper = $this->basketHelper;
+
+        $unitPrice = $this->basketHelper->getItemUnitPriceIncludeCustomOptions($item, false);
+
+        $this->assertSame(
+            15.00,
+            $unitPrice,
+            'getItemUnitPriceIncludeCustomOptions() must be getPrice() (15.00 netprice x qty 2 = 30.00) divided by qty'
+        );
+    }
+
+    /**
+     * Defensive: getItemUnitPrice() must not divide by zero for a (theoretically impossible)
+     * zero-qty item.
+     */
+    public function testGetItemUnitPriceReturnsZeroWhenQtyIsZero(): void
+    {
+        $item = $this->createMock(QuoteItem::class);
+        $item->method('getQty')->willReturn(0.0);
+
+        $unitPrice = $this->basketHelper->getItemUnitPrice($item, false);
+
+        $this->assertSame(0.0, $unitPrice, 'getItemUnitPrice() must return 0.0, not divide by zero, when qty is 0');
+    }
+
+    /**
+     * getItemUnitDiscount() must divide the whole-line getDiscountAmount() (set by a prior
+     * getItemRowDiscount() call) by qty, so the "Save X" label reconciles with the per-unit
+     * price/strikethrough it's displayed alongside.
+     */
+    public function testGetItemUnitDiscountDividesRowDiscountByQty(): void
+    {
+        $item = $this->getMockBuilder(QuoteItem::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getQty'])
+            ->addMethods(['getDiscountAmount'])
+            ->getMock();
+        $item->method('getQty')->willReturn(2.0);
+        $item->method('getDiscountAmount')->willReturn(10.0);
+
+        $unitDiscount = $this->basketHelper->getItemUnitDiscount($item);
+
+        $this->assertSame(
+            5.0,
+            $unitDiscount,
+            'getItemUnitDiscount() must be the whole-line discount (10.00 for qty 2) divided by qty'
+        );
+    }
+
+    /**
+     * Defensive: getItemUnitDiscount() must not divide by zero for a (theoretically impossible)
+     * zero-qty item.
+     */
+    public function testGetItemUnitDiscountReturnsZeroWhenQtyIsZero(): void
+    {
+        $item = $this->getMockBuilder(QuoteItem::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getQty'])
+            ->addMethods(['getDiscountAmount'])
+            ->getMock();
+        $item->method('getQty')->willReturn(0.0);
+        $item->method('getDiscountAmount')->willReturn(10.0);
+
+        $unitDiscount = $this->basketHelper->getItemUnitDiscount($item);
+
+        $this->assertSame(
+            0.0,
+            $unitDiscount,
+            'getItemUnitDiscount() must return 0.0, not divide by zero, when qty is 0'
+        );
+    }
 }

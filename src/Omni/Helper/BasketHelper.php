@@ -1184,6 +1184,25 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
+     * Get the tax-config-aware per-unit price for a quote item, derived from getItemRowTotal()
+     * divided across the item's quantity. Used by the cart item "Price" cell so it shows a true
+     * unit price rather than duplicating the row total shown in the "Subtotal" cell.
+     *
+     * @param Item $item
+     * @param bool|null $inclTax defaults to the "Display Cart Subtotal" tax config when not given
+     * @return float
+     * @throws GuzzleException
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     */
+    public function getItemUnitPrice(Item $item, $inclTax = null): float
+    {
+        $qty = (float)$item->getQty();
+
+        return $qty > 0 ? (float)$this->getItemRowTotal($item, $inclTax) / $qty : 0.0;
+    }
+
+    /**
      * This function is overriding in hospitality module
      *
      * Get Correct Item Row Total for mini-cart after comparison
@@ -1221,6 +1240,53 @@ class BasketHelper extends AbstractHelperOmni
 
         $price = $price * $item->getQty();
         return $this->basketHelper->getPriceAddingCustomOptions($item, $price);
+    }
+
+    /**
+     * Get the tax-config-aware per-unit "original price" (before discount) for a quote item,
+     * derived from getPrice() divided across the item's quantity. Used as the per-unit
+     * counterpart to getItemUnitPrice() for the strikethrough original-price display, so both
+     * values in the cart item "Price" cell are on the same per-unit scale.
+     *
+     * Note (bundle products): unlike getItemRowTotal()'s bundle branch (which sums each child's
+     * own getRowTotal()), getPrice()'s bundle branch reads the parent item's own
+     * getRowTotalInclTax()/getRowTotal() and then multiplies by qty again - a pre-existing
+     * getPrice() quirk, not introduced here. If that parent-level total is itself already
+     * qty-scaled for a given bundle configuration, dividing back out by qty here will yield the
+     * row total rather than a true per-unit price for bundle items with an active discount.
+     * Not touched as part of this fix - flagging for anyone relying on this for bundles.
+     *
+     * @param $item
+     * @param bool|null $inclTax defaults to the "Display Cart Subtotal" tax config when not given
+     * @return float
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException|GuzzleException
+     */
+    public function getItemUnitPriceIncludeCustomOptions($item, $inclTax = null): float
+    {
+        $qty = (float)$item->getQty();
+
+        return $qty > 0 ? (float)$this->getPrice($item, $inclTax) / $qty : 0.0;
+    }
+
+    /**
+     * Get the per-unit counterpart to getItemRowDiscount(), for the "Save X" label shown
+     * alongside the per-unit Price cell values (getItemUnitPrice()/
+     * getItemUnitPriceIncludeCustomOptions()) so the savings amount is on the same per-unit
+     * scale as the prices it's displayed next to.
+     *
+     * Relies on $item->getDiscountAmount() already being populated by a prior
+     * getItemRowDiscount() call (see cart item templates), matching the existing
+     * setDiscountAmount()/getDiscountAmount() convention used there.
+     *
+     * @param Item $item
+     * @return float
+     */
+    public function getItemUnitDiscount(Item $item): float
+    {
+        $qty = (float)$item->getQty();
+
+        return $qty > 0 ? (float)$item->getDiscountAmount() / $qty : 0.0;
     }
 
     /**

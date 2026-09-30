@@ -53,6 +53,22 @@ class CartViewModel implements ArgumentInterface
     }
 
     /**
+     * Get the tax-config-aware per-unit price for a quote item (row total ÷ qty), for the cart
+     * item "Price" cell so it doesn't duplicate the row total shown in the "Subtotal" cell.
+     *
+     * @param $item
+     * @param bool|null $inclTax defaults to the "Display Cart Subtotal" tax config when not given
+     * @return float
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getItemUnitPrice($item, $inclTax = null)
+    {
+        return $this->basketHelper->getItemUnitPrice($item, $inclTax);
+    }
+
+    /**
      * Get Item row total
      *
      * @param $item
@@ -63,6 +79,18 @@ class CartViewModel implements ArgumentInterface
     public function getItemRowDiscount($item)
     {
         return $this->basketHelper->getItemRowDiscount($item);
+    }
+
+    /**
+     * Get the per-unit counterpart to getItemRowDiscount(), for the "Save X" label shown
+     * alongside the per-unit Price cell values.
+     *
+     * @param $item
+     * @return float
+     */
+    public function getItemUnitDiscount($item)
+    {
+        return $this->basketHelper->getItemUnitDiscount($item);
     }
 
     /**
@@ -78,6 +106,22 @@ class CartViewModel implements ArgumentInterface
     public function getItemPriceIncludeCustomOptions($item, $inclTax = null)
     {
         return $this->basketHelper->getPrice($item, $inclTax);
+    }
+
+    /**
+     * Get the per-unit counterpart to getItemPriceIncludeCustomOptions(), for the strikethrough
+     * original-price display next to getItemUnitPrice() in the cart item "Price" cell.
+     *
+     * @param $item
+     * @param bool|null $inclTax defaults to the "Display Cart Subtotal" tax config when not given
+     * @return float
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getItemUnitPriceIncludeCustomOptions($item, $inclTax = null)
+    {
+        return $this->basketHelper->getItemUnitPriceIncludeCustomOptions($item, $inclTax);
     }
 
     /**
