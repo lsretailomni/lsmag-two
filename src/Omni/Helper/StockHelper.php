@@ -84,7 +84,7 @@ class StockHelper extends AbstractHelper
         $this->itemHelper             = $itemHelper;
         $this->configuration          = $configuration;
         $this->stockItemRepository    = $stockItemRepository;
-        $this->stockRegistry         = $stockRegistry;
+        $this->stockRegistry          = $stockRegistry;
         parent::__construct($context);
     }
 
