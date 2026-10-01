@@ -19,6 +19,7 @@ use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\Quote\Item;
+use Magento\CatalogInventory\Api\StockRegistryInterface;
 
 /**
  * Stock related operation helper
@@ -53,6 +54,11 @@ class StockHelper extends AbstractHelper
     public $stockItemRepository;
 
     /**
+     * @var StockRegistryInterface 
+     */
+    public $stockRegistry;
+
+    /**
      * @param Context $context
      * @param ProductRepositoryInterface $productRepository
      * @param CollectionFactory $storeCollectionFactory
@@ -60,6 +66,7 @@ class StockHelper extends AbstractHelper
      * @param ItemHelper $itemHelper
      * @param Configuration $configuration
      * @param StockItemRepository $stockItemRepository
+     * @param StockRegistryInterface $stockRegistry
      */
     public function __construct(
         Context $context,
@@ -68,7 +75,8 @@ class StockHelper extends AbstractHelper
         LSR $lsr,
         ItemHelper $itemHelper,
         Configuration $configuration,
-        StockItemRepository $stockItemRepository
+        StockItemRepository $stockItemRepository,
+        StockRegistryInterface $stockRegistry
     ) {
         $this->productRepository      = $productRepository;
         $this->storeCollectionFactory = $storeCollectionFactory;
@@ -76,6 +84,7 @@ class StockHelper extends AbstractHelper
         $this->itemHelper             = $itemHelper;
         $this->configuration          = $configuration;
         $this->stockItemRepository    = $stockItemRepository;
+        $this->stockRegistry         = $stockRegistry;
         parent::__construct($context);
     }
 
@@ -131,7 +140,6 @@ class StockHelper extends AbstractHelper
     {
         $stockCollection             = $stockItems = [];
         $useManageStockConfiguration = $this->configuration->getManageStock();
-
         foreach ($items as &$item) {
             $children = [];
             if ($item->getProductType() == Type::TYPE_BUNDLE) {
@@ -153,7 +161,7 @@ class StockHelper extends AbstractHelper
                 if ($useManageStockConfiguration) {
                     $product = $this->productRepository->get($child->getSku());
                     try {
-                        $stockItem     = $this->stockItemRepository->get($product->getId());
+                        $stockItem     = $this->stockRegistry->getStockItem($product->getId());
                         $useMangeStock = $stockItem->getUseConfigManageStock();
                     } catch (\Exception $e) {
                         $useMangeStock = false;

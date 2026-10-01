@@ -127,7 +127,9 @@ class DataProvider implements ConfigProviderInterface
         $config = [];
 
         if ($this->isValid()) {
+            
             $clickAndCollectEnabled = $this->lsr->getClickCollectEnabled();
+            
 
             if ($clickAndCollectEnabled) {
                 $store                = $this->getStoreId();
