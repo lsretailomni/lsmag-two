@@ -68,6 +68,7 @@ use Magento\Sales\Model\Order;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Wishlist\Model\ResourceModel\Wishlist;
 use Magento\Wishlist\Model\WishlistFactory;
+use Magento\CatalogInventory\Api\StockRegistryInterface;
 
 /**
  * Abstract Helper for merging common data members and member functions
@@ -152,6 +153,7 @@ class AbstractHelperOmni extends AbstractHelper
      * @param \Magento\Sales\Model\ResourceModel\Order $orderResourceModel
      * @param Json $json
      * @param ConfigInterface $config
+     * @param StockRegistryInterface $stockRegistry
      */
     public function __construct(
         public Context $context,
@@ -231,6 +233,7 @@ class AbstractHelperOmni extends AbstractHelper
         public \Magento\Sales\Model\ResourceModel\Order $orderResourceModel,
         public Json $json,
         public ConfigInterface $config,
+        public StockRegistryInterface $stockRegistry
     ) {
         parent::__construct($context);
         $this->initialize();
