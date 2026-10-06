@@ -686,8 +686,6 @@ class ItemHelper extends AbstractHelperOmni
             $typeId  = $product->getTypeId();
             if (in_array($typeId, [
                 Type::TYPE_VIRTUAL,
-                Configurable::TYPE_CODE,
-                Grouped::TYPE_CODE,
                 \Magento\Downloadable\Model\Product\Type::TYPE_DOWNLOADABLE
             ], true)) {
                 return true;
