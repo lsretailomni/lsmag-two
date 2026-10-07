@@ -67,9 +67,9 @@ if ($line && !empty($line->getDiscountAmount()) && $line->getDiscountAmount() > 
         <?php if ($line && !empty($line->getDiscountAmount()) && $line->getDiscountAmount() > 0) : ?>
             <?php if ($viewModel->isDisplaySalesPricesInclTax() || $viewModel->isDisplaySalesPricesBoth()): ?>
                 <span class="price-including-tax" data-label="<?= $escaper->escapeHtml(__('Incl. Tax')) ?>">
-                    <?= $viewModel->getFormattedPrice($line->getAmount()); ?>
+                    <?= $viewModel->getFormattedPrice($viewModel->getInclTaxAmount($line->getAmount(), $line->getVatAmount())); ?>
                     <div class="lsdiscountprice2">
-                        <span><?= $viewModel->getFormattedPrice($line->getAmount() + $line->getDiscountAmount()); ?></span>
+                        <span><?= $viewModel->getFormattedPrice($viewModel->getInclTaxAmount($line->getAmount() + $line->getDiscountAmount(), $line->getVatAmount())); ?></span>
                     </div>
                 </span>
             <?php endif; ?>
@@ -111,7 +111,7 @@ if ($line && !empty($line->getDiscountAmount()) && $line->getDiscountAmount() > 
         <?php if ($line) : ?>
             <?php if ($viewModel->isDisplaySalesSubtotalInclTax() || $viewModel->isDisplaySalesSubtotalBoth()): ?>
                 <span class="price-including-tax" data-label="<?= $escaper->escapeHtml(__('Incl. Tax')) ?>">
-                    <?= $viewModel->getFormattedPrice($line->getAmount()) ?>
+                    <?= $viewModel->getFormattedPrice($viewModel->getInclTaxAmount($line->getAmount(), $line->getVatAmount())) ?>
                 </span>
             <?php endif; ?>
             <?php if ($viewModel->isDisplaySalesSubtotalExclTax() || $viewModel->isDisplaySalesSubtotalBoth()): ?>

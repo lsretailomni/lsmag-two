@@ -198,4 +198,20 @@ class ItemRenderer implements ArgumentInterface
     {
         return (bool) $this->taxConfig->displaySalesSubtotalBoth();
     }
+
+    /**
+     * Add VAT to a tax-exclusive LS Central amount to get its tax-inclusive counterpart.
+     *
+     * LS Central does not fold tax into Amount/NetAmount for US sales-tax stores (Amount and
+     * NetAmount come back equal, with the tax tracked only in the line's own VatAmount), so the
+     * "Incl. Tax" spans must add VatAmount explicitly rather than reading Amount alone.
+     *
+     * @param float|null $amount
+     * @param float|null $vatAmount
+     * @return float
+     */
+    public function getInclTaxAmount($amount, $vatAmount)
+    {
+        return (float)$amount + (float)$vatAmount;
+    }
 }

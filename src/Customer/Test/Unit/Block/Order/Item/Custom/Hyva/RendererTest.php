@@ -70,4 +70,18 @@ class RendererTest extends TestCase
         $this->taxConfig->method('displaySalesSubtotalBoth')->willReturn(true);
         $this->assertTrue($this->renderer->isDisplaySalesSubtotalBoth());
     }
+
+    /**
+     * Ticket 88392: LS Central doesn't fold tax into Amount for US sales-tax stores (Amount
+     * comes back equal to NetAmount), so the "Incl. Tax" spans must add VatAmount explicitly.
+     */
+    public function testGetInclTaxAmountAddsVatAmountToAmount(): void
+    {
+        $this->assertSame(80.56, $this->renderer->getInclTaxAmount(76.0, 4.56));
+    }
+
+    public function testGetInclTaxAmountTreatsNullVatAmountAsZero(): void
+    {
+        $this->assertSame(76.0, $this->renderer->getInclTaxAmount(76.0, null));
+    }
 }

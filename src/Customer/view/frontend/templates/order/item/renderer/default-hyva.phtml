@@ -37,9 +37,11 @@ $hasDiscount = $line && !empty($line->getDiscountAmount()) && $line->getDiscount
 // Both branches use row-total-shaped fields (never a bare unit price) so switching the tax
 // display config only changes the tax treatment, never the order of magnitude.
 if ($hasDiscount && $viewModel) {
-    $unitPriceIncl     = $viewModel->getFormattedPrice($line->getAmount());
+    $unitPriceIncl     = $viewModel->getFormattedPrice($viewModel->getInclTaxAmount($line->getAmount(), $line->getVatAmount()));
     $unitPriceExcl     = $viewModel->getFormattedPrice($line->getNetAmount());
-    $originalPriceIncl = $viewModel->getFormattedPrice($line->getAmount() + $line->getDiscountAmount());
+    $originalPriceIncl = $viewModel->getFormattedPrice(
+        $viewModel->getInclTaxAmount($line->getAmount() + $line->getDiscountAmount(), $line->getVatAmount())
+    );
     $originalPriceExcl = $viewModel->getFormattedPrice($line->getNetAmount() + $line->getDiscountAmount());
     $discountAmount    = $viewModel->getFormattedPrice($line->getDiscountAmount());
 } elseif ($viewModel) {
@@ -57,7 +59,7 @@ if ($hasDiscount && $viewModel) {
 }
 
 if ($line && $viewModel) {
-    $subtotalIncl = $viewModel->getFormattedPrice($line->getAmount());
+    $subtotalIncl = $viewModel->getFormattedPrice($viewModel->getInclTaxAmount($line->getAmount(), $line->getVatAmount()));
     $subtotalExcl = $viewModel->getFormattedPrice($line->getNetAmount());
 } elseif ($viewModel) {
     $subtotalIncl = $viewModel->getFormattedPrice($block->getItem()->getRowTotalInclTax());

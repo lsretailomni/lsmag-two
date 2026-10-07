@@ -140,15 +140,35 @@ class Totals extends AbstractOrderBlock
     /**
      * Get Total Tax
      *
+     * When LS Central has already folded tax into Gross Amount, Gross - Net is arithmetically
+     * guaranteed to equal the tax (that's what "folded in" means) - so that's used directly
+     * rather than trusting every line's VatAmount to be populated for this tax model. Only when
+     * Gross Amount equals Net Amount (Gross - Net would be 0, e.g. US sales-tax stores) do we
+     * fall back to summing each line's VatAmount instead.
+     *
      * @return float
      */
     public function getTotalTax()
     {
-        $grandTotal     = $this->getGrandTotal();
+        if ($this->isTaxFoldedIntoAmount()) {
+            return $this->getGrandTotal() - $this->getNetAmount();
+        }
 
-        $totalNetAmount = $this->getNetAmount();
+        $totalTax   = 0.0;
+        $orderLines = $this->getItems();
+        if (!$orderLines) {
+            return $totalTax;
+        }
 
-        return ($grandTotal - $totalNetAmount);
+        if (!is_array($orderLines)) {
+            $orderLines = [$orderLines];
+        }
+
+        foreach ($orderLines as $line) {
+            $totalTax += (float)$line->getVatAmount();
+        }
+
+        return $totalTax;
     }
 
     /**
@@ -183,6 +203,28 @@ class Totals extends AbstractOrderBlock
     }
 
     /**
+     * Whether LS Central has already folded tax into Gross Amount for this order.
+     *
+     * VAT-style stores compute Gross Amount as Net Amount + tax, so the two differ. US
+     * sales-tax stores track tax only per-line (VatAmount) and leave Gross Amount equal to Net
+     * Amount. This flags which case applies so getGrandTotal()/getSubtotal() only add the
+     * computed tax (getTotalTax()) when Gross Amount hasn't already included it - avoiding
+     * double-counting for stores where it has.
+     *
+     * @return bool
+     */
+    public function isTaxFoldedIntoAmount()
+    {
+        if (!empty($lscMemberSalesBuffer = current($this->getCurrentTransaction()))) {
+            return abs(
+                (float)$lscMemberSalesBuffer->getGrossAmount() - (float)$lscMemberSalesBuffer->getNetAmount()
+            ) > 0.0001;
+        }
+
+        return false;
+    }
+
+    /**
      * To fetch TotalAmount value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
      *
      * @return float
@@ -190,7 +232,9 @@ class Totals extends AbstractOrderBlock
     public function getGrandTotal()
     {
         if (!empty($lscMemberSalesBuffer = current($this->getCurrentTransaction()))) {
-            return $lscMemberSalesBuffer->getGrossAmount();
+            $gross = (float)$lscMemberSalesBuffer->getGrossAmount();
+
+            return $this->isTaxFoldedIntoAmount() ? $gross : $gross + $this->getTotalTax();
         }
 
         return 0.0;
@@ -249,7 +293,38 @@ class Totals extends AbstractOrderBlock
     }
 
     /**
-     * Get Subtotal
+     * Get the Shipment & Handling line's own VAT amount
+     *
+     * @return float
+     */
+    public function getShipmentTax()
+    {
+        $orderLines = $this->getItems();
+        $tax        = 0.0;
+        if (!$orderLines) {
+            return $tax;
+        }
+
+        if (!is_array($orderLines)) {
+            $orderLines = [$orderLines];
+        }
+        foreach ($orderLines as $line) {
+            if ($line->getNumber() ==
+                $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID, $this->lsr->getCurrentStoreId())) {
+                $tax = (float)$line->getVatAmount();
+                break;
+            }
+        }
+        return $tax;
+    }
+
+    /**
+     * Get Subtotal (tax-inclusive, pre-discount, merchandise-only)
+     *
+     * getGrandTotal() is already tax-inclusive (natively, or via its own fold-check), so the
+     * merchandise-only subtotal is obtained by removing the Shipment & Handling line - adding
+     * its own tax only when getGrandTotal() needed to add tax itself, since in that case the
+     * Shipment line's Amount (like all line amounts for this tax model) is still tax-exclusive.
      *
      * @return float
      * @throws NoSuchEntityException|GuzzleException
@@ -257,11 +332,11 @@ class Totals extends AbstractOrderBlock
     public function getSubtotal()
     {
         $this->getLoyaltyGiftCardInfo();
-        $shipmentFee = $this->getShipmentChargeLineFee();
-        $grandTotal  = $this->getGrandTotal();
-        $discount    = $this->getTotalDiscount();
+        $shipmentFee     = (float)$this->getShipmentChargeLineFee();
+        $shippingInclTax = $this->isTaxFoldedIntoAmount() ? $shipmentFee : $shipmentFee + $this->getShipmentTax();
+        $discount        = $this->getTotalDiscount();
 
-        return $grandTotal + $discount - (float)$shipmentFee;
+        return $this->getGrandTotal() + $discount - $shippingInclTax;
     }
 
     /**

@@ -76,10 +76,10 @@ $cols = $checkIsShipment ? 3 : 5;
             <?php if (!empty($_item->getDiscountAmount()) && $_item->getDiscountAmount() !== 0): ?>
                 <?php if ($block->isDisplaySalesPricesInclTax() || $block->isDisplaySalesPricesBoth()): ?>
                     <span class="price-including-tax" data-label="<?= $escaper->escapeHtml(__('Incl. Tax')) ?>">
-                        <?= /* @noEscape */ $block->getFormattedPrice($_item->getAmount()) ?>
+                        <?= /* @noEscape */ $block->getFormattedPrice($block->getInclTaxAmount($_item->getAmount(), $_item->getVatAmount())) ?>
                         <div class="lsdiscountprice2">
                             <span class="line-through text-gray-400">
-                                <?= /* @noEscape */ $block->getFormattedPrice($_item->getPrice() * $_item->getQuantity()) ?>
+                                <?= /* @noEscape */ $block->getFormattedPrice($block->getInclTaxAmount($_item->getPrice() * $_item->getQuantity(), $_item->getVatAmount())) ?>
                             </span>
                         </div>
                     </span>
@@ -100,7 +100,7 @@ $cols = $checkIsShipment ? 3 : 5;
             <?php else: ?>
                 <?php if ($block->isDisplaySalesPricesInclTax() || $block->isDisplaySalesPricesBoth()): ?>
                     <span class="price-including-tax" data-label="<?= $escaper->escapeHtml(__('Incl. Tax')) ?>">
-                        <?= /* @noEscape */ $block->getFormattedPrice($_item->getAmount()) ?>
+                        <?= /* @noEscape */ $block->getFormattedPrice($block->getInclTaxAmount($_item->getAmount(), $_item->getVatAmount())) ?>
                     </span>
                 <?php endif; ?>
                 <?php if ($block->isDisplaySalesPricesExclTax() || $block->isDisplaySalesPricesBoth()): ?>
@@ -124,7 +124,7 @@ $cols = $checkIsShipment ? 3 : 5;
             <p class="lg:sr-only font-medium"><?= $escaper->escapeHtml(__('Subtotal')) ?></p>
             <?php if ($block->isDisplaySalesSubtotalInclTax() || $block->isDisplaySalesSubtotalBoth()): ?>
                 <span class="price-including-tax" data-label="<?= $escaper->escapeHtml(__('Incl. Tax')) ?>">
-                    <?= /* @noEscape */ $block->getFormattedPrice($_item->getAmount()) ?>
+                    <?= /* @noEscape */ $block->getFormattedPrice($block->getInclTaxAmount($_item->getAmount(), $_item->getVatAmount())) ?>
                 </span>
             <?php endif; ?>
             <?php if ($block->isDisplaySalesSubtotalExclTax() || $block->isDisplaySalesSubtotalBoth()): ?>
