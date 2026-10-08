@@ -4,7 +4,18 @@ namespace Ls\Customer\Block\Order;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
+use \Ls\Omni\Helper\Data as DataHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\OrderHelper;
+use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Directory\Model\CountryFactory;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Pricing\Helper\Data as PriceHelper;
+use Magento\Framework\Pricing\PriceCurrencyInterface;
+use Magento\Framework\View\Element\Template\Context;
+use Magento\Sales\Model\OrderRepository;
+use Magento\Tax\Model\Config as TaxConfig;
 
 /**
  * Totals class to return total lines
@@ -20,6 +31,78 @@ class Totals extends AbstractOrderBlock
      * @var int
      */
     public $loyaltyPointAmount = 0;
+
+    /**
+     * @var TaxConfig
+     */
+    public $taxConfig;
+
+    /**
+     * @param Context $context
+     * @param PriceCurrencyInterface $priceCurrency
+     * @param LoyaltyHelper $loyaltyHelper
+     * @param LSR $lsr
+     * @param OrderHelper $orderHelper
+     * @param DataHelper $dataHelper
+     * @param PriceHelper $priceHelper
+     * @param OrderRepository $orderRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param CustomerSession $customerSession
+     * @param CountryFactory $countryFactory
+     * @param TaxConfig $taxConfig
+     * @param array $data
+     */
+    public function __construct(
+        Context $context,
+        PriceCurrencyInterface $priceCurrency,
+        LoyaltyHelper $loyaltyHelper,
+        LSR $lsr,
+        OrderHelper $orderHelper,
+        DataHelper $dataHelper,
+        PriceHelper $priceHelper,
+        OrderRepository $orderRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        CustomerSession $customerSession,
+        CountryFactory $countryFactory,
+        TaxConfig $taxConfig,
+        array $data = []
+    ) {
+        $this->taxConfig = $taxConfig;
+        parent::__construct(
+            $context,
+            $priceCurrency,
+            $loyaltyHelper,
+            $lsr,
+            $orderHelper,
+            $dataHelper,
+            $priceHelper,
+            $orderRepository,
+            $searchCriteriaBuilder,
+            $customerSession,
+            $countryFactory,
+            $data
+        );
+    }
+
+    /**
+     * Whether the "Display Sales Totals" config is set to show subtotal excluding tax only
+     *
+     * @return bool
+     */
+    public function isDisplaySalesSubtotalExclTax()
+    {
+        return $this->taxConfig->displaySalesSubtotalExclTax($this->lsr->getCurrentStoreId());
+    }
+
+    /**
+     * Whether the "Display Sales Totals" config is set to show subtotal including and excluding tax
+     *
+     * @return bool
+     */
+    public function isDisplaySalesSubtotalBoth()
+    {
+        return $this->taxConfig->displaySalesSubtotalBoth($this->lsr->getCurrentStoreId());
+    }
 
     /**
      * Get items.
@@ -66,9 +149,7 @@ class Totals extends AbstractOrderBlock
     public function getTotalNetAmount()
     {
         $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
-        $shipmentFee = $this->getShipmentChargeLineFee();
-        return (float)$this->orderHelper->getParameterValues($lineItemObj, "TotalNetAmount") - (float)$shipmentFee
-            + (float)$this->orderHelper->getParameterValues($lineItemObj, "TotalDiscount");
+        return (float)$this->orderHelper->getParameterValues($lineItemObj, "TotalNetAmount");
     }
 
     /**
@@ -86,10 +167,12 @@ class Totals extends AbstractOrderBlock
      * Get total amount
      *
      * @return float
+     * @throws NoSuchEntityException
      */
     public function getTotalAmount()
     {
-        return $this->getGrandTotal() - $this->giftCardAmount - $this->loyaltyPointAmount;
+        return $this->getGrandTotal() + (float)$this->getShipmentChargeLineFee()
+            - $this->giftCardAmount - $this->loyaltyPointAmount;
     }
 
     /**
@@ -106,10 +189,12 @@ class Totals extends AbstractOrderBlock
     /**
      * Get Shipment charge line fee
      *
+     * @param bool $excludingTax Return the tax-exclusive amount (Line::getNetAmount()) instead
+     *                           of the tax-inclusive amount (Line::getAmount())
      * @return float|int|null
      * @throws NoSuchEntityException
      */
-    public function getShipmentChargeLineFee()
+    public function getShipmentChargeLineFee($excludingTax = false)
     {
         $orderLines = $this->getLines();
         $fee        = 0;
@@ -118,7 +203,7 @@ class Totals extends AbstractOrderBlock
                 LSR::LSR_SHIPMENT_ITEM_ID,
                 $this->lsr->getCurrentStoreId()
             )) {
-                $fee = $line->getAmount();
+                $fee = $excludingTax ? $line->getNetAmount() : $line->getAmount();
                 break;
             }
         }
@@ -134,10 +219,7 @@ class Totals extends AbstractOrderBlock
     public function getSubtotal()
     {
         $this->getLoyaltyGiftCardInfo();
-        $shipmentFee = $this->getShipmentChargeLineFee();
-        $grandTotal  = $this->getGrandTotal();
-        $discount    = $this->getTotalDiscount();
-        return (float)$grandTotal + $discount - (float)$shipmentFee;
+        return (float)$this->getGrandTotal();
     }
 
     /**

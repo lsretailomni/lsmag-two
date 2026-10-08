@@ -170,7 +170,6 @@
                                                         </item>
                                                         <item name="subtotal" xsi:type="array">
                                                             <item name="config" xsi:type="array">
-                                                                <item name="title" xsi:type="string" translate="true">Subtotal (Inc.Tax)</item>
                                                                 <item name="sortOrder" xsi:type="string">1</item>
                                                             </item>
                                                         </item>

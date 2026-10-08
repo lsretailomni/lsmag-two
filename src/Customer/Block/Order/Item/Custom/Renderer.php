@@ -14,6 +14,7 @@ use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer;
 use Magento\Sales\Model\ResourceModel\Order\Item\Collection;
 use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory;
+use Magento\Tax\Model\Config as TaxConfig;
 
 class Renderer extends DefaultRenderer
 {
@@ -50,6 +51,11 @@ class Renderer extends DefaultRenderer
     public $orderHelper;
 
     /**
+     * @var TaxConfig
+     */
+    public $taxConfig;
+
+    /**
      * @param Context $context
      * @param StringUtils $string
      * @param OptionFactory $productOptionFactory
@@ -57,6 +63,7 @@ class Renderer extends DefaultRenderer
      * @param ItemHelper $itemHelper
      * @param CollectionFactory $itemCollectionFactory
      * @param OrderHelper $orderHelper
+     * @param TaxConfig $taxConfig
      * @param array $data
      */
     public function __construct(
@@ -67,12 +74,14 @@ class Renderer extends DefaultRenderer
         ItemHelper $itemHelper,
         CollectionFactory $itemCollectionFactory,
         OrderHelper $orderHelper,
+        TaxConfig $taxConfig,
         array $data = []
     ) {
         $this->priceCurrency         = $priceCurrency;
         $this->itemHelper            = $itemHelper;
         $this->orderHelper           = $orderHelper;
         $this->itemCollectionFactory = $itemCollectionFactory;
+        $this->taxConfig             = $taxConfig;
         parent::__construct($context, $string, $productOptionFactory, $data);
     }
 
@@ -216,6 +225,66 @@ class Renderer extends DefaultRenderer
     public function checkIsShipment()
     {
         return ($this->orderHelper->getGivenValueFromRegistry('current_detail') == 'shipment');
+    }
+
+    /**
+     * Whether the Price cell should show the tax-inclusive amount
+     *
+     * @return bool
+     */
+    public function isDisplaySalesPricesInclTax()
+    {
+        return (bool) $this->taxConfig->displaySalesPricesInclTax();
+    }
+
+    /**
+     * Whether the Price cell should show the tax-exclusive amount
+     *
+     * @return bool
+     */
+    public function isDisplaySalesPricesExclTax()
+    {
+        return (bool) $this->taxConfig->displaySalesPricesExclTax();
+    }
+
+    /**
+     * Whether the Price cell should show both tax-inclusive and tax-exclusive amounts
+     *
+     * @return bool
+     */
+    public function isDisplaySalesPricesBoth()
+    {
+        return (bool) $this->taxConfig->displaySalesPricesBoth();
+    }
+
+    /**
+     * Whether the Subtotal cell should show the tax-inclusive amount
+     *
+     * @return bool
+     */
+    public function isDisplaySalesSubtotalInclTax()
+    {
+        return (bool) $this->taxConfig->displaySalesSubtotalInclTax();
+    }
+
+    /**
+     * Whether the Subtotal cell should show the tax-exclusive amount
+     *
+     * @return bool
+     */
+    public function isDisplaySalesSubtotalExclTax()
+    {
+        return (bool) $this->taxConfig->displaySalesSubtotalExclTax();
+    }
+
+    /**
+     * Whether the Subtotal cell should show both tax-inclusive and tax-exclusive amounts
+     *
+     * @return bool
+     */
+    public function isDisplaySalesSubtotalBoth()
+    {
+        return (bool) $this->taxConfig->displaySalesSubtotalBoth();
     }
 
 }

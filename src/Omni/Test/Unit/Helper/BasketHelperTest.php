@@ -8,9 +8,11 @@ use Ls\Omni\Helper\BasketHelper;
 use Ls\Omni\Helper\ItemHelper;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\CustomerFactory;
+use Magento\Quote\Model\Quote\Item as QuoteItem;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Item as OrderItem;
 use Magento\Store\Model\Store;
+use Magento\Tax\Model\Config as TaxConfig;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
@@ -57,19 +59,28 @@ class BasketHelperTest extends TestCase
      */
     private $customerFactory;
 
+    /**
+     * @var TaxConfig|MockObject
+     */
+    private $taxConfig;
+
     public function setUp(): void
     {
         $this->itemHelper = $this->createMock(ItemHelper::class);
         $this->lsr = $this->createMock(LSR::class);
         $this->customerFactory = $this->createMock(CustomerFactory::class);
+        // Unstubbed methods return null (falsy), i.e. tax-exclusive display — matching this
+        // suite's pre-existing "always excl. tax" expectations unless a test opts into incl. tax.
+        $this->taxConfig = $this->createMock(TaxConfig::class);
 
-        // Partial mock: only `calculate()` (the sole gateway to the remote OneListCalculate SOAP
-        // call) is stubbed. Everything else (buildOrderFromMagentoOrderItems(),
-        // buildOrderLinesFromOrderItems(), getOneListAdmin(), _offers()) runs as real production
-        // code once implemented.
+        // Partial mock: `calculate()` (the sole gateway to the remote OneListCalculate SOAP call)
+        // and `getOneListCalculation()` (used by getItemRowTotal()/getPrice() to fetch the cached
+        // basket comparison data without a remote call in tests) are stubbed. Everything else
+        // (buildOrderFromMagentoOrderItems(), buildOrderLinesFromOrderItems(), getOneListAdmin(),
+        // _offers()) runs as real production code once implemented.
         $this->basketHelper = $this->getMockBuilder(BasketHelper::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['calculate'])
+            ->onlyMethods(['calculate', 'getOneListCalculation'])
             ->getMock();
 
         // Public, promoted properties inherited from AbstractHelperOmni — assigned directly since
@@ -77,6 +88,7 @@ class BasketHelperTest extends TestCase
         $this->basketHelper->itemHelper = $this->itemHelper;
         $this->basketHelper->lsr = $this->lsr;
         $this->basketHelper->customerFactory = $this->customerFactory;
+        $this->basketHelper->taxConfig = $this->taxConfig;
     }
 
     /**
@@ -316,5 +328,292 @@ class BasketHelperTest extends TestCase
         foreach ($lines as $line) {
             $this->assertSame(Entity\Enum\LineType::ITEM, $line->getLineType());
         }
+    }
+
+    /**
+     * FR2/solution-plan-88392 §1a: getItemRowTotal() must compute the row total from
+     * $line->getNetAmount() (tax-exclusive), not $line->getAmount() (tax-inclusive). getAmount()
+     * (24.0) is deliberately different from getNetAmount() (20.0) so this fails if the wrong field
+     * is used.
+     */
+    public function testGetItemRowTotalUsesNetAmountNotAmount(): void
+    {
+        $line = $this->createMock(Entity\OrderLine::class);
+        $line->method('getQuantity')->willReturn(2.0);
+        $line->method('getAmount')->willReturn(24.0);      // tax-inclusive row total
+        $line->method('getNetAmount')->willReturn(20.0);   // tax-exclusive row total
+
+        $orderLines = $this->createMock(Entity\ArrayOfOrderLine::class);
+        $orderLines->method('getOrderLine')->willReturn([$line]);
+
+        $basketData = $this->createMock(Entity\Order::class);
+        $basketData->method('getOrderLines')->willReturn($orderLines);
+
+        $this->basketHelper->method('getOneListCalculation')->willReturn($basketData);
+
+        $this->itemHelper->method('getComparisonValues')->willReturn(['IT001', 'VAR001', 'PCS']);
+        $this->itemHelper->method('isValid')->willReturn(true);
+
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->willReturn('PCS');
+
+        $item = $this->getMockBuilder(QuoteItem::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getProductType', 'getProduct', 'getSku', 'getQty'])
+            ->addMethods(['getRowTotalInclTax'])
+            ->getMock();
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getProduct')->willReturn($product);
+        $item->method('getSku')->willReturn('ITEM001');
+        $item->method('getQty')->willReturn(2.0);
+        $item->method('getRowTotalInclTax')->willReturn(24.0);
+
+        $result = $this->basketHelper->getItemRowTotal($item);
+
+        $this->assertSame(20.0, $result, 'getItemRowTotal() must use getNetAmount(), not getAmount()');
+    }
+
+    /**
+     * Regression for PR #69979 review feedback: when no OneListCalculate order line matches the
+     * quote item (isValid() returns false for every line, e.g. basket comparison data is stale or
+     * the item was just added), getItemRowTotal() must fall back to a tax-exclusive value
+     * ($item->getRowTotal()), not $item->getRowTotalInclTax(). The template that renders this value
+     * unconditionally labels it "Excl. Tax", so a tax-inclusive fallback would silently mislabel the
+     * amount. getRowTotal() (18.0) is deliberately different from getRowTotalInclTax() (24.0) so this
+     * fails if the wrong field is used.
+     */
+    public function testGetItemRowTotalFallbackUsesTaxExclusiveRowTotal(): void
+    {
+        $line = $this->createMock(Entity\OrderLine::class);
+        $line->method('getQuantity')->willReturn(2.0);
+        $line->method('getAmount')->willReturn(24.0);
+        $line->method('getNetAmount')->willReturn(20.0);
+
+        $orderLines = $this->createMock(Entity\ArrayOfOrderLine::class);
+        $orderLines->method('getOrderLine')->willReturn([$line]);
+
+        $basketData = $this->createMock(Entity\Order::class);
+        $basketData->method('getOrderLines')->willReturn($orderLines);
+
+        $this->basketHelper->method('getOneListCalculation')->willReturn($basketData);
+
+        $this->itemHelper->method('getComparisonValues')->willReturn(['IT001', 'VAR001', 'PCS']);
+        // No order line matches this quote item, so the loop never assigns $rowTotal and the
+        // fallback set before the loop must be used.
+        $this->itemHelper->method('isValid')->willReturn(false);
+
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->willReturn('PCS');
+
+        $item = $this->getMockBuilder(QuoteItem::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getProductType', 'getProduct', 'getSku', 'getQty'])
+            ->addMethods(['getRowTotalInclTax', 'getRowTotal'])
+            ->getMock();
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getProduct')->willReturn($product);
+        $item->method('getSku')->willReturn('ITEM001');
+        $item->method('getQty')->willReturn(2.0);
+        $item->method('getRowTotalInclTax')->willReturn(24.0);
+        $item->method('getRowTotal')->willReturn(18.0);
+
+        $result = $this->basketHelper->getItemRowTotal($item);
+
+        $this->assertSame(
+            18.0,
+            $result,
+            'getItemRowTotal() fallback (no matching order line) must use the tax-exclusive '
+            . 'getRowTotal(), not getRowTotalInclTax(), since the template labels this value "Excl. Tax"'
+        );
+    }
+
+    /**
+     * FR3/solution-plan-88392 §1b: getPrice() must return $line->getNetPrice() (tax-exclusive), not
+     * $line->getPrice() (tax-inclusive). getPrice() (12.0) is deliberately different from
+     * getNetPrice() (10.0) so this fails if the wrong field is used.
+     */
+    public function testGetPriceUsesNetPriceNotPrice(): void
+    {
+        $line = $this->createMock(Entity\OrderLine::class);
+        $line->method('getPrice')->willReturn(12.0);      // tax-inclusive unit price
+        $line->method('getNetPrice')->willReturn(10.0);   // tax-exclusive unit price
+
+        $orderLines = $this->createMock(Entity\ArrayOfOrderLine::class);
+        $orderLines->method('getOrderLine')->willReturn([$line]);
+
+        $basketData = $this->createMock(Entity\Order::class);
+        $basketData->method('getOrderLines')->willReturn($orderLines);
+
+        $this->basketHelper->method('getOneListCalculation')->willReturn($basketData);
+        // getPrice() finishes with $this->basketHelper->getPriceAddingCustomOptions(...) — the
+        // real (unmocked) implementation, so the inherited `basketHelper` proxy property (normally
+        // wired by the disabled constructor) must be set for that call to succeed.
+        $this->basketHelper->basketHelper = $this->basketHelper;
+
+        $this->itemHelper->method('getComparisonValues')->willReturn(['IT001', 'VAR001', 'PCS']);
+        $this->itemHelper->method('isValid')->willReturn(true);
+
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->willReturn('PCS');
+
+        $item = $this->getMockBuilder(QuoteItem::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getProductType', 'getProduct', 'getSku', 'getQty', 'getPrice'])
+            ->getMock();
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getProduct')->willReturn($product);
+        $item->method('getSku')->willReturn('ITEM001');
+        $item->method('getQty')->willReturn(1.0);
+        $item->method('getPrice')->willReturn(12.0);      // fallback value, must not be returned
+
+        $result = $this->basketHelper->getPrice($item);
+
+        $this->assertSame(10.0, $result, 'getPrice() must use getNetPrice(), not getPrice()');
+    }
+
+    /**
+     * Bug report (2026-09-24): cart page items table showed "Price" excluding tax while the cart
+     * Totals block's "Subtotal" line showed including tax, even though the store's "Display Cart
+     * Subtotal" config was set to Including Tax — getItemRowTotal() ignored that config entirely
+     * and always used the tax-exclusive getNetAmount()/getRowTotal(). getAmount() (24.0) is
+     * deliberately different from getNetAmount() (20.0) so this fails if the wrong field is used.
+     */
+    public function testGetItemRowTotalUsesAmountWhenDisplayCartSubtotalInclTax(): void
+    {
+        $this->taxConfig->method('displayCartSubtotalInclTax')->willReturn(true);
+
+        $line = $this->createMock(Entity\OrderLine::class);
+        $line->method('getQuantity')->willReturn(2.0);
+        $line->method('getAmount')->willReturn(24.0);      // tax-inclusive row total
+        $line->method('getNetAmount')->willReturn(20.0);   // tax-exclusive row total
+
+        $orderLines = $this->createMock(Entity\ArrayOfOrderLine::class);
+        $orderLines->method('getOrderLine')->willReturn([$line]);
+
+        $basketData = $this->createMock(Entity\Order::class);
+        $basketData->method('getOrderLines')->willReturn($orderLines);
+
+        $this->basketHelper->method('getOneListCalculation')->willReturn($basketData);
+
+        $this->itemHelper->method('getComparisonValues')->willReturn(['IT001', 'VAR001', 'PCS']);
+        $this->itemHelper->method('isValid')->willReturn(true);
+
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->willReturn('PCS');
+
+        $item = $this->getMockBuilder(QuoteItem::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getProductType', 'getProduct', 'getSku', 'getQty'])
+            ->addMethods(['getRowTotalInclTax'])
+            ->getMock();
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getProduct')->willReturn($product);
+        $item->method('getSku')->willReturn('ITEM001');
+        $item->method('getQty')->willReturn(2.0);
+        $item->method('getRowTotalInclTax')->willReturn(24.0);
+
+        $result = $this->basketHelper->getItemRowTotal($item);
+
+        $this->assertSame(
+            24.0,
+            $result,
+            'getItemRowTotal() must use getAmount(), not getNetAmount(), when "Display Cart '
+            . 'Subtotal" is configured as Including Tax'
+        );
+    }
+
+    /**
+     * An explicit $inclTax argument must override whatever the tax config says, since callers
+     * rendering "Both" mode need both the incl. and excl. amounts side by side regardless of the
+     * single config-driven default.
+     */
+    public function testGetItemRowTotalExplicitInclTaxParamOverridesConfig(): void
+    {
+        // Config says excl. tax, but the caller explicitly asks for incl. tax.
+        $this->taxConfig->method('displayCartSubtotalInclTax')->willReturn(false);
+
+        $line = $this->createMock(Entity\OrderLine::class);
+        $line->method('getQuantity')->willReturn(2.0);
+        $line->method('getAmount')->willReturn(24.0);
+        $line->method('getNetAmount')->willReturn(20.0);
+
+        $orderLines = $this->createMock(Entity\ArrayOfOrderLine::class);
+        $orderLines->method('getOrderLine')->willReturn([$line]);
+
+        $basketData = $this->createMock(Entity\Order::class);
+        $basketData->method('getOrderLines')->willReturn($orderLines);
+
+        $this->basketHelper->method('getOneListCalculation')->willReturn($basketData);
+
+        $this->itemHelper->method('getComparisonValues')->willReturn(['IT001', 'VAR001', 'PCS']);
+        $this->itemHelper->method('isValid')->willReturn(true);
+
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->willReturn('PCS');
+
+        $item = $this->getMockBuilder(QuoteItem::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getProductType', 'getProduct', 'getSku', 'getQty'])
+            ->addMethods(['getRowTotalInclTax'])
+            ->getMock();
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getProduct')->willReturn($product);
+        $item->method('getSku')->willReturn('ITEM001');
+        $item->method('getQty')->willReturn(2.0);
+        $item->method('getRowTotalInclTax')->willReturn(24.0);
+
+        $result = $this->basketHelper->getItemRowTotal($item, true);
+
+        $this->assertSame(24.0, $result, 'An explicit $inclTax=true must override the tax config');
+    }
+
+    /**
+     * Companion to testGetItemRowTotalUsesAmountWhenDisplayCartSubtotalInclTax: getPrice() (the
+     * strikethrough "original price" shown next to a discounted row total) must follow the same
+     * tax-display config so the two amounts shown together stay tax-consistent with each other.
+     */
+    public function testGetPriceUsesPriceWhenDisplayCartSubtotalInclTax(): void
+    {
+        $this->taxConfig->method('displayCartSubtotalInclTax')->willReturn(true);
+
+        $line = $this->createMock(Entity\OrderLine::class);
+        $line->method('getPrice')->willReturn(12.0);      // tax-inclusive unit price
+        $line->method('getNetPrice')->willReturn(10.0);   // tax-exclusive unit price
+
+        $orderLines = $this->createMock(Entity\ArrayOfOrderLine::class);
+        $orderLines->method('getOrderLine')->willReturn([$line]);
+
+        $basketData = $this->createMock(Entity\Order::class);
+        $basketData->method('getOrderLines')->willReturn($orderLines);
+
+        $this->basketHelper->method('getOneListCalculation')->willReturn($basketData);
+        $this->basketHelper->basketHelper = $this->basketHelper;
+
+        $this->itemHelper->method('getComparisonValues')->willReturn(['IT001', 'VAR001', 'PCS']);
+        $this->itemHelper->method('isValid')->willReturn(true);
+
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->willReturn('PCS');
+
+        $item = $this->getMockBuilder(QuoteItem::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getProductType', 'getProduct', 'getSku', 'getQty', 'getPrice'])
+            ->addMethods(['getPriceInclTax'])
+            ->getMock();
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getProduct')->willReturn($product);
+        $item->method('getSku')->willReturn('ITEM001');
+        $item->method('getQty')->willReturn(1.0);
+        $item->method('getPrice')->willReturn(9.0);            // fallback, must not be returned
+        $item->method('getPriceInclTax')->willReturn(11.0);    // fallback, must not be returned
+
+        $result = $this->basketHelper->getPrice($item);
+
+        $this->assertSame(
+            12.0,
+            $result,
+            'getPrice() must use getPrice() [tax-inclusive], not getNetPrice(), when "Display Cart '
+            . 'Subtotal" is configured as Including Tax'
+        );
     }
 }
