@@ -42,13 +42,30 @@ class CartViewModel implements ArgumentInterface
      * Get Item row total
      *
      * @param $item
+     * @param bool|null $inclTax defaults to the "Display Cart Subtotal" tax config when not given
      * @return string
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
-    public function getItemRowTotal($item)
+    public function getItemRowTotal($item, $inclTax = null)
     {
-        return $this->basketHelper->getItemRowTotal($item);
+        return $this->basketHelper->getItemRowTotal($item, $inclTax);
+    }
+
+    /**
+     * Get the tax-config-aware per-unit price for a quote item (row total ÷ qty), for the cart
+     * item "Price" cell so it doesn't duplicate the row total shown in the "Subtotal" cell.
+     *
+     * @param $item
+     * @param bool|null $inclTax defaults to the "Display Cart Subtotal" tax config when not given
+     * @return float
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getItemUnitPrice($item, $inclTax = null)
+    {
+        return $this->basketHelper->getItemUnitPrice($item, $inclTax);
     }
 
     /**
@@ -65,17 +82,72 @@ class CartViewModel implements ArgumentInterface
     }
 
     /**
+     * Get the per-unit counterpart to getItemRowDiscount(), for the "Save X" label shown
+     * alongside the per-unit Price cell values.
+     *
+     * @param $item
+     * @return float
+     */
+    public function getItemUnitDiscount($item)
+    {
+        return $this->basketHelper->getItemUnitDiscount($item);
+    }
+
+    /**
      * Get Item price including custom options price
      *
      * @param $item
+     * @param bool|null $inclTax defaults to the "Display Cart Subtotal" tax config when not given
      * @return string
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getItemPriceIncludeCustomOptions($item)
+    public function getItemPriceIncludeCustomOptions($item, $inclTax = null)
     {
-        return $this->basketHelper->getPrice($item);
+        return $this->basketHelper->getPrice($item, $inclTax);
+    }
+
+    /**
+     * Get the per-unit counterpart to getItemPriceIncludeCustomOptions(), for the strikethrough
+     * original-price display next to getItemUnitPrice() in the cart item "Price" cell.
+     *
+     * @param $item
+     * @param bool|null $inclTax defaults to the "Display Cart Subtotal" tax config when not given
+     * @return float
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getItemUnitPriceIncludeCustomOptions($item, $inclTax = null)
+    {
+        return $this->basketHelper->getItemUnitPriceIncludeCustomOptions($item, $inclTax);
+    }
+
+    /**
+     * Whether the cart item Price/Subtotal cells should render tax-inclusive amounts.
+     *
+     * @return bool
+     */
+    public function isCartItemPriceInclTax(): bool
+    {
+        return $this->basketHelper->isCartItemPriceInclTax();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCartItemPriceExclTax(): bool
+    {
+        return $this->basketHelper->isCartItemPriceExclTax();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCartItemPriceBothTax(): bool
+    {
+        return $this->basketHelper->isCartItemPriceBothTax();
     }
 
     /**

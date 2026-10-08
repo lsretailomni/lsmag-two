@@ -34,21 +34,40 @@ if ($viewModel && method_exists($viewModel, 'getDiscountInfoGivenOrderItem')) {
 $hasDiscount = $line && !empty($line->getDiscountAmount()) && $line->getDiscountAmount() > 0;
 
 // --- Price helpers (use viewModel/LS line when available, fall back to native Magento values) ---
-$unitPrice = $hasDiscount
-    ? ($viewModel ? $viewModel->getFormattedPrice($line->getAmount()) : $_item->getPrice())
-    : ($viewModel ? $viewModel->getFormattedPrice($_item->getPrice()) : $_item->getPrice());
+// Both branches use row-total-shaped fields (never a bare unit price) so switching the tax
+// display config only changes the tax treatment, never the order of magnitude.
+if ($hasDiscount && $viewModel) {
+    $unitPriceIncl     = $viewModel->getFormattedPrice($viewModel->getInclTaxAmount($line->getAmount(), $line->getVatAmount()));
+    $unitPriceExcl     = $viewModel->getFormattedPrice($line->getNetAmount());
+    $originalPriceIncl = $viewModel->getFormattedPrice(
+        $viewModel->getInclTaxAmount($line->getAmount() + $line->getDiscountAmount(), $line->getVatAmount())
+    );
+    $originalPriceExcl = $viewModel->getFormattedPrice($line->getNetAmount() + $line->getDiscountAmount());
+    $discountAmount    = $viewModel->getFormattedPrice($line->getDiscountAmount());
+} elseif ($viewModel) {
+    $unitPriceIncl     = $viewModel->getFormattedPrice($block->getItem()->getRowTotalInclTax());
+    $unitPriceExcl     = $viewModel->getFormattedPrice($block->getItem()->getRowTotal());
+    $originalPriceIncl = null;
+    $originalPriceExcl = null;
+    $discountAmount    = null;
+} else {
+    $unitPriceIncl     = $_item->getPrice();
+    $unitPriceExcl     = $_item->getPrice();
+    $originalPriceIncl = null;
+    $originalPriceExcl = null;
+    $discountAmount    = null;
+}
 
-$originalPrice = ($hasDiscount && $viewModel)
-    ? $viewModel->getFormattedPrice($line->getAmount() + $line->getDiscountAmount())
-    : null;
-
-$discountAmount = ($hasDiscount && $viewModel)
-    ? $viewModel->getFormattedPrice($line->getDiscountAmount())
-    : null;
-
-$subtotal = ($line && $viewModel)
-    ? $viewModel->getFormattedPrice($line->getAmount())
-    : ($viewModel ? $viewModel->getFormattedPrice($_item->getRowTotal()) : $_item->getRowTotal());
+if ($line && $viewModel) {
+    $subtotalIncl = $viewModel->getFormattedPrice($viewModel->getInclTaxAmount($line->getAmount(), $line->getVatAmount()));
+    $subtotalExcl = $viewModel->getFormattedPrice($line->getNetAmount());
+} elseif ($viewModel) {
+    $subtotalIncl = $viewModel->getFormattedPrice($block->getItem()->getRowTotalInclTax());
+    $subtotalExcl = $viewModel->getFormattedPrice($block->getItem()->getRowTotal());
+} else {
+    $subtotalIncl = $_item->getRowTotal();
+    $subtotalExcl = $_item->getRowTotal();
+}
 ?>
 <div id="order-item-row-<?= (int)$_item->getId() ?>"
      class="lg:grid grid-cols-5 py-2 border-b border-gray-100 last:border-b-0">
@@ -118,20 +137,38 @@ $subtotal = ($line && $viewModel)
     <div class="p-2 flex justify-between lg:block">
         <p class="lg:sr-only font-medium"><?= $escaper->escapeHtml(__('Price')) ?></p>
 
-        <?php if ($hasDiscount): ?>
-            <div>
-                <?= /* @noEscape */ $unitPrice ?>
-                <div class="lsdiscountprice2">
-                    <span class="line-through text-gray-400">
-                        <?= /* @noEscape */ $originalPrice ?>
-                    </span>
-                </div>
+        <?php if (!$viewModel): ?>
+            <?= /* @noEscape */ $unitPriceIncl ?>
+        <?php else: ?>
+            <?php if ($viewModel->isDisplaySalesPricesInclTax() || $viewModel->isDisplaySalesPricesBoth()): ?>
+                <span class="price-including-tax" data-label="<?= $escaper->escapeHtml(__('Incl. Tax')) ?>">
+                    <?= /* @noEscape */ $unitPriceIncl ?>
+                    <?php if ($hasDiscount): ?>
+                        <div class="lsdiscountprice2">
+                            <span class="line-through text-gray-400">
+                                <?= /* @noEscape */ $originalPriceIncl ?>
+                            </span>
+                        </div>
+                    <?php endif; ?>
+                </span>
+            <?php endif; ?>
+            <?php if ($viewModel->isDisplaySalesPricesExclTax() || $viewModel->isDisplaySalesPricesBoth()): ?>
+                <span class="price-excluding-tax" data-label="<?= $escaper->escapeHtml(__('Excl. Tax')) ?>">
+                    <?= /* @noEscape */ $unitPriceExcl ?>
+                    <?php if ($hasDiscount): ?>
+                        <div class="lsdiscountprice2">
+                            <span class="line-through text-gray-400">
+                                <?= /* @noEscape */ $originalPriceExcl ?>
+                            </span>
+                        </div>
+                    <?php endif; ?>
+                </span>
+            <?php endif; ?>
+            <?php if ($hasDiscount): ?>
                 <div class="lsdiscountamount text-sm text-red-600">
                     <?= /* @noEscape */ '(' . __('Save') . ' ' . $discountAmount . ')' ?>
                 </div>
-            </div>
-        <?php else: ?>
-            <?= /* @noEscape */ $unitPrice ?>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
 
@@ -169,7 +206,20 @@ $subtotal = ($line && $viewModel)
     <!-- Column 5: Row subtotal -->
     <div class="p-2 text-right flex justify-between lg:block">
         <p class="lg:sr-only font-medium"><?= $escaper->escapeHtml(__('Subtotal')) ?></p>
-        <?= /* @noEscape */ $subtotal ?>
+        <?php if (!$viewModel): ?>
+            <?= /* @noEscape */ $subtotalIncl ?>
+        <?php else: ?>
+            <?php if ($viewModel->isDisplaySalesSubtotalInclTax() || $viewModel->isDisplaySalesSubtotalBoth()): ?>
+                <span class="price-including-tax" data-label="<?= $escaper->escapeHtml(__('Incl. Tax')) ?>">
+                    <?= /* @noEscape */ $subtotalIncl ?>
+                </span>
+            <?php endif; ?>
+            <?php if ($viewModel->isDisplaySalesSubtotalExclTax() || $viewModel->isDisplaySalesSubtotalBoth()): ?>
+                <span class="price-excluding-tax" data-label="<?= $escaper->escapeHtml(__('Excl. Tax')) ?>">
+                    <?= /* @noEscape */ $subtotalExcl ?>
+                </span>
+            <?php endif; ?>
+        <?php endif; ?>
     </div>
 
 </div>

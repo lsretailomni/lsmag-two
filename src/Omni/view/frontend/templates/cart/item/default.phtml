@@ -108,30 +108,48 @@ $_item->setRowTotalInclTax($viewModel->getItemRowTotal($_item));
         </td>
     <?php else: ?>
         <td class="col price" data-th="<?= $escaper->escapeHtml(__('Price')) ?>">
-            <?php if (!empty($basketData)): ?>
-                <span class="price-excluding-tax" data-label="Excl. Tax">
+            <?php if ($viewModel->isCartItemPriceInclTax() || $viewModel->isCartItemPriceBothTax()): ?>
+                <span class="price-including-tax" data-label="<?= $escaper->escapeHtml(__('Incl. Tax')) ?>">
                     <span class="cart-price">
-                        <?= $priceCurrency->format($viewModel->getItemRowTotal($_item), true); ?><br/>
-                        <?php if ($_item->getDiscountAmount() > 0):
-                            ?>
+                        <?= $priceCurrency->format($viewModel->getItemUnitPrice($_item, true), true); ?><br/>
+                        <?php if ($_item->getDiscountAmount() > 0): ?>
                             <div class="lsdiscountprice2">
                             <strike>
-                                <?= $priceCurrency->format($viewModel->getItemPriceIncludeCustomOptions($_item), true); ?>
+                                <?= $priceCurrency->format(
+                                    $viewModel->getItemUnitPriceIncludeCustomOptions($_item, true),
+                                    true
+                                ); ?>
                             </strike>
                             </div>
                         <?php endif; ?>
                     </span>
                 </span>
-                <?php if ($_item->getDiscountAmount() > 0): ?>
-                    <div class="lsdiscountamount">
-                        <?= '(' . __($basketData[1]) . ' ' . $priceCurrency->format($_item->getDiscountAmount()) . ')';
-                        ?>
-                    </div>
-                <?php endif; ?>
-            <?php else: ?>
-                <?= $block->getUnitPriceHtml($_item); ?>
             <?php endif; ?>
-
+            <?php if ($viewModel->isCartItemPriceExclTax() || $viewModel->isCartItemPriceBothTax()): ?>
+                <span class="price-excluding-tax" data-label="<?= $escaper->escapeHtml(__('Excl. Tax')) ?>">
+                    <span class="cart-price">
+                        <?= $priceCurrency->format($viewModel->getItemUnitPrice($_item, false), true); ?><br/>
+                        <?php if ($_item->getDiscountAmount() > 0): ?>
+                            <div class="lsdiscountprice2">
+                            <strike>
+                                <?= $priceCurrency->format(
+                                    $viewModel->getItemUnitPriceIncludeCustomOptions($_item, false),
+                                    true
+                                ); ?>
+                            </strike>
+                            </div>
+                        <?php endif; ?>
+                    </span>
+                </span>
+            <?php endif; ?>
+            <?php if ($_item->getDiscountAmount() > 0 && !empty($basketData)): ?>
+                <div class="lsdiscountamount">
+                    <?= $escaper->escapeHtml(
+                        '(' . __($basketData[1]) . ' '
+                        . $priceCurrency->format($viewModel->getItemUnitDiscount($_item), false) . ')'
+                    ); ?>
+                </div>
+            <?php endif; ?>
         </td>
     <?php endif; ?>
     <td class="col qty" data-th="<?= $escaper->escapeHtml(__('Qty')) ?>">
@@ -158,14 +176,19 @@ $_item->setRowTotalInclTax($viewModel->getItemRowTotal($_item));
         <?php if ($canApplyMsrp): ?>
             <span class="cart msrp subtotal">--</span>
         <?php else: ?>
-            <?php if (!empty($basketData)): ?>
-                <span class="price-excluding-tax" data-label="Excl. Tax">
+            <?php if ($viewModel->isCartItemPriceInclTax() || $viewModel->isCartItemPriceBothTax()): ?>
+                <span class="price-including-tax" data-label="<?= $escaper->escapeHtml(__('Incl. Tax')) ?>">
                     <span class="cart-price">
-                        <?= $priceCurrency->format($viewModel->getItemRowTotal($_item), true); ?>
+                        <?= $priceCurrency->format($viewModel->getItemRowTotal($_item, true), true); ?>
                     </span>
-        </span>
-            <?php else: ?>
-                <?= $block->getRowTotalHtml($_item) ?>
+                </span>
+            <?php endif; ?>
+            <?php if ($viewModel->isCartItemPriceExclTax() || $viewModel->isCartItemPriceBothTax()): ?>
+                <span class="price-excluding-tax" data-label="<?= $escaper->escapeHtml(__('Excl. Tax')) ?>">
+                    <span class="cart-price">
+                        <?= $priceCurrency->format($viewModel->getItemRowTotal($_item, false), true); ?>
+                    </span>
+                </span>
             <?php endif; ?>
         <?php endif; ?>
     </td>

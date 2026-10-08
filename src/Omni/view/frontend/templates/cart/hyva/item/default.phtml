@@ -35,12 +35,10 @@ $priceCurrency = null;
 if ($viewModel) {
     $basketData = $viewModel->getOneListCalculateData($item) ?: [];
     $priceCurrency = $viewModel->getPriceCurrency();
-    if (!empty($basketData)) {
-        $item->setDiscountAmount($viewModel->getItemRowDiscount($item));
-        $item->setRowTotalInclTax($viewModel->getItemRowTotal($item));
-    }
+    $item->setDiscountAmount($viewModel->getItemRowDiscount($item));
+    $item->setRowTotalInclTax($viewModel->getItemRowTotal($item));
 }
-$hasLsPricing = !empty($basketData) && $priceCurrency;
+$hasLsPricing = (bool) $viewModel && $priceCurrency;
 
 $minSalesQty = $stockItemViewModel->getMinSaleQty($product);
 $maxSalesQty = $stockItemViewModel->getMaxSaleQty($product);
@@ -107,18 +105,40 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
 
                 <p class="price-box inline-flex flex-col items-end gap-1 text-end">
                     <?php if ($hasLsPricing): ?>
-                        <?php $rowTotal = $viewModel->getItemRowTotal($item); ?>
                         <?php $discountAmt = (float) $item->getDiscountAmount(); ?>
-                        <span class="font-medium">
-                            <span class="sr-only"><?= $escaper->escapeHtml(__('Subtotal')) ?></span>
-                            <span><?= /* @noEscape */ $priceCurrency->format($rowTotal, true) ?></span>
-                        </span>
+                        <?php if ($qty > 1): ?>
+                            <span><?= $escaper->escapeHtmlAttr(__('%1 x', $qty)) ?></span>
+                        <?php endif; ?>
+                        <?php if ($viewModel->isCartItemPriceInclTax() || $viewModel->isCartItemPriceBothTax()): ?>
+                            <span class="text-fg-secondary" data-label="<?= $escaper->escapeHtml(__('Incl. Tax')) ?>">
+                                <span class="sr-only"><?= $escaper->escapeHtml(__('Price')) ?></span>
+                                <span><?= /* @noEscape */ $priceCurrency->format($viewModel->getItemUnitPrice($item, true), true) ?></span>
+                            </span>
+                        <?php endif; ?>
+                        <?php if ($viewModel->isCartItemPriceExclTax() || $viewModel->isCartItemPriceBothTax()): ?>
+                            <span class="text-fg-secondary" data-label="<?= $escaper->escapeHtml(__('Excl. Tax')) ?>">
+                                <span class="sr-only"><?= $escaper->escapeHtml(__('Price')) ?></span>
+                                <span><?= /* @noEscape */ $priceCurrency->format($viewModel->getItemUnitPrice($item, false), true) ?></span>
+                            </span>
+                        <?php endif; ?>
+                        <?php if ($viewModel->isCartItemPriceInclTax() || $viewModel->isCartItemPriceBothTax()): ?>
+                            <span class="font-medium" data-label="<?= $escaper->escapeHtml(__('Incl. Tax')) ?>">
+                                <span class="sr-only"><?= $escaper->escapeHtml(__('Subtotal')) ?></span>
+                                <span><?= /* @noEscape */ $priceCurrency->format($viewModel->getItemRowTotal($item, true), true) ?></span>
+                            </span>
+                        <?php endif; ?>
+                        <?php if ($viewModel->isCartItemPriceExclTax() || $viewModel->isCartItemPriceBothTax()): ?>
+                            <span class="font-medium" data-label="<?= $escaper->escapeHtml(__('Excl. Tax')) ?>">
+                                <span class="sr-only"><?= $escaper->escapeHtml(__('Subtotal')) ?></span>
+                                <span><?= /* @noEscape */ $priceCurrency->format($viewModel->getItemRowTotal($item, false), true) ?></span>
+                            </span>
+                        <?php endif; ?>
                         <?php if ($discountAmt > 0): ?>
                             <s class="text-sm text-fg-secondary">
-                                <?= /* @noEscape */ $priceCurrency->format($viewModel->getItemPriceIncludeCustomOptions($item), true) ?>
+                                <?= /* @noEscape */ $priceCurrency->format($viewModel->getItemUnitPriceIncludeCustomOptions($item), true) ?>
                             </s>
                             <span class="text-xs font-bold text-red-700">
-                                <?= $escaper->escapeHtml('(' . __($basketData[1] ?? 'Save') . ' ' . $priceCurrency->format($discountAmt, false) . ')') ?>
+                                <?= $escaper->escapeHtml('(' . __($basketData[1] ?? 'Save') . ' ' . $priceCurrency->format($viewModel->getItemUnitDiscount($item), false) . ')') ?>
                             </span>
                         <?php endif; ?>
                     <?php else: ?>

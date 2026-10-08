@@ -12,6 +12,7 @@ use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
+use Magento\Tax\Model\Config as TaxConfig;
 
 /**
  * Item renderer being used on order detail
@@ -28,12 +29,14 @@ class ItemRenderer implements ArgumentInterface
      * @param OrderHelper $orderHelper
      * @param PriceCurrencyInterface $priceCurrency
      * @param BasketHelper $basketHelper
+     * @param TaxConfig $taxConfig
      */
     public function __construct(
         public ItemHelper $itemHelper,
         public OrderHelper $orderHelper,
         public PriceCurrencyInterface $priceCurrency,
-        public BasketHelper $basketHelper
+        public BasketHelper $basketHelper,
+        public TaxConfig $taxConfig
     ) {
     }
 
@@ -134,5 +137,81 @@ class ItemRenderer implements ArgumentInterface
         }
 
         return !empty($this->lines) ? $this->basketHelper->getItemRowDiscount($item, $this->lines) : 0;
+    }
+
+    /**
+     * Whether the Price cell should show the tax-inclusive amount
+     *
+     * @return bool
+     */
+    public function isDisplaySalesPricesInclTax()
+    {
+        return (bool) $this->taxConfig->displaySalesPricesInclTax();
+    }
+
+    /**
+     * Whether the Price cell should show the tax-exclusive amount
+     *
+     * @return bool
+     */
+    public function isDisplaySalesPricesExclTax()
+    {
+        return (bool) $this->taxConfig->displaySalesPricesExclTax();
+    }
+
+    /**
+     * Whether the Price cell should show both tax-inclusive and tax-exclusive amounts
+     *
+     * @return bool
+     */
+    public function isDisplaySalesPricesBoth()
+    {
+        return (bool) $this->taxConfig->displaySalesPricesBoth();
+    }
+
+    /**
+     * Whether the Subtotal cell should show the tax-inclusive amount
+     *
+     * @return bool
+     */
+    public function isDisplaySalesSubtotalInclTax()
+    {
+        return (bool) $this->taxConfig->displaySalesSubtotalInclTax();
+    }
+
+    /**
+     * Whether the Subtotal cell should show the tax-exclusive amount
+     *
+     * @return bool
+     */
+    public function isDisplaySalesSubtotalExclTax()
+    {
+        return (bool) $this->taxConfig->displaySalesSubtotalExclTax();
+    }
+
+    /**
+     * Whether the Subtotal cell should show both tax-inclusive and tax-exclusive amounts
+     *
+     * @return bool
+     */
+    public function isDisplaySalesSubtotalBoth()
+    {
+        return (bool) $this->taxConfig->displaySalesSubtotalBoth();
+    }
+
+    /**
+     * Add VAT to a tax-exclusive LS Central amount to get its tax-inclusive counterpart.
+     *
+     * LS Central does not fold tax into Amount/NetAmount for US sales-tax stores (Amount and
+     * NetAmount come back equal, with the tax tracked only in the line's own VatAmount), so the
+     * "Incl. Tax" spans must add VatAmount explicitly rather than reading Amount alone.
+     *
+     * @param float|null $amount
+     * @param float|null $vatAmount
+     * @return float
+     */
+    public function getInclTaxAmount($amount, $vatAmount)
+    {
+        return (float)$amount + (float)$vatAmount;
     }
 }

@@ -131,6 +131,8 @@ Refunded,Refunded
 "Order Total","Order Total"
 "Qty Shipped","Qty Shipped"
 "Subtotal (Inc.Tax)","Subtotal (Inc.Tax)"
+"Subtotal (Excl. Tax)","Subtotal (Excl. Tax)"
+"Subtotal (Incl. Tax)","Subtotal (Incl. Tax)"
 "Gift Card Redeemed","Gift Card Redeemed"
 "Loyalty Points Redeemed","Loyalty Points Redeemed"
 "Total Discount","Total Discount"

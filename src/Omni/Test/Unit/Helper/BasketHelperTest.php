@@ -9,15 +9,18 @@ use Ls\Omni\Client\CentralEcommerce\Entity\MobileTransactionLine;
 use Ls\Omni\Client\CentralEcommerce\Entity\RootMobileTransaction;
 use Ls\Omni\Helper\BasketHelper;
 use Ls\Omni\Helper\ItemHelper;
+use Magento\Quote\Model\Quote\Item as QuoteItem;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Item;
 use Magento\Store\Model\Store;
+use Magento\Tax\Model\Config as TaxConfig;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
 /**
- * Unit tests for {@see BasketHelper::buildOrderFromMagentoOrderItems()} (ticket 85191).
+ * Unit tests for {@see BasketHelper::buildOrderFromMagentoOrderItems()} (ticket 85191) and
+ * {@see BasketHelper::getItemRowTotal()}/{@see BasketHelper::getPrice()} (ticket 88392).
  *
  * Note on entity types: the requirements/solution-plan docs for this ticket reference
  * `Ls\Omni\Client\Ecommerce\Entity\Order`/`OrderLine` and the `OneListCalculate` SOAP
@@ -55,11 +58,16 @@ class BasketHelperTest extends TestCase
      */
     private $itemHelper;
 
+    /**
+     * @var TaxConfig&MockObject
+     */
+    private $taxConfig;
+
     protected function setUp(): void
     {
         $this->basketHelper = $this->getMockBuilder(BasketHelper::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['getOneListAdmin', 'calculate', 'update', 'createInstance'])
+            ->onlyMethods(['getOneListAdmin', 'calculate', 'update', 'createInstance', 'getOneListCalculation'])
             ->getMock();
 
         $this->itemHelper = $this->createMock(ItemHelper::class);
@@ -68,6 +76,11 @@ class BasketHelperTest extends TestCase
                 return [$sku . '-ITEM', $sku . '-VARIANT', 'PCS'];
             });
         $this->basketHelper->itemHelper = $this->itemHelper;
+
+        // Unstubbed methods return null => falsy => tax-exclusive, preserving prior test
+        // expectations unless a test opts into incl. tax.
+        $this->taxConfig = $this->createMock(TaxConfig::class);
+        $this->basketHelper->taxConfig = $this->taxConfig;
 
         $this->basketHelper->method('createInstance')
             ->willReturnCallback(static function (?string $entityClassName = null, array $data = []) {
@@ -83,8 +96,7 @@ class BasketHelperTest extends TestCase
         $oneListAdmin = (new ReflectionClass(RootMobileTransaction::class))->newInstanceWithoutConstructor();
         $oneListAdmin->setMobiletransaction($mobileTransaction);
 
-        $this->basketHelper->expects($this->once())
-            ->method('getOneListAdmin')
+        $this->basketHelper->method('getOneListAdmin')
             ->with('jane@example.com', '1', false)
             ->willReturn($oneListAdmin);
     }
@@ -160,8 +172,7 @@ class BasketHelperTest extends TestCase
     }
 
     /**
-     * FR5: StoreId/CardId must come from getOneListAdmin() (already asserted to be called
-     * exactly once, with no remote call, in setUp()) - not from a fresh/duplicate lookup.
+     * FR5: StoreId/CardId must come from getOneListAdmin() - not from a fresh/duplicate lookup.
      */
     public function testBuildOrderFromMagentoOrderItemsSourcesStoreIdAndCardIdFromOneListAdmin(): void
     {
@@ -262,5 +273,321 @@ class BasketHelperTest extends TestCase
         $discountLine = $discountLines[0];
         $this->assertSame(2.00, $discountLine->getDiscountamount());
         $this->assertSame(20.0, $discountLine->getDiscountpercent(), 'Percent must be recomputed as (2.00 / 10.00) * 100');
+    }
+
+    /**
+     * @param float $netprice tax-exclusive unit price
+     * @param float $price tax-inclusive unit price
+     * @param float $netamount tax-exclusive row total
+     * @param float $taxamount tax amount for the row
+     * @return MobileTransactionLine
+     */
+    private function createOrderLine(
+        float $netprice,
+        float $price,
+        float $netamount,
+        float $taxamount,
+        float $quantity = 1.0
+    ): MobileTransactionLine {
+        /** @var MobileTransactionLine $line */
+        $line = (new ReflectionClass(MobileTransactionLine::class))->newInstanceWithoutConstructor();
+        $line->setNetprice($netprice)
+            ->setPrice($price)
+            ->setNetamount($netamount)
+            ->setTaxamount($taxamount)
+            ->setQuantity($quantity)
+            ->setNumber('SKU-1-ITEM')
+            ->setVariantcode('SKU-1-VARIANT');
+
+        return $line;
+    }
+
+    /**
+     * Ticket 88392: US customers (real sales tax) saw tax-inclusive prices where Magento
+     * expects the tax-exclusive row total. getItemRowTotal() must source the row total from
+     * NetAmount alone, never NetAmount + TaxAmount (which is the tax-inclusive gross amount).
+     */
+    public function testGetItemRowTotalUsesTaxExclusiveNetAmountNotGrossAmount(): void
+    {
+        $item = $this->createMock(QuoteItem::class);
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getSku')->willReturn('SKU-1');
+        $item->method('getQty')->willReturn(1.0);
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->with('uom')->willReturn('PCS');
+        $item->method('getProduct')->willReturn($product);
+
+        $line = $this->createOrderLine(15.00, 18.00, 15.00, 3.00);
+
+        $this->basketHelper->expects($this->once())
+            ->method('getOneListCalculation')
+            ->willReturnCallback(function () use ($line) {
+                $basketData = (new ReflectionClass(RootMobileTransaction::class))->newInstanceWithoutConstructor();
+                $basketData->setMobiletransactionline([$line]);
+                return $basketData;
+            });
+        $this->itemHelper->method('isValid')->willReturn(true);
+
+        $rowTotal = $this->basketHelper->getItemRowTotal($item);
+
+        $this->assertSame(15.00, $rowTotal, 'Row total must be the tax-exclusive NetAmount, not NetAmount + TaxAmount');
+    }
+
+    /**
+     * Ticket 88392: getPrice() must source the unit price from NetPrice (tax-exclusive), not
+     * Price (tax-inclusive) - otherwise the "excl. tax" price shown is actually tax-inclusive.
+     */
+    public function testGetPriceUsesTaxExclusiveNetPriceNotTaxInclusivePrice(): void
+    {
+        $item = $this->createMock(QuoteItem::class);
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getSku')->willReturn('SKU-1');
+        $item->method('getQty')->willReturn(1.0);
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->with('uom')->willReturn('PCS');
+        $item->method('getProduct')->willReturn($product);
+
+        $line = $this->createOrderLine(15.00, 18.00, 15.00, 3.00);
+
+        $this->basketHelper->expects($this->once())
+            ->method('getOneListCalculation')
+            ->willReturnCallback(function () use ($line) {
+                $basketData = (new ReflectionClass(RootMobileTransaction::class))->newInstanceWithoutConstructor();
+                $basketData->setMobiletransactionline([$line]);
+                return $basketData;
+            });
+        $this->itemHelper->method('isValid')->willReturn(true);
+        $this->basketHelper->basketHelper = $this->basketHelper;
+
+        $price = $this->basketHelper->getPrice($item);
+
+        $this->assertSame(15.00, $price, 'Price must be the tax-exclusive NetPrice, not the tax-inclusive Price');
+    }
+
+    /**
+     * When "Display Cart Subtotal" is configured for Including Tax, getItemRowTotal() must
+     * source the row total from NetAmount + TaxAmount (tax-inclusive), not NetAmount alone.
+     */
+    public function testGetItemRowTotalUsesTaxInclusiveAmountWhenConfigIsInclTax(): void
+    {
+        $item = $this->createMock(QuoteItem::class);
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getSku')->willReturn('SKU-1');
+        $item->method('getQty')->willReturn(1.0);
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->with('uom')->willReturn('PCS');
+        $item->method('getProduct')->willReturn($product);
+
+        $line = $this->createOrderLine(15.00, 18.00, 15.00, 3.00);
+
+        $this->basketHelper->expects($this->once())
+            ->method('getOneListCalculation')
+            ->willReturnCallback(function () use ($line) {
+                $basketData = (new ReflectionClass(RootMobileTransaction::class))->newInstanceWithoutConstructor();
+                $basketData->setMobiletransactionline([$line]);
+                return $basketData;
+            });
+        $this->itemHelper->method('isValid')->willReturn(true);
+        $this->taxConfig->method('displayCartSubtotalInclTax')->willReturn(true);
+
+        $rowTotal = $this->basketHelper->getItemRowTotal($item);
+
+        $this->assertSame(18.00, $rowTotal, 'Row total must be NetAmount + TaxAmount when config is incl. tax');
+    }
+
+    /**
+     * When "Display Cart Subtotal" is configured for Including Tax, getPrice() must source the
+     * unit price from Price (tax-inclusive), not NetPrice.
+     */
+    public function testGetPriceUsesTaxInclusivePriceWhenConfigIsInclTax(): void
+    {
+        $item = $this->createMock(QuoteItem::class);
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getSku')->willReturn('SKU-1');
+        $item->method('getQty')->willReturn(1.0);
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->with('uom')->willReturn('PCS');
+        $item->method('getProduct')->willReturn($product);
+
+        $line = $this->createOrderLine(15.00, 18.00, 15.00, 3.00);
+
+        $this->basketHelper->expects($this->once())
+            ->method('getOneListCalculation')
+            ->willReturnCallback(function () use ($line) {
+                $basketData = (new ReflectionClass(RootMobileTransaction::class))->newInstanceWithoutConstructor();
+                $basketData->setMobiletransactionline([$line]);
+                return $basketData;
+            });
+        $this->itemHelper->method('isValid')->willReturn(true);
+        $this->basketHelper->basketHelper = $this->basketHelper;
+        $this->taxConfig->method('displayCartSubtotalInclTax')->willReturn(true);
+
+        $price = $this->basketHelper->getPrice($item);
+
+        $this->assertSame(18.00, $price, 'Price must be the tax-inclusive Price when config is incl. tax');
+    }
+
+    /**
+     * An explicit $inclTax argument must always override the config default.
+     */
+    public function testGetItemRowTotalExplicitInclTaxArgumentOverridesConfig(): void
+    {
+        $item = $this->createMock(QuoteItem::class);
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getSku')->willReturn('SKU-1');
+        $item->method('getQty')->willReturn(1.0);
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->with('uom')->willReturn('PCS');
+        $item->method('getProduct')->willReturn($product);
+
+        $line = $this->createOrderLine(15.00, 18.00, 15.00, 3.00);
+
+        $this->basketHelper->expects($this->once())
+            ->method('getOneListCalculation')
+            ->willReturnCallback(function () use ($line) {
+                $basketData = (new ReflectionClass(RootMobileTransaction::class))->newInstanceWithoutConstructor();
+                $basketData->setMobiletransactionline([$line]);
+                return $basketData;
+            });
+        $this->itemHelper->method('isValid')->willReturn(true);
+        // Config says exclusive, but the explicit argument must still win.
+        $this->taxConfig->method('displayCartSubtotalInclTax')->willReturn(false);
+
+        $rowTotal = $this->basketHelper->getItemRowTotal($item, true);
+
+        $this->assertSame(18.00, $rowTotal, 'Explicit $inclTax = true must override the config default');
+    }
+
+    /**
+     * Cart item price-fallback fix: getItemUnitPrice() must return the per-unit price (row
+     * total ÷ qty), not the row total itself - otherwise the cart item "Price" cell duplicates
+     * the "Subtotal" cell for any item with qty > 1.
+     */
+    public function testGetItemUnitPriceDividesRowTotalByQty(): void
+    {
+        $item = $this->createMock(QuoteItem::class);
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getSku')->willReturn('SKU-1');
+        $item->method('getQty')->willReturn(2.0);
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->with('uom')->willReturn('PCS');
+        $item->method('getProduct')->willReturn($product);
+
+        $line = $this->createOrderLine(15.00, 18.00, 30.00, 6.00, 2.0);
+
+        $this->basketHelper->expects($this->once())
+            ->method('getOneListCalculation')
+            ->willReturnCallback(function () use ($line) {
+                $basketData = (new ReflectionClass(RootMobileTransaction::class))->newInstanceWithoutConstructor();
+                $basketData->setMobiletransactionline([$line]);
+                return $basketData;
+            });
+        $this->itemHelper->method('isValid')->willReturn(true);
+
+        $unitPrice = $this->basketHelper->getItemUnitPrice($item, false);
+
+        $this->assertSame(
+            15.00,
+            $unitPrice,
+            'getItemUnitPrice() must be the row total (30.00 for qty 2) divided by qty, not the row total itself'
+        );
+    }
+
+    /**
+     * getItemUnitPriceIncludeCustomOptions() is the per-unit counterpart to
+     * getItemPriceIncludeCustomOptions() (getPrice()), used for the strikethrough
+     * original-price display alongside getItemUnitPrice() - it must also be qty-divided so both
+     * values shown together in the "Price" cell are on the same per-unit scale.
+     */
+    public function testGetItemUnitPriceIncludeCustomOptionsDividesPriceByQty(): void
+    {
+        $item = $this->createMock(QuoteItem::class);
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getSku')->willReturn('SKU-1');
+        $item->method('getQty')->willReturn(2.0);
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->with('uom')->willReturn('PCS');
+        $item->method('getProduct')->willReturn($product);
+
+        $line = $this->createOrderLine(15.00, 18.00, 30.00, 6.00, 2.0);
+
+        $this->basketHelper->expects($this->once())
+            ->method('getOneListCalculation')
+            ->willReturnCallback(function () use ($line) {
+                $basketData = (new ReflectionClass(RootMobileTransaction::class))->newInstanceWithoutConstructor();
+                $basketData->setMobiletransactionline([$line]);
+                return $basketData;
+            });
+        $this->itemHelper->method('isValid')->willReturn(true);
+        $this->basketHelper->basketHelper = $this->basketHelper;
+
+        $unitPrice = $this->basketHelper->getItemUnitPriceIncludeCustomOptions($item, false);
+
+        $this->assertSame(
+            15.00,
+            $unitPrice,
+            'getItemUnitPriceIncludeCustomOptions() must be getPrice() (15.00 netprice x qty 2 = 30.00) divided by qty'
+        );
+    }
+
+    /**
+     * Defensive: getItemUnitPrice() must not divide by zero for a (theoretically impossible)
+     * zero-qty item.
+     */
+    public function testGetItemUnitPriceReturnsZeroWhenQtyIsZero(): void
+    {
+        $item = $this->createMock(QuoteItem::class);
+        $item->method('getQty')->willReturn(0.0);
+
+        $unitPrice = $this->basketHelper->getItemUnitPrice($item, false);
+
+        $this->assertSame(0.0, $unitPrice, 'getItemUnitPrice() must return 0.0, not divide by zero, when qty is 0');
+    }
+
+    /**
+     * getItemUnitDiscount() must divide the whole-line getDiscountAmount() (set by a prior
+     * getItemRowDiscount() call) by qty, so the "Save X" label reconciles with the per-unit
+     * price/strikethrough it's displayed alongside.
+     */
+    public function testGetItemUnitDiscountDividesRowDiscountByQty(): void
+    {
+        $item = $this->getMockBuilder(QuoteItem::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getQty'])
+            ->addMethods(['getDiscountAmount'])
+            ->getMock();
+        $item->method('getQty')->willReturn(2.0);
+        $item->method('getDiscountAmount')->willReturn(10.0);
+
+        $unitDiscount = $this->basketHelper->getItemUnitDiscount($item);
+
+        $this->assertSame(
+            5.0,
+            $unitDiscount,
+            'getItemUnitDiscount() must be the whole-line discount (10.00 for qty 2) divided by qty'
+        );
+    }
+
+    /**
+     * Defensive: getItemUnitDiscount() must not divide by zero for a (theoretically impossible)
+     * zero-qty item.
+     */
+    public function testGetItemUnitDiscountReturnsZeroWhenQtyIsZero(): void
+    {
+        $item = $this->getMockBuilder(QuoteItem::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getQty'])
+            ->addMethods(['getDiscountAmount'])
+            ->getMock();
+        $item->method('getQty')->willReturn(0.0);
+        $item->method('getDiscountAmount')->willReturn(10.0);
+
+        $unitDiscount = $this->basketHelper->getItemUnitDiscount($item);
+
+        $this->assertSame(
+            0.0,
+            $unitDiscount,
+            'getItemUnitDiscount() must return 0.0, not divide by zero, when qty is 0'
+        );
     }
 }
