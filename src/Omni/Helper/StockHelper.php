@@ -72,7 +72,7 @@ class StockHelper extends AbstractHelperOmni
                 if ($useManageStockConfiguration) {
                     $product = $this->productRepository->get($child->getSku());
                     try {
-                        $stockItem     = $this->stockItemRepository->get($product->getId());
+                        $stockItem     = $this->stockRegistry->getStockItem($product->getId());
                         $useMangeStock = $stockItem->getUseConfigManageStock();
                     } catch (\Exception $e) {
                         $useMangeStock = false;

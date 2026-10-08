@@ -69,6 +69,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Tax\Model\Config as TaxConfig;
 use Magento\Wishlist\Model\ResourceModel\Wishlist;
 use Magento\Wishlist\Model\WishlistFactory;
+use Magento\CatalogInventory\Api\StockRegistryInterface;
 
 /**
  * Abstract Helper for merging common data members and member functions
@@ -154,6 +155,7 @@ class AbstractHelperOmni extends AbstractHelper
      * @param Json $json
      * @param ConfigInterface $config
      * @param TaxConfig $taxConfig
+     * @param StockRegistryInterface $stockRegistry
      */
     public function __construct(
         public Context $context,
@@ -234,6 +236,7 @@ class AbstractHelperOmni extends AbstractHelper
         public Json $json,
         public ConfigInterface $config,
         public TaxConfig $taxConfig,
+        public StockRegistryInterface $stockRegistry
     ) {
         parent::__construct($context);
         $this->initialize();
