@@ -642,6 +642,8 @@
     <column xsi:type="int" name="SortOrder" padding="11" nullable="true" comment="sort_order"/>
     <column xsi:type="varchar" name="Type" length="200" nullable="true" comment="type"/>
     <column xsi:type="text" name="ValidationPeriod" nullable="true" comment="validation_period_id"/>
+    <column xsi:type="boolean" name="VendorSourcing" default="0" nullable="true" comment="vendor_sourcing"/>
+    <column xsi:type="decimal" name="Prepayment" scale="4" precision="20" nullable="true" comment="prepayment"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>

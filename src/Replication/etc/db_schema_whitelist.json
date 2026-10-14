@@ -512,6 +512,8 @@
             "SortOrder": true,
             "Type": true,
             "ValidationPeriod": true,
+            "VendorSourcing": true,
+            "Prepayment": true,
             "scope": true,
             "scope_id": true,
             "IsDeleted": true,

@@ -547,6 +547,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_TARIFF_NO_ATTRIBUTE_CODE = 'lsr_tariff_no';
     const LS_TARIFF_NO_ATTRIBUTE_LABEL = 'Tariff No';
 
+    const LS_VENDOR_SOURCING_ATTRIBUTE_CODE = 'lsr_vendor_sourcing';
+    const LS_VENDOR_SOURCING_ATTRIBUTE_LABEL = 'Vendor Sourcing';
+
+    const LS_PREPAYMENT_ATTRIBUTE_CODE = 'lsr_prepayment';
+    const LS_PREPAYMENT_ATTRIBUTE_LABEL = 'Prepayment';
+
     const LS_ITEM_CATEGORY = 'lsr_item_category';
     const LS_ITEM_CATEGORY_LABEL = 'Item Category';
     const LS_ITEM_PRODUCT_GROUP = 'lsr_item_product_group';

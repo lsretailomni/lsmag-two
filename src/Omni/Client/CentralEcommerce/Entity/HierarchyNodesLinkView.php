@@ -24,6 +24,8 @@ class HierarchyNodesLinkView extends AbstractModel
     public const DEAL_PRICE = 'Deal Price';
     public const VALIDATION_PERIOD_ID = 'Validation Period ID';
     public const STATUS = 'Status';
+    public const VENDOR_SOURCING = 'VendorSourcing';
+    public const PREPAYMENT = 'Prepayment';
 
     public static array $dbColumnsMapping = [
 	self::HIERARCHY_CODE => 'hierarchy_code',
@@ -39,6 +41,8 @@ class HierarchyNodesLinkView extends AbstractModel
 	self::DEAL_PRICE => 'deal_price',
 	self::VALIDATION_PERIOD_ID => 'validation_period_id',
 	self::STATUS => 'status',
+	self::VENDOR_SOURCING => 'vendor_sourcing',
+	self::PREPAYMENT => 'prepayment',
     ];
 
     public static function getDbColumnsMapping(): array
@@ -175,5 +179,25 @@ class HierarchyNodesLinkView extends AbstractModel
     public function setStatus(?int $value)
     {
         return $this->setData(self::STATUS, $value);
+    }
+
+    public function getVendorSourcing(): ?bool
+    {
+        return $this->getData(self::VENDOR_SOURCING);
+    }
+
+    public function setVendorSourcing(?bool $value)
+    {
+        return $this->setData(self::VENDOR_SOURCING, $value);
+    }
+
+    public function getPrepayment(): ?float
+    {
+        return $this->getData(self::PREPAYMENT);
+    }
+
+    public function setPrepayment(?float $value)
+    {
+        return $this->setData(self::PREPAYMENT, $value);
     }
 }

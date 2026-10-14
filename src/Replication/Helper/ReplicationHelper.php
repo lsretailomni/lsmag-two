@@ -265,6 +265,8 @@ class ReplicationHelper extends AbstractHelper
                 'item_unit_of_measure' => 'ItemUOM',
                 'sort_order' => 'SortOrder',
                 'validation_period_id' => 'ValidationPeriod',
+                'vendor_sourcing' => 'VendorSourcing',
+                'prepayment' => 'Prepayment',
             ]
         ],
         'repl_lsc_barcodes' => [
@@ -2923,7 +2925,12 @@ class ReplicationHelper extends AbstractHelper
         $criteria             = $this->buildCriteriaForDirect($filters);
         $hierarchyLeafs       = $this->replHierarchyLeafRepository->getList($criteria);
         $resultantCategoryIds = [];
+        $leafValues           = null;
         foreach ($hierarchyLeafs->getItems() as $hierarchyLeaf) {
+            $leafValues  = [
+                LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE => (int)$hierarchyLeaf->getVendorSourcing(),
+                LSR::LS_PREPAYMENT_ATTRIBUTE_CODE      => (float)$hierarchyLeaf->getPrepayment()
+            ];
             $categoryIds = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId(), $store);
             if (!empty($categoryIds)) {
                 // @codingStandardsIgnoreLine
@@ -2935,6 +2942,11 @@ class ReplicationHelper extends AbstractHelper
             $hierarchyLeaf->setData('processed', 1);
             $hierarchyLeaf->setData('is_updated', 0);
             $this->replHierarchyLeafRepository->save($hierarchyLeaf);
+        }
+        if ($leafValues !== null &&
+            (!$isItemCategory || !$this->hasItemLevelHierarchyLeaf($product, $hierarchyCode, $store))
+        ) {
+            $this->updateVendorSourcingAndPrepayment($product, $leafValues);
         }
         if (!empty($resultantCategoryIds)) {
             try {
@@ -2956,6 +2968,69 @@ class ReplicationHelper extends AbstractHelper
                 }
             } catch (Exception $e) {
                 $this->_logger->info("Product deleted from admin configuration. Things will re-run again");
+            }
+        }
+    }
+
+    /**
+     * Check if the product has its own item level leaf in the configured hierarchy
+     *
+     * Item level leaf values take precedence over the item category level ones.
+     *
+     * @param mixed $product
+     * @param string $hierarchyCode
+     * @param mixed $store
+     * @return bool
+     */
+    public function hasItemLevelHierarchyLeaf($product, $hierarchyCode, $store)
+    {
+        $filters  = [
+            ['field' => 'NodeId', 'value' => true, 'condition_type' => 'notnull'],
+            ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $store->getWebsiteId(), 'condition_type' => 'eq'],
+            [
+                'field'          => 'Type',
+                'value'          => \Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyLeafType::ITEM_CATEGORY,
+                'condition_type' => 'neq'
+            ],
+            [
+                'field'          => 'nav_id',
+                'value'          => $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE),
+                'condition_type' => 'eq'
+            ]
+        ];
+        $criteria = $this->buildCriteriaForDirect($filters, 1);
+        return $this->replHierarchyLeafRepository->getList($criteria)->getTotalCount() > 0;
+    }
+
+    /**
+     * Save vendor sourcing and prepayment values on the product and its simple children
+     *
+     * @param mixed $product
+     * @param array $values
+     * @return void
+     */
+    public function updateVendorSourcingAndPrepayment($product, array $values)
+    {
+        $products = [$product];
+        if ($product->getTypeId() == Configurable::TYPE_CODE) {
+            // @codingStandardsIgnoreLine
+            $products = array_merge($products, $product->getTypeInstance()->getUsedProducts($product));
+        }
+        foreach ($products as $target) {
+            try {
+                foreach ($values as $attributeCode => $value) {
+                    $target->setData($attributeCode, $value);
+                    $this->productResourceModel->saveAttribute($target, $attributeCode);
+                }
+            } catch (Exception $e) {
+                $this->_logger->info(
+                    sprintf(
+                        'Vendor sourcing / prepayment update failed for product %s: %s',
+                        $target->getSku(),
+                        $e->getMessage()
+                    )
+                );
             }
         }
     }
