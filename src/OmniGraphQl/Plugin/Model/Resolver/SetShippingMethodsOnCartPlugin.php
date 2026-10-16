@@ -106,7 +106,7 @@ class SetShippingMethodsOnCartPlugin
                     $storeId
                 );
                 if (empty($this->dataHelper->getCheckoutSession()->getNoManageStock())) {
-                    if (!$stockCollection) {
+                    if ($stockCollection === null) {
                         throw new LocalizedException(__('Oops! Unable to do stock lookup currently.'));
                     }
 

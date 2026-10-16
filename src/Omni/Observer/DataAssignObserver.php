@@ -189,7 +189,7 @@ class DataAssignObserver implements ObserverInterface
             $quote
         );
         if (empty($this->checkoutSession->getNoManageStock())) {
-            if (!$stockCollection) {
+            if ($stockCollection === null) {
                 $message = __('Oops! Unable to do stock lookup currently.');
             }
             if ($stockCollection) {

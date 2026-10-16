@@ -265,7 +265,7 @@ class ReplicationHelper extends AbstractHelper
                 'item_unit_of_measure' => 'ItemUOM',
                 'sort_order' => 'SortOrder',
                 'validation_period_id' => 'ValidationPeriod',
-                'vendor_sourcing' => 'VendorSourcing',
+                'vendorsourcing' => 'VendorSourcing',
                 'prepayment' => 'Prepayment',
             ]
         ],
@@ -2928,7 +2928,10 @@ class ReplicationHelper extends AbstractHelper
         $leafValues           = null;
         foreach ($hierarchyLeafs->getItems() as $hierarchyLeaf) {
             $leafValues  = [
-                LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE => (int)$hierarchyLeaf->getVendorSourcing(),
+                LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE => (int)(
+                    !empty($leafValues[LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE]) ||
+                    $hierarchyLeaf->getVendorSourcing()
+                ),
                 LSR::LS_PREPAYMENT_ATTRIBUTE_CODE      => (float)$hierarchyLeaf->getPrepayment()
             ];
             $categoryIds = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId(), $store);
@@ -2946,7 +2949,7 @@ class ReplicationHelper extends AbstractHelper
         if ($leafValues !== null &&
             (!$isItemCategory || !$this->hasItemLevelHierarchyLeaf($product, $hierarchyCode, $store))
         ) {
-            $this->updateVendorSourcingAndPrepayment($product, $leafValues);
+            $this->updateVendorSourcingAndPrepayment($product, $leafValues, $store->getWebsiteId());
         }
         if (!empty($resultantCategoryIds)) {
             try {
@@ -3006,22 +3009,31 @@ class ReplicationHelper extends AbstractHelper
     /**
      * Save vendor sourcing and prepayment values on the product and its simple children
      *
+     * Vendor sourced items are not stock managed so that zero stock does not block them.
+     *
      * @param mixed $product
      * @param array $values
+     * @param int|string|null $scopeId
      * @return void
      */
-    public function updateVendorSourcingAndPrepayment($product, array $values)
+    public function updateVendorSourcingAndPrepayment($product, array $values, $scopeId = null)
     {
         $products = [$product];
         if ($product->getTypeId() == Configurable::TYPE_CODE) {
             // @codingStandardsIgnoreLine
             $products = array_merge($products, $product->getTypeInstance()->getUsedProducts($product));
         }
+        $itemId       = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+        $itemType     = $scopeId !== null ? $this->getInventoryType($itemId, $scopeId) : null;
+        $stockChanged = false;
         foreach ($products as $target) {
             try {
                 foreach ($values as $attributeCode => $value) {
                     $target->setData($attributeCode, $value);
                     $this->productResourceModel->saveAttribute($target, $attributeCode);
+                }
+                if (array_key_exists(LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE, $values)) {
+                    $stockChanged = $this->updateStockManagement($target, $itemType) || $stockChanged;
                 }
             } catch (Exception $e) {
                 $this->_logger->info(
@@ -3033,6 +3045,63 @@ class ReplicationHelper extends AbstractHelper
                 );
             }
         }
+
+        if ($stockChanged && $scopeId !== null) {
+            $this->resetInventoryStatus($itemId, $scopeId);
+        }
+    }
+
+    /**
+     * Mark inventory status records of the given item for re-processing by the inventory sync
+     *
+     * @param string $itemId
+     * @param int|string $scopeId
+     * @return void
+     */
+    public function resetInventoryStatus($itemId, $scopeId)
+    {
+        $this->updateGivenTableDataGivenConditions(
+            $this->getGivenTableName('ls_replication_repl_inv_status'),
+            ['processed' => 0, 'is_updated' => 1],
+            ['ItemId = ?' => $itemId, 'scope_id = ?' => $scopeId]
+        );
+    }
+
+    /**
+     * Persist the manage stock setting of the product stock item based on item type and vendor sourcing
+     *
+     * @param mixed $product
+     * @param string|null $itemType
+     * @return bool true if the stock item was changed
+     */
+    public function updateStockManagement($product, $itemType)
+    {
+        $useConfigManageStock = (int)$this->manageStock($product, $itemType)
+            ->getStockData()['use_config_manage_stock'];
+        $criteria             = $this->criteriaInterfaceFactory->create();
+        $criteria->setScopeFilter($this->stockConfiguration->getDefaultScopeId());
+        $criteria->setProductsFilter($product->getId());
+        $stockItems = $this->stockItemRepository->getList($criteria)->getItems();
+        $stockItem  = reset($stockItems);
+
+        if (!$stockItem) {
+            return false;
+        }
+
+        if ((int)$stockItem->getData('use_config_manage_stock') === $useConfigManageStock &&
+            ($useConfigManageStock || (int)$stockItem->getData('manage_stock') === 0)
+        ) {
+            return false;
+        }
+
+        $stockItem->setUseConfigManageStock($useConfigManageStock);
+
+        if (!$useConfigManageStock) {
+            $stockItem->setManageStock(0);
+        }
+        $this->stockItemRepository->save($stockItem);
+
+        return true;
     }
 
     /**
@@ -4495,7 +4564,9 @@ class ReplicationHelper extends AbstractHelper
     {
         $useManageStock = 1;
 
-        if (!empty($type) && $type != ItemType::INVENTORY) {
+        if ((!empty($type) && $type != ItemType::INVENTORY) ||
+            $product->getData(LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE)
+        ) {
             $useManageStock = 0;
         }
 

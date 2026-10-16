@@ -2528,6 +2528,9 @@ class ProductCreateTask
                 $this->getScopeId()
             );
         }
+        if ($configProduct->getData(LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE)) {
+            $productV->setData(LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE, 1);
+        }
         $productV = $this->replicationHelper->manageStock($productV, $item->getType());
         if ($value->getVariantId()) {
             $productV->setCustomAttribute(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $value->getVariantId());
@@ -2764,6 +2767,9 @@ class ProductCreateTask
                 $this->webStoreId,
                 $this->getScopeId()
             );
+        }
+        if ($configProduct->getData(LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE)) {
+            $productV->setData(LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE, 1);
         }
         $productV = $this->replicationHelper->manageStock($productV, $item->getType());
         try {
