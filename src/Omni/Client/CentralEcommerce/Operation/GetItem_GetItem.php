@@ -46,7 +46,7 @@ class GetItem_GetItem
 
     public function formatResponse($data): \Ls\Omni\Client\CentralEcommerce\Entity\GetItem_GetItemResponse
     {
-        $requiredDataSetName = explode(',', 'Item,LSC Item Status Link,LSC Item HTML ML,LSC Retail Image Link,LSC Item/Special Group Link,LSC Item Section Location,LSC Section Shelf,LSC Store Section,LSC WI Price,Item Unit of Measure,Unit of Measure,LSC Item Variant Registration,LSC Extd. Variant Values,LSC Attribute,LSC Attribute Value,BOM Component,LSC Infocode,LSC Information Subcode,LSC Table Specific Infocode');
+        $requiredDataSetName = explode(',', 'Item,LSC Item Status Link 2,LSC Item HTML ML,LSC Retail Image Link,LSC Item/Special Group Link,LSC Item Section Location,LSC Section Shelf,LSC Store Section,LSC WI Price,Item Unit of Measure,Unit of Measure,LSC Item Variant Registration,LSC Extd. Variant Values,LSC Attribute,LSC Attribute Value,BOM Component,LSC Infocode,LSC Information Subcode,LSC Table Specific Infocode');
         $finalEntry = $this->createInstance(\Ls\Omni\Client\CentralEcommerce\Entity\GetItem_GetItem::class);
         if (is_array($requiredDataSetName)) {
             foreach ($requiredDataSetName as $dataSet) {
@@ -55,7 +55,7 @@ class GetItem_GetItem
                 if (isset($data[$dataSet]) && is_array($data[$dataSet])) {
                     $entity = $this->createInstance(
                         \Ls\Omni\Client\CentralEcommerce\Entity\GetItem_GetItem::class,
-                         ['data' => $data['Item,LSC Item Status Link,LSC Item HTML ML,LSC Retail Image Link,LSC Item/Special Group Link,LSC Item Section Location,LSC Section Shelf,LSC Store Section,LSC WI Price,Item Unit of Measure,Unit of Measure,LSC Item Variant Registration,LSC Extd. Variant Values,LSC Attribute,LSC Attribute Value,BOM Component,LSC Infocode,LSC Information Subcode,LSC Table Specific Infocode']]
+                         ['data' => $data['Item,LSC Item Status Link 2,LSC Item HTML ML,LSC Retail Image Link,LSC Item/Special Group Link,LSC Item Section Location,LSC Section Shelf,LSC Store Section,LSC WI Price,Item Unit of Measure,Unit of Measure,LSC Item Variant Registration,LSC Extd. Variant Values,LSC Attribute,LSC Attribute Value,BOM Component,LSC Infocode,LSC Information Subcode,LSC Table Specific Infocode']]
                      );
 
                     return $this->createInstance(

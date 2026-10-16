@@ -17,9 +17,11 @@ class OperationGenerator extends AbstractOmniGenerator
     /**
      * @param Operation $operation
      * @param Metadata $metadata
+     * @param string|null $codeUnit Name of the separately published codeunit the operation belongs to,
+     *                              null for the OmniWrapper operations
      * @throws \Exception
      */
-    public function __construct(public Operation $operation, Metadata $metadata)
+    public function __construct(public Operation $operation, Metadata $metadata, public ?string $codeUnit = null)
     {
         parent::__construct($metadata);
     }
@@ -63,6 +65,9 @@ class OperationGenerator extends AbstractOmniGenerator
         // ADDING CONSTANTS
         $this->class->addConstant('OPERATION_NAME', $operationName);
         $this->class->addConstant('SERVICE_TYPE', $this->metadata->getClient()->getServiceType()->getValue());
+        if ($this->codeUnit) {
+            $this->class->addConstant('CODE_UNIT', $this->codeUnit);
+        }
 
         // ADDING METHODS
         $this->class->addMethodFromGenerator($this->getConstructorMethod());
@@ -140,10 +145,11 @@ class OperationGenerator extends AbstractOmniGenerator
         $method = new MethodGenerator();
         $method->setParameters([new ParameterGenerator('baseUrl', null, '')]);
         $method->setName('__construct');
+        $urlArguments = $this->codeUnit ? '$baseUrl, true, self::CODE_UNIT' : '$baseUrl, true';
         $method->setBody(
             <<<CODE
 parent::__construct();
-\$url = OmniService::getUrl(\$baseUrl, true);
+\$url = OmniService::getUrl($urlArguments);
 \$this->client = \$this->createInstance(OmniClient::class, ['uri' => \$url]);
 \$this->client->setClassmap(\$this->getClassMap());
 CODE

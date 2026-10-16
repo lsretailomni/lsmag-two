@@ -97,6 +97,21 @@ class GeneralViewModel implements ArgumentInterface
     }
 
     /**
+     * Check if the current product is vendor sourced
+     *
+     * @return bool
+     */
+    public function isVendorSourced(): bool
+    {
+        try {
+            return $this->lsr->isLSR($this->lsr->getCurrentStoreId()) &&
+                (int)$this->getProduct()?->getData(LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE) === 1;
+        } catch (\Throwable $e) {
+            return false;
+        }
+    }
+
+    /**
      * Get current product
      *
      * @return Product|null

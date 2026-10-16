@@ -32,6 +32,14 @@
             </arguments>
         </block>
 
+        <block name="ls.omni.product.vendor.sourcing"
+               template="Ls_Omni::product/view/vendorsourcing/link.phtml"
+               ifconfig="ls_mag/one_list/vendor_sourcing_options">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\GeneralViewModel</argument>
+            </arguments>
+        </block>
+
         <block name="ls.omni.product.return.policy"
                template="Ls_Omni::product/view/returnpolicy.phtml"
                ifconfig="ls_mag/return_policy/show_return_policy">

@@ -30,6 +30,8 @@ class WishListHeader extends \Magento\Catalog\Model\AbstractModel
 
     public const OWNER = 'Owner';
 
+    public const EXTERNAL_REFERENCE_NO = 'ExternalReferenceNo';
+
     /**
      * @param ?string $WishListNo
      * @return $this
@@ -190,6 +192,24 @@ class WishListHeader extends \Magento\Catalog\Model\AbstractModel
     public function getOwner(): ?string
     {
         return $this->getData(self::OWNER);
+    }
+
+    /**
+     * @param ?string $ExternalReferenceNo
+     * @return $this
+     */
+    public function setExternalreferenceno(?string $ExternalReferenceNo)
+    {
+        $this->setData(self::EXTERNAL_REFERENCE_NO, $ExternalReferenceNo);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getExternalreferenceno(): ?string
+    {
+        return $this->getData(self::EXTERNAL_REFERENCE_NO);
     }
 }
 

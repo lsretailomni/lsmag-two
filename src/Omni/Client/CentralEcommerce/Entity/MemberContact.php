@@ -90,6 +90,8 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
 
     public const SEND_RECEIPTBY_E_MAIL = 'SendReceiptbyE-mail';
 
+    public const SYSTEM_ID_INT = 'SystemIdInt';
+
     /**
      * @param ?string $AccountNo
      * @return $this
@@ -790,6 +792,24 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     public function getSendreceiptbyeMail(): ?string
     {
         return $this->getData(self::SEND_RECEIPTBY_E_MAIL);
+    }
+
+    /**
+     * @param ?string $SystemIdInt
+     * @return $this
+     */
+    public function setSystemidint(?string $SystemIdInt)
+    {
+        $this->setData(self::SYSTEM_ID_INT, $SystemIdInt);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getSystemidint(): ?string
+    {
+        return $this->getData(self::SYSTEM_ID_INT);
     }
 }
 

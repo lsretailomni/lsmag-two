@@ -1,0 +1,26 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php /* @var $block \Magento\Catalog\Block\Product\View\AbstractView */?>
+<?php /* @var $viewModel \Ls\Omni\ViewModel\GeneralViewModel */ ?>
+<?php $_product = $block->getProduct() ?>
+<?php $viewModel = $block->getViewModel() ?>
+
+<?php if ($block->displayProductStockStatus()) :?>
+    <?php if ($_product->isAvailable()) :?>
+        <div class="stock available" title="<?= $block->escapeHtmlAttr(__('Availability')) ?>">
+            <?php if ($viewModel && $viewModel->isVendorSourced() && $viewModel->isValid()) :?>
+                <span><?= $block->escapeHtml(__('In stock at supplier')) ?></span>
+            <?php else :?>
+                <span><?= $block->escapeHtml(__('In stock')) ?></span>
+            <?php endif; ?>
+        </div>
+    <?php else :?>
+        <div class="stock unavailable" title="<?= $block->escapeHtmlAttr(__('Availability')) ?>">
+            <span><?= $block->escapeHtml(__('Out of stock')) ?></span>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>

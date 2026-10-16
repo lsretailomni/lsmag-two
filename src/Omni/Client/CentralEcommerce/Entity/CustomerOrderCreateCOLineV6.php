@@ -84,6 +84,8 @@ class CustomerOrderCreateCOLineV6 extends \Magento\Catalog\Model\AbstractModel
 
     public const WISH_LIST_NO = 'WishListNo';
 
+    public const PTEJSON_CARRIER = 'PTEJsonCarrier';
+
     /**
      * @param ?string $DocumentID
      * @return $this
@@ -730,6 +732,24 @@ class CustomerOrderCreateCOLineV6 extends \Magento\Catalog\Model\AbstractModel
     public function getWishlistno(): ?string
     {
         return $this->getData(self::WISH_LIST_NO);
+    }
+
+    /**
+     * @param ?string $PTEJsonCarrier
+     * @return $this
+     */
+    public function setPtejsoncarrier(?string $PTEJsonCarrier)
+    {
+        $this->setData(self::PTEJSON_CARRIER, $PTEJsonCarrier);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getPtejsoncarrier(): ?string
+    {
+        return $this->getData(self::PTEJSON_CARRIER);
     }
 }
 

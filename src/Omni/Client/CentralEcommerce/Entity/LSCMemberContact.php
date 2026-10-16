@@ -65,6 +65,7 @@ class LSCMemberContact extends AbstractModel
     public const SURNAME = 'Surname';
     public const SYSTEMCREATEDAT = 'SystemCreatedAt';
     public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMIDINT = 'SystemIdInt';
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
     public const TERRITORY_CODE = 'Territory Code';
@@ -127,6 +128,7 @@ class LSCMemberContact extends AbstractModel
 	self::SURNAME => 'surname',
 	self::SYSTEMCREATEDAT => 'systemcreatedat',
 	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMIDINT => 'systemidint',
 	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
 	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
 	self::TERRITORY_CODE => 'territory_code',
@@ -679,6 +681,16 @@ class LSCMemberContact extends AbstractModel
     public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
+    }
+
+    public function getSystemidint(): ?string
+    {
+        return $this->getData(self::SYSTEMIDINT);
+    }
+
+    public function setSystemidint(?string $value)
+    {
+        return $this->setData(self::SYSTEMIDINT, $value);
     }
 
     public function getSystemmodifiedat(): ?string

@@ -5,6 +5,7 @@ var config = {
             'lsomni/stores-provider': 'Ls_Omni/js/model/stores-provider',
             'lsomni/map': 'Ls_Omni/js/view/map',
             'lsomni/stock': 'Ls_Omni/js/view/product',
+            'lsomni/vendor-sourcing': 'Ls_Omni/js/view/product/vendor-sourcing',
             'lsomni/return-policy': 'Ls_Omni/js/view/product/return-policy',
             'OwlCarousel': 'Ls_Omni/js/owl-carousel',
             'loyaltyPoints': 'Ls_Omni/js/loyalty-points',

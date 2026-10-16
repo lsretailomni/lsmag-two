@@ -17,6 +17,17 @@ class Service
     /** @var null|string $baseUrl */
     public $baseUrl = null;
     public const CODE_UNIT = 'WS/Codeunit/OmniWrapper';
+    public const CODE_UNIT_PATH = 'WS/Codeunit';
+
+    /**
+     * Codeunits that are published as their own web service (not part of OmniWrapper).
+     *
+     * omni:client:generate reads the WSDL of each one and generates its entities and operation too.
+     * Every operation of such a codeunit posts to WS/Codeunit/<name> instead of OmniWrapper.
+     */
+    public const ADDITIONAL_CODE_UNITS = [
+        'COSourcingLocListV4'
+    ];
 
     // @codingStandardsIgnoreStart
     /**
@@ -24,12 +35,14 @@ class Service
      *
      * @param string $baseUrl The base URL to use (optional).
      * @param bool $wsdl Flag to indicate whether to include WSDL (optional).
+     * @param string|null $codeUnit Name of a separately published codeunit, OmniWrapper when empty (optional).
      *
      * @return Uri The generated URI.
      */
     public static function getUrl(
         $baseUrl = self::DEFAULT_BASE_URL,
-        $wsdl = false
+        $wsdl = false,
+        ?string $codeUnit = null
     ) {
         // If no base URL is provided, use the default Omni base URL.
         if ($baseUrl == null) {
@@ -39,7 +52,8 @@ class Service
         $url = $baseUrl;
         if ($wsdl) {
             // Build the full URL by joining the base URL and the corresponding service endpoint.
-            $url = join('/', [$baseUrl, self::CODE_UNIT]);
+            $endpoint = empty($codeUnit) ? self::CODE_UNIT : join('/', [self::CODE_UNIT_PATH, $codeUnit]);
+            $url = join('/', [$baseUrl, $endpoint]);
         }
         return UriFactory::factory($url);
     }
