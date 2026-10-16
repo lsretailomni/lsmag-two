@@ -265,7 +265,7 @@ class ReplicationHelper extends AbstractHelper
                 'item_unit_of_measure' => 'ItemUOM',
                 'sort_order' => 'SortOrder',
                 'validation_period_id' => 'ValidationPeriod',
-                'vendor_sourcing' => 'VendorSourcing',
+                'vendorsourcing' => 'VendorSourcing',
                 'prepayment' => 'Prepayment',
             ]
         ],
