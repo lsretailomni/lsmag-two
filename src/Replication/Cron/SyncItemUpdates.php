@@ -239,7 +239,7 @@ class SyncItemUpdates extends ProductCreateTask
                             $this->store,
                             false
                         );
-
+                        
                         if ($product->getTypeId() == Configurable::TYPE_CODE) {
                             $children = $product->getTypeInstance()->getUsedProducts($product);
                             foreach ($children as $child) {
