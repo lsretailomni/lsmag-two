@@ -1183,6 +1183,10 @@ class Data extends AbstractHelperOmni
 
             list($response, $stockCollection) = $this->stockHelper->getGivenItemsStockInGivenStore($items, $storeId);
 
+            if (empty($stockCollection)) {
+                return [];
+            }
+
             if ($response) {
 //                if (is_object($response)) {
 //                    if (!is_array($response->getInventoryResponse())) {

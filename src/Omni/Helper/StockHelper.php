@@ -92,7 +92,30 @@ class StockHelper extends AbstractHelperOmni
             }
         }
 
+        if (empty($stockItems)) {
+            return [null, $stockCollection];
+        }
+
         return [$this->getAllItemsStockInSingleStore($storeId, $stockItems), $stockCollection];
+    }
+
+    /**
+     * Check if the stock of the given sku is managed
+     *
+     * Items with manage stock disabled at stock item level (e.g. vendor sourced) are exempt from stock validation.
+     *
+     * @param string $sku
+     * @return bool
+     */
+    public function isStockManaged(string $sku): bool
+    {
+        try {
+            $product = $this->productRepository->get($sku);
+
+            return (bool)$this->stockRegistry->getStockItem($product->getId())->getUseConfigManageStock();
+        } catch (\Exception $e) {
+            return true;
+        }
     }
 
     /**
@@ -321,7 +344,8 @@ class StockHelper extends AbstractHelperOmni
                 }
 
                 if ($this->lsr->inventoryLookupBeforeAddToCartEnabled() &&
-                    $this->lsr->getBasketIntegrationOnFrontend()
+                    $this->lsr->getBasketIntegrationOnFrontend() &&
+                    $this->isStockManaged($child->getSku())
                 ) {
                     $uomQty = $child->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
 
