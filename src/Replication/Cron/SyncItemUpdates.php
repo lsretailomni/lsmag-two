@@ -215,6 +215,11 @@ class SyncItemUpdates extends ProductCreateTask
                     foreach ($products as $product) {
                         $sku = $product->getSku();
                         $this->categoryProductLinkRemoval($hierarchyLeaf, $product, $sku);
+                        $this->replicationHelper->refreshVendorSourcingAndPrepayment(
+                            $product,
+                            $this->store,
+                            true
+                        );
                         if ($product->getTypeId() == Configurable::TYPE_CODE) {
                             $children = $product->getTypeInstance()->getUsedProducts($product);
                             foreach ($children as $child) {
@@ -229,7 +234,12 @@ class SyncItemUpdates extends ProductCreateTask
                             $sku
                         );
                         $this->categoryProductLinkRemoval($hierarchyLeaf, $product, $sku);
-
+                        $this->replicationHelper->refreshVendorSourcingAndPrepayment(
+                            $product,
+                            $this->store,
+                            false
+                        );
+                        
                         if ($product->getTypeId() == Configurable::TYPE_CODE) {
                             $children = $product->getTypeInstance()->getUsedProducts($product);
                             foreach ($children as $child) {

@@ -215,7 +215,8 @@ class DataAssignObserver implements ObserverInterface
             // is a failure here - an empty array means there was simply nothing left needing a
             // per-store check (e.g. a cart that is entirely vendor-sourced/unmanaged items once
             // ticket 89358's manage_stock=0 gating lands), which is a legitimate "nothing to
-            // block on" outcome, not an error (bug fix, post-merge review, Bug A).
+            // block on" outcome, not an error (bug fix, post-merge review, Bug A). This matches
+            // the same fix independently made on 89358/89359 for this exact line.
             if ($stockCollection === null) {
                 return __('Oops! Unable to do stock lookup currently.');
             }
