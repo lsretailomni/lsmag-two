@@ -41,7 +41,7 @@ class HierarchyNodesLinkView extends AbstractModel
 	self::DEAL_PRICE => 'deal_price',
 	self::VALIDATION_PERIOD_ID => 'validation_period_id',
 	self::STATUS => 'status',
-	self::VENDOR_SOURCING => 'vendor_sourcing',
+	self::VENDOR_SOURCING => 'vendorsourcing',
 	self::PREPAYMENT => 'prepayment',
     ];
 
