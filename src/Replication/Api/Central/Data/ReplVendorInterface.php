@@ -264,6 +264,10 @@ interface ReplVendorInterface
 
     public function setSelfBillingAgreement(?bool $value);
 
+    public function getSelfBillingInvoiceNos(): ?string;
+
+    public function setSelfBillingInvoiceNos(?string $value);
+
     public function getPreferredBankAccountCode(): ?string;
 
     public function setPreferredBankAccountCode(?string $value);
@@ -327,6 +331,10 @@ interface ReplVendorInterface
     public function getOverReceiptCode(): ?string;
 
     public function setOverReceiptCode(?string $value);
+
+    public function getReceiptOnInvoicePolicy(): ?int;
+
+    public function setReceiptOnInvoicePolicy(?int $value);
 
     public function getLscRtcFilterField(): ?int;
 

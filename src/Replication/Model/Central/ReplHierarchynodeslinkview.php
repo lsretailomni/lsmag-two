@@ -159,14 +159,14 @@ class ReplHierarchynodeslinkview extends \Ls\Omni\Client\CentralEcommerce\Entity
         return $this->setData(self::getDbColumnsMapping()[self::STATUS], $value);
     }
 
-    public function getVendorSourcing(): ?bool
+    public function getVendorsourcing(): ?bool
     {
-        return $this->getData(self::getDbColumnsMapping()[self::VENDOR_SOURCING]);
+        return $this->getData(self::getDbColumnsMapping()[self::VENDORSOURCING]);
     }
 
-    public function setVendorSourcing(?bool $value)
+    public function setVendorsourcing(?bool $value)
     {
-        return $this->setData(self::getDbColumnsMapping()[self::VENDOR_SOURCING], $value);
+        return $this->setData(self::getDbColumnsMapping()[self::VENDORSOURCING], $value);
     }
 
     public function getPrepayment(): ?float
