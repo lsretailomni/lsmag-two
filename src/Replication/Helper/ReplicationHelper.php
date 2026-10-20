@@ -2916,6 +2916,7 @@ class ReplicationHelper extends AbstractHelper
             ['field' => 'NodeId', 'value' => true, 'condition_type' => 'notnull'],
             ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
             ['field' => 'scope_id', 'value' => $store->getWebsiteId(), 'condition_type' => 'eq'],
+            ['field' => 'IsDeleted', 'value' => 0, 'condition_type' => 'eq'],
             [
                 'field'          => 'nav_id',
                 'value'          => $product->getData($attribute),
@@ -3001,6 +3002,54 @@ class ReplicationHelper extends AbstractHelper
         ];
         $criteria = $this->buildCriteriaForDirect($filters, 1);
         return $this->replHierarchyLeafRepository->getList($criteria)->getTotalCount() > 0;
+    }
+
+    /**
+     * Recompute vendor sourcing / prepayment from the remaining active hierarchy leaves of a product
+     *
+     * Used after a hierarchy leaf is deleted, since assignProductToCategories() only reacts to leaves
+     * still present in the replicated feed and never resets the product when its last contributing
+     * leaf is removed. Unlike assignProductToCategories(), this always persists a value (0 when no
+     * active leaf remains) instead of skipping the update.
+     *
+     * @param mixed $product
+     * @param mixed $store
+     * @param bool $isItemCategory
+     * @return void
+     */
+    public function refreshVendorSourcingAndPrepayment($product, $store, $isItemCategory = false)
+    {
+        $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $store->getId());
+        if (empty($hierarchyCode)) {
+            return;
+        }
+        if ($isItemCategory && $this->hasItemLevelHierarchyLeaf($product, $hierarchyCode, $store)) {
+            return;
+        }
+        $attribute = $isItemCategory ? LSR::LS_ITEM_CATEGORY : LSR::LS_ITEM_ID_ATTRIBUTE_CODE;
+        $filters   = [
+            ['field' => 'NodeId', 'value' => true, 'condition_type' => 'notnull'],
+            ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $store->getWebsiteId(), 'condition_type' => 'eq'],
+            ['field' => 'IsDeleted', 'value' => 0, 'condition_type' => 'eq'],
+            [
+                'field'          => 'nav_id',
+                'value'          => $product->getData($attribute),
+                'condition_type' => 'eq'
+            ]
+        ];
+        $criteria = $this->buildCriteriaForDirect($filters);
+        $values   = [
+            LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE => 0,
+            LSR::LS_PREPAYMENT_ATTRIBUTE_CODE      => 0.0
+        ];
+        foreach ($this->replHierarchyLeafRepository->getList($criteria)->getItems() as $hierarchyLeaf) {
+            $values = [
+                LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE => (int)$hierarchyLeaf->getVendorSourcing(),
+                LSR::LS_PREPAYMENT_ATTRIBUTE_CODE      => (float)$hierarchyLeaf->getPrepayment()
+            ];
+        }
+        $this->updateVendorSourcingAndPrepayment($product, $values);
     }
 
     /**
