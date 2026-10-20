@@ -232,6 +232,10 @@ interface ReplContactviewInterface
 
     public function setDefaultToken(?int $value);
 
+    public function getSystemidint(): ?string;
+
+    public function setSystemidint(?string $value);
+
     public function getSystemid(): ?string;
 
     public function setSystemid(?string $value);

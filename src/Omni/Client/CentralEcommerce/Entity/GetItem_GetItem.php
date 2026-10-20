@@ -12,7 +12,7 @@ use Magento\Catalog\Model\AbstractModel;
 class GetItem_GetItem extends AbstractModel
 {
     public const ITEM = 'Item';
-    public const LSC_ITEM_STATUS_LINK = 'LSC Item Status Link';
+    public const LSC_ITEM_STATUS_LINK_2 = 'LSC Item Status Link 2';
     public const LSC_ITEM_HTML_ML = 'LSC Item HTML ML';
     public const LSC_RETAIL_IMAGE_LINK = 'LSC Retail Image Link';
     public const LSC_ITEMSPECIAL_GROUP_LINK = 'LSC Item/Special Group Link';
@@ -33,7 +33,7 @@ class GetItem_GetItem extends AbstractModel
 
     public static array $dbColumnsMapping = [
 	self::ITEM => 'item',
-	self::LSC_ITEM_STATUS_LINK => 'lsc_item_status_link',
+	self::LSC_ITEM_STATUS_LINK_2 => 'lsc_item_status_link_2',
 	self::LSC_ITEM_HTML_ML => 'lsc_item_html_ml',
 	self::LSC_RETAIL_IMAGE_LINK => 'lsc_retail_image_link',
 	self::LSC_ITEMSPECIAL_GROUP_LINK => 'lsc_itemspecial_group_link',
@@ -69,14 +69,14 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::ITEM, $value);
     }
 
-    public function getLscItemStatusLink()
+    public function getLscItemStatusLink2()
     {
-        return $this->getData(self::LSC_ITEM_STATUS_LINK);
+        return $this->getData(self::LSC_ITEM_STATUS_LINK_2);
     }
 
-    public function setLscItemStatusLink(?LSCItemStatusLink $value)
+    public function setLscItemStatusLink2(?LSCItemStatusLink2 $value)
     {
-        return $this->setData(self::LSC_ITEM_STATUS_LINK, $value);
+        return $this->setData(self::LSC_ITEM_STATUS_LINK_2, $value);
     }
 
     public function getLscItemHtmlMl()
@@ -84,7 +84,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->getData(self::LSC_ITEM_HTML_ML);
     }
 
-    public function setLscItemHtmlMl(?array $value)
+    public function setLscItemHtmlMl(?LSCItemHTMLML $value)
     {
         return $this->setData(self::LSC_ITEM_HTML_ML, $value);
     }
@@ -94,7 +94,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->getData(self::LSC_RETAIL_IMAGE_LINK);
     }
 
-    public function setLscRetailImageLink(?array $value)
+    public function setLscRetailImageLink(?LSCRetailImageLink $value)
     {
         return $this->setData(self::LSC_RETAIL_IMAGE_LINK, $value);
     }
@@ -144,7 +144,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->getData(self::LSC_WI_PRICE);
     }
 
-    public function setLscWiPrice(?array $value)
+    public function setLscWiPrice(?LSCWIPrice $value)
     {
         return $this->setData(self::LSC_WI_PRICE, $value);
     }
@@ -154,7 +154,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->getData(self::ITEM_UNIT_OF_MEASURE);
     }
 
-    public function setItemUnitOfMeasure(?array $value)
+    public function setItemUnitOfMeasure(?ItemUnitofMeasure $value)
     {
         return $this->setData(self::ITEM_UNIT_OF_MEASURE, $value);
     }
@@ -164,7 +164,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->getData(self::UNIT_OF_MEASURE);
     }
 
-    public function setUnitOfMeasure(?array $value)
+    public function setUnitOfMeasure(?UnitofMeasure $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE, $value);
     }

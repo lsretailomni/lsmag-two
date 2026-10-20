@@ -252,6 +252,8 @@ class TransSalesEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const WISH_LIST = 'WishList';
 
+    public const EPC = 'Epc';
+
     /**
      * @param int $TransactionNo
      * @return $this
@@ -2410,6 +2412,24 @@ class TransSalesEntry extends \Magento\Catalog\Model\AbstractModel
     public function getWishlist(): ?string
     {
         return $this->getData(self::WISH_LIST);
+    }
+
+    /**
+     * @param ?string $Epc
+     * @return $this
+     */
+    public function setEpc(?string $Epc)
+    {
+        $this->setData(self::EPC, $Epc);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getEpc(): ?string
+    {
+        return $this->getData(self::EPC);
     }
 }
 

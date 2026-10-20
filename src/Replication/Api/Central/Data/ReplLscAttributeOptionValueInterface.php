@@ -24,6 +24,10 @@ interface ReplLscAttributeOptionValueInterface
 
     public function setOptionValue(?string $value);
 
+    public function getImage(): ?string;
+
+    public function setImage(?string $value);
+
     public function getWeight(): ?int;
 
     public function setWeight(?int $value);
@@ -47,6 +51,10 @@ interface ReplLscAttributeOptionValueInterface
     public function getLinkAttributeOptionSeq(): ?int;
 
     public function setLinkAttributeOptionSeq(?int $value);
+
+    public function getSelected(): ?bool;
+
+    public function setSelected(?bool $value);
 
     public function getSystemid(): ?string;
 

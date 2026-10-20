@@ -579,6 +579,16 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::DEFAULT_TOKEN], $value);
     }
 
+    public function getSystemidint(): ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMIDINT]);
+    }
+
+    public function setSystemidint(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMIDINT], $value);
+    }
+
     public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);

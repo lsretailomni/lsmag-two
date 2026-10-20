@@ -50,6 +50,8 @@ class CustomerOrderGetCOLineV4 extends \Magento\Catalog\Model\AbstractModel
 
     public const ORIGINAL_LINE_NO = 'OriginalLineNo';
 
+    public const CREATED_BY_RECEIPT_NO = 'CreatedByReceiptNo';
+
     public const SOURCING_LOCATION = 'SourcingLocation';
 
     public const ORDER_REFERENCE = 'OrderReference';
@@ -452,6 +454,24 @@ class CustomerOrderGetCOLineV4 extends \Magento\Catalog\Model\AbstractModel
     public function getOriginallineno()
     {
         return $this->getData(self::ORIGINAL_LINE_NO);
+    }
+
+    /**
+     * @param ?string $CreatedByReceiptNo
+     * @return $this
+     */
+    public function setCreatedbyreceiptno(?string $CreatedByReceiptNo)
+    {
+        $this->setData(self::CREATED_BY_RECEIPT_NO, $CreatedByReceiptNo);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getCreatedbyreceiptno(): ?string
+    {
+        return $this->getData(self::CREATED_BY_RECEIPT_NO);
     }
 
     /**

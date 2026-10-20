@@ -18,6 +18,10 @@ class KOTLine extends \Magento\Catalog\Model\AbstractModel
 
     public const ITEM_NO = 'ItemNo';
 
+    public const QUANTITY = 'Quantity';
+
+    public const UNIT_OF_MEASURE_ID = 'UnitOfMeasureId';
+
     /**
      * @param ?string $KotNo
      * @return $this
@@ -70,6 +74,42 @@ class KOTLine extends \Magento\Catalog\Model\AbstractModel
     public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
+    }
+
+    /**
+     * @param ?float $Quantity
+     * @return $this
+     */
+    public function setQuantity(?float $Quantity)
+    {
+        $this->setData(self::QUANTITY, $Quantity);
+        return $this;
+    }
+
+    /**
+     * @return ?float
+     */
+    public function getQuantity(): ?float
+    {
+        return $this->getData(self::QUANTITY);
+    }
+
+    /**
+     * @param ?string $UnitOfMeasureId
+     * @return $this
+     */
+    public function setUnitofmeasureid(?string $UnitOfMeasureId)
+    {
+        $this->setData(self::UNIT_OF_MEASURE_ID, $UnitOfMeasureId);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getUnitofmeasureid(): ?string
+    {
+        return $this->getData(self::UNIT_OF_MEASURE_ID);
     }
 }
 

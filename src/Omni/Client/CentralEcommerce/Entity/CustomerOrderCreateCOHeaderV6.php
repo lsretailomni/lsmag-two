@@ -100,6 +100,8 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
 
     public const CURRENCY_FACTOR = 'CurrencyFactor';
 
+    public const PTEJSON_CARRIER = 'PTEJsonCarrier';
+
     /**
      * @param ?string $DocumentID
      * @return $this
@@ -890,6 +892,24 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     public function getCurrencyfactor(): ?float
     {
         return $this->getData(self::CURRENCY_FACTOR);
+    }
+
+    /**
+     * @param ?string $PTEJsonCarrier
+     * @return $this
+     */
+    public function setPtejsoncarrier(?string $PTEJsonCarrier)
+    {
+        $this->setData(self::PTEJSON_CARRIER, $PTEJsonCarrier);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getPtejsoncarrier(): ?string
+    {
+        return $this->getData(self::PTEJSON_CARRIER);
     }
 }
 

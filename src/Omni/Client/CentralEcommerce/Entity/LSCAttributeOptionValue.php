@@ -14,12 +14,14 @@ class LSCAttributeOptionValue extends AbstractModel
     public const ATTRIBUTE_CODE = 'Attribute Code';
     public const SEQUENCE = 'Sequence';
     public const OPTION_VALUE = 'Option Value';
+    public const IMAGE = 'Image';
     public const WEIGHT = 'Weight';
     public const HIDE_VALUE_ON_POS = 'Hide Value on POS';
     public const HIDE_VALUE_FOR_CUSTOMER = 'Hide Value for Customer';
     public const OPTION_VALUE_CUST = 'Option Value (Cust.)';
     public const LINKED_ATTRIBUTE_CODE = 'Linked Attribute Code';
     public const LINK_ATTRIBUTE_OPTION_SEQ = 'Link. Attribute Option Seq.';
+    public const SELECTED = 'Selected';
     public const SYSTEMID = '$systemId';
     public const SYSTEMCREATEDAT = 'SystemCreatedAt';
     public const SYSTEMCREATEDBY = 'SystemCreatedBy';
@@ -30,12 +32,14 @@ class LSCAttributeOptionValue extends AbstractModel
 	self::ATTRIBUTE_CODE => 'attribute_code',
 	self::SEQUENCE => 'sequence',
 	self::OPTION_VALUE => 'option_value',
+	self::IMAGE => 'image',
 	self::WEIGHT => 'weight',
 	self::HIDE_VALUE_ON_POS => 'hide_value_on_pos',
 	self::HIDE_VALUE_FOR_CUSTOMER => 'hide_value_for_customer',
 	self::OPTION_VALUE_CUST => 'option_value_cust',
 	self::LINKED_ATTRIBUTE_CODE => 'linked_attribute_code',
 	self::LINK_ATTRIBUTE_OPTION_SEQ => 'link_attribute_option_seq',
+	self::SELECTED => 'selected',
 	self::SYSTEMID => 'systemid',
 	self::SYSTEMCREATEDAT => 'systemcreatedat',
 	self::SYSTEMCREATEDBY => 'systemcreatedby',
@@ -77,6 +81,16 @@ class LSCAttributeOptionValue extends AbstractModel
     public function setOptionValue(?string $value)
     {
         return $this->setData(self::OPTION_VALUE, $value);
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->getData(self::IMAGE);
+    }
+
+    public function setImage(?string $value)
+    {
+        return $this->setData(self::IMAGE, $value);
     }
 
     public function getWeight(): ?int
@@ -137,6 +151,16 @@ class LSCAttributeOptionValue extends AbstractModel
     public function setLinkAttributeOptionSeq(?int $value)
     {
         return $this->setData(self::LINK_ATTRIBUTE_OPTION_SEQ, $value);
+    }
+
+    public function getSelected(): ?bool
+    {
+        return $this->getData(self::SELECTED);
+    }
+
+    public function setSelected(?bool $value)
+    {
+        return $this->setData(self::SELECTED, $value);
     }
 
     public function getSystemid(): ?string
