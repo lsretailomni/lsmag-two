@@ -104,7 +104,7 @@ class VendorSourcingHelper
      * @param Product|null $child
      * @return bool
      */
-    private function isVendorSourced(Product $parent, ?Product $child): bool
+    public function isVendorSourced(Product $parent, ?Product $child): bool
     {
         $value = $child ? $child->getData(LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE) : null;
 

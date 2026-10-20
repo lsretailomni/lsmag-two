@@ -14,6 +14,9 @@ use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\StockHelper;
 use \Ls\Omni\Helper\StoreHelper;
 use \Ls\Omni\Helper\GiftCardHelper;
+use Ls\Omni\Helper\VendorSourcingHelper;
+use Ls\Omni\Model\VendorSourcing\PickupStoreIntersectionFilter;
+use Ls\Omni\Model\VendorSourcing\ZeroStockEverywhereResolver;
 use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Catalog\Model\Product\Type;
@@ -25,6 +28,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\LayoutFactory;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Custom Data provider
@@ -48,6 +52,10 @@ class DataProvider implements ConfigProviderInterface
      * @param GiftCardHelper $giftCardHelper
      * @param BasketHelper $basketHelper
      * @param LayoutFactory $layoutFactory
+     * @param VendorSourcingHelper $vendorSourcingHelper
+     * @param ZeroStockEverywhereResolver $zeroStockResolver
+     * @param PickupStoreIntersectionFilter $pickupStoreIntersectionFilter
+     * @param LoggerInterface $logger
      */
     public function __construct(
         public StoreManagerInterface $storeManager,
@@ -59,7 +67,11 @@ class DataProvider implements ConfigProviderInterface
         public StoreHelper $storeHelper,
         public GiftCardHelper $giftCardHelper,
         public BasketHelper $basketHelper,
-        public LayoutFactory $layoutFactory
+        public LayoutFactory $layoutFactory,
+        public VendorSourcingHelper $vendorSourcingHelper,
+        public ZeroStockEverywhereResolver $zeroStockResolver,
+        public PickupStoreIntersectionFilter $pickupStoreIntersectionFilter,
+        public LoggerInterface $logger
     ) {
     }
 
@@ -377,6 +389,13 @@ class DataProvider implements ConfigProviderInterface
     /**
      * Filter Stores on the basis of quantity
      *
+     * D5/FR8: zero-stock-everywhere + vendor-sourcing-eligible rows are partitioned out of the
+     * qty-based disqualification loop entirely (no store can satisfy them by stock alone) and are
+     * instead routed through {@see PickupStoreIntersectionFilter} against their collect-type
+     * sourcing stores. An ordinary (non-eligible) zero-stock-everywhere item is left in the
+     * disqualification loop unchanged - no regression, it still empties the candidate list exactly
+     * as it does today.
+     *
      * @param RootGetInventoryMultipleOut $response
      * @param array $items
      * @return mixed
@@ -384,13 +403,12 @@ class DataProvider implements ConfigProviderInterface
      */
     public function filterStoresOnTheBasisOfQty(RootGetInventoryMultipleOut $response, array $items)
     {
+        $stockCollection = [];
+        $normalRows = [];
+        $fallbackEligibleOptions = [];
+
         foreach ($items as $item) {
-            $children = [];
-            if ($item->getProductType() == Type::TYPE_BUNDLE) {
-                $children = $item->getChildren();
-            } else {
-                $children[] = $item;
-            }
+            $children = $item->getProductType() == Type::TYPE_BUNDLE ? $item->getChildren() : [$item];
 
             foreach ($children as $child) {
                 $itemQty = $item->getQty();
@@ -400,26 +418,75 @@ class DataProvider implements ConfigProviderInterface
                 if (!empty($uomQty)) {
                     $itemQty = $itemQty * $uomQty;
                 }
-                if ($response) {
-                    foreach ($response->getInventorybufferout() as $responseItem) {
-                        if ($responseItem->getNumber() == $parentProductSku &&
-                            $responseItem->getVariant() == $childProductSku &&
-                            ceil($responseItem->getInventory()) < $itemQty
-                        ) {
-                            $this->removeAllOccurrenceOfGivenStore($response, $responseItem->getStore());
-                        }
+
+                $this->stockHelper->mergeStockCollection(
+                    $stockCollection,
+                    $parentProductSku,
+                    $childProductSku,
+                    $child->getName(),
+                    $itemQty,
+                    $child
+                );
+            }
+        }
+
+        $stockMap = $this->zeroStockResolver->resolve($response, $stockCollection);
+
+        foreach ($stockCollection as $row) {
+            $key = $row['item_id'] . '|' . $row['variant_id'];
+            $zeroEverywhere = !($stockMap[$key] ?? false);
+            $quoteItem = $row['quote_item'] ?? null;
+
+            if ($zeroEverywhere && $quoteItem) {
+                $parent = $quoteItem->getProduct();
+                $child = null;
+
+                if ($quoteItem->getOptionByCode('simple_product')) {
+                    $child = $quoteItem->getOptionByCode('simple_product')->getProduct();
+                }
+
+                if ($this->vendorSourcingHelper->isVendorSourced($parent, $child)) {
+                    // Fallback-eligible AND zero-stock-everywhere: skip the qty disqualification
+                    // loop entirely for this row (no store can satisfy it by stock alone) and
+                    // route it to the vendor-sourcing intersection instead (FR8).
+                    try {
+                        $fallbackEligibleOptions[] = $this->vendorSourcingHelper->getOptions(
+                            $parent->getSku(),
+                            $child ? (int)$child->getId() : null
+                        );
+                    } catch (\Throwable $e) {
+                        $this->logger->error(
+                            'Vendor sourcing checkout fallback options lookup failed: ' . $e->getMessage()
+                        );
+                        $fallbackEligibleOptions[] = [];
                     }
+                    continue;
+                }
+            }
+
+            $normalRows[] = $row;
+        }
+
+        foreach ($normalRows as $row) {
+            foreach ($response->getInventorybufferout() as $responseItem) {
+                if ($responseItem->getNumber() == $row['item_id'] &&
+                    $responseItem->getVariant() == $row['variant_id'] &&
+                    ceil($responseItem->getInventory()) < $row['qty']
+                ) {
+                    $this->removeAllOccurrenceOfGivenStore($response, $responseItem->getStore());
                 }
             }
         }
 
-        $responseItems = null;
+        $responseItems = !empty($response) ? $this->getAllResponseItemsWithInventoryAvailable($response) : null;
+        $qtySatisfiedStoreNavIds = $responseItems ?: [];
 
-        if (!empty($response)) {
-            $responseItems = $this->getAllResponseItemsWithInventoryAvailable($response);
-        }
+        $validStoreNavIds = $this->pickupStoreIntersectionFilter->filter(
+            $qtySatisfiedStoreNavIds,
+            $fallbackEligibleOptions
+        );
 
-        return $this->getSelectedClickAndCollectStoresData($responseItems);
+        return $this->getSelectedClickAndCollectStoresData($validStoreNavIds);
     }
 
     /**
