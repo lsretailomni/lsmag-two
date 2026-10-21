@@ -106,13 +106,42 @@ class VendorSourcingHelper
      */
     public function isVendorSourced(Product $parent, ?Product $child): bool
     {
-        $value = $child ? $child->getData(LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE) : null;
+        $value = $child ? $this->resolveVendorSourcingValue($child) : null;
 
         if ($value === null || $value === '') {
-            $value = $parent->getData(LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE);
+            $value = $this->resolveVendorSourcingValue($parent);
         }
 
         return (int)$value === 1;
+    }
+
+    /**
+     * Read the vendor-sourcing attribute off a product, falling back to a direct raw-attribute
+     * lookup when the product instance doesn't have it loaded in its own data (e.g. products
+     * attached to Quote\Item::getProduct() are frequently loaded with a reduced attribute set
+     * that doesn't include custom attributes like this one, even though the same product fetched
+     * fresh via ProductRepository does carry it).
+     *
+     * @param Product $product
+     * @return mixed
+     */
+    private function resolveVendorSourcingValue(Product $product)
+    {
+        $value = $product->getData(LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE);
+
+        if (($value === null || $value === '') && $product->getId()) {
+            try {
+                $value = $product->getResource()->getAttributeRawValue(
+                    $product->getId(),
+                    LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE,
+                    $product->getStoreId()
+                );
+            } catch (\Throwable $e) {
+                $value = null;
+            }
+        }
+
+        return $value;
     }
 
     /**
