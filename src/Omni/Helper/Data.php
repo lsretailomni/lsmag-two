@@ -576,7 +576,7 @@ class Data extends AbstractHelperOmni
             [
                 'baseUrl' => $baseUrl,
                 'connectionParams' => $connectionParams,
-                'companyName' => $companyName['company'] ?? ''
+                'companyName' => $connectionParams['centralType'] && $companyName['company'] ? $companyName['company'] : ''
             ]
         );
 
@@ -604,7 +604,7 @@ class Data extends AbstractHelperOmni
             [
                 'baseUrl' => $baseUrl,
                 'connectionParams' => $connectionParams,
-                'companyName' => $companyName['company'] ?? ''
+                'companyName' => $connectionParams['centralType'] && $companyName['company'] ? $companyName['company'] : ''
             ]
         );
         $webStoreOperation->setOperationInput(
@@ -643,7 +643,7 @@ class Data extends AbstractHelperOmni
             [
             'baseUrl' => $baseUrl,
             'connectionParams' => $connectionParams,
-            'companyName' => $companyName['company'] ?? ''
+            'companyName' => $connectionParams['centralType'] && $companyName['company'] ? $companyName['company'] : ''
             ]
         );
         $hierarchyOperation->setOperationInput(
@@ -1061,8 +1061,8 @@ class Data extends AbstractHelperOmni
         $storeTenderTypes     = [];
         $scopeId              = $this->lsr->getCurrentWebsiteId();
         $storeTenderTypeArray = $this->getTenderTypes($scopeId);
-        
-        if (!empty($storeTenderTypeArray)) {            
+
+        if (!empty($storeTenderTypeArray)) {
             foreach ($storeTenderTypeArray as $storeTenderType) {
                 $storeTenderTypes[$storeTenderType->getTenderTypeId()] = $storeTenderType->getName();
             }
