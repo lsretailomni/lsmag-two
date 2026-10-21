@@ -695,18 +695,23 @@ class OrderHelper extends AbstractHelperOmni
 
             if ($stockResponse) {
                 $stockCollection = $this->stockHelper->updateStockCollection($stockResponse, $stockCollection);
-
-                $this->checkoutFallbackService->evaluate(
-                    $stockCollection,
-                    VendorSourcingHelper::TYPE_COLLECT,
-                    $quoteItems
-                );
+            } else {
+                // $stockResponse is null whenever every item in the cart is excluded from this
+                // gated per-store call (ticket 89358: manage_stock=0 for vendor-sourced items) -
+                // this is always the case for a cart made up entirely of vendor-sourced items, not
+                // just a lookup failure. Don't feed the raw, status-less $stockCollection into
+                // evaluate()'s main loop (every row would look like zero-stock by omission, wrongly
+                // triggering getOptions() for ordinary items too) - pass an empty collection
+                // instead. evaluate()'s own $quoteItems-driven fallback still independently
+                // discovers and resolves the vendor-sourcing-eligible items regardless.
+                $stockCollection = [];
             }
-            // $stockResponse null: the per-store lookup failed. Without updateStockCollection()'s
-            // 'status' key, every row would look like zero-stock to evaluate(), wrongly triggering
-            // a getOptions()/disambiguation call for every ordinary item in the cart - skip instead
-            // and return whatever buildVendorSourcedLinesMap() finds below (consistent with
-            // DataAssignObserver::storeInventoryCheck()'s own fail-safe on a null stock collection).
+
+            $this->checkoutFallbackService->evaluate(
+                $stockCollection,
+                VendorSourcingHelper::TYPE_COLLECT,
+                $quoteItems
+            );
         } else {
             $this->checkoutFallbackService->evaluateDelivery($quoteItems);
         }
