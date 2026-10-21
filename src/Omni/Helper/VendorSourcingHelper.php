@@ -242,10 +242,17 @@ class VendorSourcingHelper
             }
 
             foreach ($types as $type) {
-                $code = $type === self::TYPE_COLLECT ? (string)$row->getSourcinglocation() : null;
-
-                if ($code !== null) {
+                if ($type === self::TYPE_COLLECT) {
+                    $code = (string)$row->getSourcinglocation();
                     $collectCodes[$code] = $code;
+                } else {
+                    // Ship-type rows carry their sourcing reference in DeliveryStore, not
+                    // SourcingLocation - previously discarded entirely (always null), which meant
+                    // #89360's delivery order lines never had a SourcingLocation to pass through.
+                    // Not added to $collectCodes/getStoreNames() - a DeliveryStore reference isn't
+                    // guaranteed to be a retail store in ReplStore's nav_id space.
+                    $deliveryStore = (string)$row->getDeliverystore();
+                    $code = $deliveryStore !== '' ? $deliveryStore : null;
                 }
 
                 $options[] = [
