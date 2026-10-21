@@ -221,6 +221,11 @@ class DataProviderTest extends TestCase
      * Companion happy-path test: a successful getOptions() lookup for a zero-stock-everywhere,
      * vendor-sourcing-eligible item must be passed through to PickupStoreIntersectionFilter
      * unmodified, with no error logged.
+     *
+     * $normalRows is empty here (the cart's only row is routed to $fallbackEligibleOptions), so
+     * per the ticket 89360 follow-up fix the qty-satisfied baseline is now $clickNCollectStoresIds
+     * (the third parameter) rather than derived from $response - passed here as ['S1'] so the
+     * expected intersection result is unchanged from before the fix.
      */
     public function testFilterStoresOnTheBasisOfQtyPassesThroughOptionsOnSuccess(): void
     {
@@ -251,13 +256,110 @@ class DataProviderTest extends TestCase
 
         $response = $this->createResponse([$this->createBufferRow('S1')]);
 
-        $result = $this->createDataProvider()->filterStoresOnTheBasisOfQty($response, [$item]);
+        $result = $this->createDataProvider()->filterStoresOnTheBasisOfQty($response, [$item], ['S1']);
 
         $this->assertSame($this->storeCollection, $result);
         $this->assertSame(
             ['S1'],
             $this->capturedFieldFilters['nav_id']['in'],
             'S1 is a valid collect store for the sourced item and qty-satisfied (trivially, no normal rows)'
+        );
+    }
+
+    /**
+     * Ticket 89360 bug fix: a cart made up ENTIRELY of a single vendor-sourcing-eligible item has
+     * manage_stock=0 on that item (ticket 89358), so the caller's gated stock check
+     * ({@see \Ls\Omni\Helper\StockHelper::getGivenItemsStockInGivenStore()}) returns a null
+     * $response for the whole cart - there's nothing left for it to gate "in". Before the fix,
+     * DataProvider::getStores() would short-circuit to `return null` as soon as $response was
+     * null, so filterStoresOnTheBasisOfQty() (and therefore the vendor-sourcing intersection)
+     * never even ran. This test exercises filterStoresOnTheBasisOfQty() directly with $response
+     * = null (as getStores() now always forwards it) and asserts the resulting store list is
+     * neither empty NOR the full unfiltered candidate list, but exactly the intersection of the
+     * candidate stores with the item's collect-type sourcing stores.
+     */
+    public function testFilterStoresOnTheBasisOfQtyResolvesStoresForAllVendorSourcedCartWithNullResponse(): void
+    {
+        $product = $this->createMock(Product::class);
+        $product->method('getSku')->willReturn('SKU-1');
+        $item = $this->createQuoteItem('SKU-1', $product);
+
+        $this->stockHelper->itemHelper->method('getComparisonValues')
+            ->with('SKU-1')
+            ->willReturn(['ITEM1', 'VAR1', null, null, null, null]);
+
+        // The gated stock check found nothing to gate in (every item has manage_stock=0), so
+        // $response is null - the exact scenario StockHelper::getGivenItemsStockInGivenStore()
+        // produces for an all-vendor-sourced cart.
+        $this->zeroStockResolver->method('resolve')->willReturn(['ITEM1|VAR1' => false]);
+        $this->vendorSourcingHelper->method('isVendorSourced')->willReturn(true);
+
+        $options = [
+            [
+                'type' => VendorSourcingHelper::TYPE_COLLECT,
+                'store_code' => 'S1',
+                'store_name' => 'Store 1',
+                'days' => 2,
+                'date' => '2026-10-21',
+                'priority' => 1,
+            ],
+        ];
+        $this->vendorSourcingHelper->method('getOptions')->willReturn($options);
+
+        $this->logger->expects($this->never())->method('error');
+
+        // S1 and S2 are both valid click & collect candidate stores for this web store, but only
+        // S1 is a collect-type sourcing location for the vendor-sourced item.
+        $result = $this->createDataProvider()->filterStoresOnTheBasisOfQty(null, [$item], ['S1', 'S2']);
+
+        $this->assertSame($this->storeCollection, $result);
+        $this->assertSame(
+            ['S1'],
+            $this->capturedFieldFilters['nav_id']['in'],
+            'A null $response (all-vendor-sourced cart) must still resolve to the collect-type ' .
+            'sourcing stores, not an empty list and not the full unfiltered candidate list'
+        );
+    }
+
+    /**
+     * Companion to the above: when the vendor-sourced item has NO valid collect-type sourcing
+     * option (ship-type only here), the result must still correctly come back empty - confirming
+     * the fix does not overcorrect into "always show every candidate store" whenever $response is
+     * null.
+     */
+    public function testFilterStoresOnTheBasisOfQtyReturnsEmptyWhenNoCollectOptionsAndNullResponse(): void
+    {
+        $product = $this->createMock(Product::class);
+        $product->method('getSku')->willReturn('SKU-1');
+        $item = $this->createQuoteItem('SKU-1', $product);
+
+        $this->stockHelper->itemHelper->method('getComparisonValues')
+            ->with('SKU-1')
+            ->willReturn(['ITEM1', 'VAR1', null, null, null, null]);
+
+        $this->zeroStockResolver->method('resolve')->willReturn(['ITEM1|VAR1' => false]);
+        $this->vendorSourcingHelper->method('isVendorSourced')->willReturn(true);
+
+        $options = [
+            [
+                'type' => VendorSourcingHelper::TYPE_SHIP,
+                'store_code' => null,
+                'store_name' => null,
+                'days' => 2,
+                'date' => '2026-10-21',
+                'priority' => 1,
+            ],
+        ];
+        $this->vendorSourcingHelper->method('getOptions')->willReturn($options);
+
+        $result = $this->createDataProvider()->filterStoresOnTheBasisOfQty(null, [$item], ['S1', 'S2']);
+
+        $this->assertSame($this->storeCollection, $result);
+        $this->assertSame(
+            [],
+            $this->capturedFieldFilters['nav_id']['in'],
+            'No collect-type option for the vendor-sourced item must empty the candidate list, ' .
+            'not fall back to showing every candidate store'
         );
     }
 }

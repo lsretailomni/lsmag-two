@@ -191,6 +191,14 @@ class DataProvider implements ConfigProviderInterface
     /**
      * Get stores
      *
+     * D5/FR8 (ticket 89360 follow-up): a cart made up ENTIRELY of vendor-sourcing-eligible items
+     * has manage_stock=0 on every item (ticket 89358), so the gated
+     * {@see StockHelper::getGivenItemsStockInGivenStore()} call below always returns a null
+     * $response for such a cart - there is nothing left for it to gate "in". That must no longer
+     * short-circuit the whole pickup-store list to null; filterStoresOnTheBasisOfQty() is now able
+     * to run with a null $response and resolve the candidate list purely via the vendor-sourcing
+     * intersection (see its docblock).
+     *
      * @return Collection
      * @throws NoSuchEntityException|LocalizedException|InvalidEnumException
      */
@@ -205,15 +213,13 @@ class DataProvider implements ConfigProviderInterface
         $items = $this->checkoutSession->getQuote()->getAllVisibleItems();
         list($response) = $this->stockHelper->getGivenItemsStockInGivenStore($items);
 
+        $clickNCollectStoresIds = $this->getClickAndCollectStoreIds($storesData);
+
         if ($response && !empty($response->getInventorybufferout())) {
-
-            $clickNCollectStoresIds = $this->getClickAndCollectStoreIds($storesData);
             $this->filterClickAndCollectStores($response, $clickNCollectStoresIds);
-
-            return $this->filterStoresOnTheBasisOfQty($response, $items);
         }
 
-        return null;
+        return $this->filterStoresOnTheBasisOfQty($response, $items, $clickNCollectStoresIds);
     }
 
     /**
@@ -396,13 +402,27 @@ class DataProvider implements ConfigProviderInterface
      * disqualification loop unchanged - no regression, it still empties the candidate list exactly
      * as it does today.
      *
-     * @param RootGetInventoryMultipleOut $response
+     * $response is nullable (ticket 89360 follow-up): a cart made up ENTIRELY of vendor-sourcing
+     * -eligible items has manage_stock=0 on every item, so the caller's gated stock check never
+     * returns a response for it at all. When that happens there are no $normalRows either (every
+     * row gets routed to $fallbackEligibleOptions), so there is nothing to derive a qty-satisfied
+     * store baseline FROM - in that case the baseline is the full set of candidate click & collect
+     * stores ($clickNCollectStoresIds), since there's nothing left to disqualify by ordinary stock,
+     * and the vendor-sourcing intersection becomes the only applicable filter.
+     *
+     * @param RootGetInventoryMultipleOut|null $response
      * @param array $items
+     * @param array $clickNCollectStoresIds the full candidate set of click & collect store nav-ids,
+     *                                       used as the qty-satisfied baseline when there are no
+     *                                       normal (non-vendor-sourced) rows to derive it from
      * @return mixed
      * @throws NoSuchEntityException
      */
-    public function filterStoresOnTheBasisOfQty(RootGetInventoryMultipleOut $response, array $items)
-    {
+    public function filterStoresOnTheBasisOfQty(
+        ?RootGetInventoryMultipleOut $response,
+        array $items,
+        array $clickNCollectStoresIds = []
+    ) {
         $stockCollection = [];
         $normalRows = [];
         $fallbackEligibleOptions = [];
@@ -467,19 +487,27 @@ class DataProvider implements ConfigProviderInterface
             $normalRows[] = $row;
         }
 
-        foreach ($normalRows as $row) {
-            foreach ($response->getInventorybufferout() as $responseItem) {
-                if ($responseItem->getNumber() == $row['item_id'] &&
-                    $responseItem->getVariant() == $row['variant_id'] &&
-                    ceil($responseItem->getInventory()) < $row['qty']
-                ) {
-                    $this->removeAllOccurrenceOfGivenStore($response, $responseItem->getStore());
+        if ($response) {
+            foreach ($normalRows as $row) {
+                foreach ($response->getInventorybufferout() as $responseItem) {
+                    if ($responseItem->getNumber() == $row['item_id'] &&
+                        $responseItem->getVariant() == $row['variant_id'] &&
+                        ceil($responseItem->getInventory()) < $row['qty']
+                    ) {
+                        $this->removeAllOccurrenceOfGivenStore($response, $responseItem->getStore());
+                    }
                 }
             }
         }
 
-        $responseItems = !empty($response) ? $this->getAllResponseItemsWithInventoryAvailable($response) : null;
-        $qtySatisfiedStoreNavIds = $responseItems ?: [];
+        if (empty($normalRows)) {
+            // Nothing to disqualify by ordinary stock - the full candidate C&C store set is the
+            // baseline, and the vendor-sourcing intersection below is the only applicable filter.
+            $qtySatisfiedStoreNavIds = $clickNCollectStoresIds;
+        } else {
+            $responseItems = $response ? $this->getAllResponseItemsWithInventoryAvailable($response) : null;
+            $qtySatisfiedStoreNavIds = $responseItems ?: [];
+        }
 
         $validStoreNavIds = $this->pickupStoreIntersectionFilter->filter(
             $qtySatisfiedStoreNavIds,
