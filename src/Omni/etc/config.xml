@@ -61,6 +61,7 @@
                 <graphql_discount_validation_msg>Unfortunately since your discount is no longer valid your order summary has been updated.</graphql_discount_validation_msg>
                 <graphql_giftcard_validation_msg>Unfortunately since your applied gift card has been expired order summary has been updated.</graphql_giftcard_validation_msg>
                 <order_edit>0</order_edit>
+                <validate_tax_parameter>0</validate_tax_parameter>
             </ls_order_management>
             <ls_delivery_pickup_date_time>
                 <pickup_date_time_slot>0</pickup_date_time_slot>
