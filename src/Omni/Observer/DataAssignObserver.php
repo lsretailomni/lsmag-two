@@ -22,7 +22,10 @@ use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
 use Magento\Framework\Phrase;
 use Magento\Framework\App\Request\Http;
+use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
 use Magento\Quote\Model\QuoteIdToMaskedQuoteIdInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class for assigning and validating different extension attribute values
@@ -38,6 +41,9 @@ class DataAssignObserver implements ObserverInterface
      * @param QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId
      * @param CheckoutSession $checkoutSession
      * @param CheckoutFallbackService $checkoutFallbackService
+     * @param MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId
+     * @param CartRepositoryInterface $cartRepository
+     * @param LoggerInterface $logger
      */
     public function __construct(
         public Data $helper,
@@ -48,7 +54,10 @@ class DataAssignObserver implements ObserverInterface
         public GiftCardHelper $giftCardHelper,
         public QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId,
         public CheckoutSession $checkoutSession,
-        public CheckoutFallbackService $checkoutFallbackService
+        public CheckoutFallbackService $checkoutFallbackService,
+        public MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
+        public CartRepositoryInterface $cartRepository,
+        public LoggerInterface $logger
     ) {
     }
 
@@ -228,9 +237,13 @@ class DataAssignObserver implements ObserverInterface
             // them and evaluate() would never run for an all-vendor-sourced (or vendor-sourced +
             // all-in-stock) cart. Passing the quote's items through lets evaluate() independently
             // re-discover and evaluate such items via the ungated stock check. $quote is only
-            // passed on the non-GraphQL call path today (see validateClickAndCollectOrder()) -
-            // gracefully skip this additional check when it's null, same as before.
-            $quoteItems = $quote ? $quote->getAllVisibleItems() : [];
+            // passed on the non-GraphQL call path today (see validateClickAndCollectOrder()),
+            // which deliberately doesn't trust a caller-supplied quote reference on the GraphQL
+            // path - resolve it the same trusted way fetchCartAndReturnStock() does internally
+            // (via $maskedCartId), so this fix also applies to GraphQL, not just the frontend.
+            $quoteItems = $quote
+                ? $quote->getAllVisibleItems()
+                : $this->resolveQuoteItemsFromMaskedCartId($maskedCartId);
 
             if ($this->hasZeroStockRow($stockCollection) || !empty($quoteItems)) {
                 $fallbackResult = $this->checkoutFallbackService->evaluate(
@@ -283,6 +296,36 @@ class DataAssignObserver implements ObserverInterface
         }
 
         return false;
+    }
+
+    /**
+     * Resolve a quote's visible items from a masked cart id via the same trusted,
+     * server-side resolution {@see Data::fetchCartAndReturnStock()} uses internally - used for
+     * the GraphQL call path, which deliberately doesn't pass a caller-supplied $quote reference.
+     * Fails closed to an empty array (no additional vendor-sourcing items discovered beyond what
+     * $stockCollection already carries) rather than let a resolution failure abort checkout.
+     *
+     * @param string $maskedCartId
+     * @return array
+     */
+    private function resolveQuoteItemsFromMaskedCartId(string $maskedCartId): array
+    {
+        if (empty($maskedCartId)) {
+            return [];
+        }
+
+        try {
+            $quoteId = $this->maskedQuoteIdToQuoteId->execute($maskedCartId);
+            $quote = $this->cartRepository->get($quoteId);
+
+            return $quote->getAllVisibleItems();
+        } catch (\Throwable $e) {
+            $this->logger->error(
+                'Unable to resolve quote items for vendor sourcing check: ' . $e->getMessage()
+            );
+
+            return [];
+        }
     }
 
     /**

@@ -11,10 +11,13 @@ use Ls\Omni\Model\VendorSourcing\CheckoutFallbackService;
 use Ls\Omni\Model\VendorSourcing\ItemSourcingVerdict;
 use Ls\Omni\Observer\DataAssignObserver;
 use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Item;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 /**
  * Unit tests for {@see DataAssignObserver::storeInventoryCheck()} and the new
@@ -52,6 +55,15 @@ class DataAssignObserverTest extends TestCase
     /** @var CheckoutFallbackService&MockObject */
     private $checkoutFallbackService;
 
+    /** @var MaskedQuoteIdToQuoteIdInterface&MockObject */
+    private $maskedQuoteIdToQuoteId;
+
+    /** @var CartRepositoryInterface&MockObject */
+    private $cartRepository;
+
+    /** @var LoggerInterface&MockObject */
+    private $logger;
+
     protected function setUp(): void
     {
         $this->observer = $this->getMockBuilder(DataAssignObserver::class)
@@ -68,10 +80,24 @@ class DataAssignObserverTest extends TestCase
             ->addMethods(['getNoManageStock'])
             ->getMock();
         $this->checkoutFallbackService = $this->createMock(CheckoutFallbackService::class);
+        $this->maskedQuoteIdToQuoteId = $this->createMock(MaskedQuoteIdToQuoteIdInterface::class);
+        $this->cartRepository = $this->createMock(CartRepositoryInterface::class);
+        $this->logger = $this->createMock(LoggerInterface::class);
+
+        // Default: the GraphQL-path quote resolution (resolveQuoteItemsFromMaskedCartId()) finds a
+        // real quote with no items, so tests not specifically about this resolution behave exactly
+        // as they did before it existed (quoteItems ends up [] either way).
+        $defaultQuote = $this->createMock(Quote::class);
+        $defaultQuote->method('getAllVisibleItems')->willReturn([]);
+        $this->maskedQuoteIdToQuoteId->method('execute')->willReturn(1);
+        $this->cartRepository->method('get')->willReturn($defaultQuote);
 
         $this->observer->helper = $this->helper;
         $this->observer->checkoutSession = $this->checkoutSession;
         $this->observer->checkoutFallbackService = $this->checkoutFallbackService;
+        $this->observer->maskedQuoteIdToQuoteId = $this->maskedQuoteIdToQuoteId;
+        $this->observer->cartRepository = $this->cartRepository;
+        $this->observer->logger = $this->logger;
     }
 
     /**
@@ -221,8 +247,9 @@ class DataAssignObserverTest extends TestCase
 
     /**
      * Companion no-op regression: an all-in-stock cart with no $quote passed at all (the GraphQL
-     * call path, which omits $quote today) must not call evaluate() - there is nothing to
-     * independently re-discover without quote items available.
+     * call path, which omits $quote today) and nothing resolved from the masked cart id (default
+     * mock in setUp() resolves an empty-item quote) must not call evaluate() - there is nothing
+     * to independently re-discover.
      */
     public function testStoreInventoryCheckDoesNotCallEvaluateWhenNoZeroStockRowAndNoQuotePassed(): void
     {
@@ -233,6 +260,82 @@ class DataAssignObserverTest extends TestCase
         $this->checkoutSession->method('getNoManageStock')->willReturn(null);
 
         $this->checkoutFallbackService->expects($this->never())->method('evaluate');
+
+        $result = $this->observer->storeInventoryCheck('masked-cart-id', 1, 1, 'STORE01');
+
+        $this->assertNull($result);
+    }
+
+    /**
+     * Regression test for the GraphQL "C&C trigger gap" fix: validateClickAndCollectOrder()'s
+     * GraphQL branch deliberately doesn't pass a caller-supplied $quote (it only trusts a
+     * server-resolved one), but the manage_stock=0 re-discovery fix must still apply there -
+     * resolveQuoteItemsFromMaskedCartId() resolves a trusted quote via the same
+     * masked-cart-id-to-quote path fetchCartAndReturnStock() uses internally, and its items are
+     * passed into evaluate() exactly as they would be if $quote had been passed directly.
+     */
+    public function testStoreInventoryCheckResolvesQuoteItemsFromMaskedCartIdWhenNoQuotePassed(): void
+    {
+        $stockCollection = [
+            ['item_id' => 'ITEM1', 'variant_id' => 'VAR1', 'status' => '1'],
+        ];
+        $this->helper->method('fetchCartAndReturnStock')->willReturn($stockCollection);
+        $this->checkoutSession->method('getNoManageStock')->willReturn(null);
+
+        $resolvedItem = $this->createMock(Item::class);
+        $resolvedQuote = $this->createMock(Quote::class);
+        $resolvedQuote->method('getAllVisibleItems')->willReturn([$resolvedItem]);
+
+        // Fresh mocks (not the setUp() defaults) - a second, competing stub on the same mock for
+        // the same method is unreliable to override in PHPUnit 10 once a prior unconstrained
+        // stub already exists, so this test's specific behavior gets its own mock instances
+        // instead.
+        $this->observer->maskedQuoteIdToQuoteId = $this->createMock(MaskedQuoteIdToQuoteIdInterface::class);
+        $this->observer->cartRepository = $this->createMock(CartRepositoryInterface::class);
+
+        $this->observer->maskedQuoteIdToQuoteId->expects($this->once())
+            ->method('execute')
+            ->with('masked-cart-id')
+            ->willReturn(42);
+        $this->observer->cartRepository->expects($this->once())
+            ->method('get')
+            ->with(42)
+            ->willReturn($resolvedQuote);
+
+        $this->checkoutFallbackService->expects($this->once())
+            ->method('evaluate')
+            ->with($stockCollection, VendorSourcingHelper::TYPE_COLLECT, [$resolvedItem])
+            ->willReturn($this->createFallbackResult(false));
+
+        $result = $this->observer->storeInventoryCheck('masked-cart-id', 1, 1, 'STORE01');
+
+        $this->assertNull($result);
+    }
+
+    /**
+     * Fail-closed/fail-safe: if resolving the quote from the masked cart id throws (e.g. an
+     * invalid or expired masked cart id), the resolution degrades to an empty item list rather
+     * than letting the exception propagate and abort checkout - logged, not fatal.
+     */
+    public function testStoreInventoryCheckResolveQuoteItemsGracefullyHandlesResolutionFailure(): void
+    {
+        $stockCollection = [
+            ['item_id' => 'ITEM1', 'variant_id' => 'VAR1', 'status' => '0'],
+        ];
+        $this->helper->method('fetchCartAndReturnStock')->willReturn($stockCollection);
+        $this->checkoutSession->method('getNoManageStock')->willReturn(null);
+
+        // Fresh mock (see note in the preceding test) so the exception is guaranteed to actually
+        // fire rather than potentially being shadowed by setUp()'s unconstrained default stub.
+        $this->observer->maskedQuoteIdToQuoteId = $this->createMock(MaskedQuoteIdToQuoteIdInterface::class);
+        $this->observer->maskedQuoteIdToQuoteId->method('execute')
+            ->willThrowException(new \Exception('invalid masked cart id'));
+        $this->logger->expects($this->once())->method('error');
+
+        $this->checkoutFallbackService->expects($this->once())
+            ->method('evaluate')
+            ->with($stockCollection, VendorSourcingHelper::TYPE_COLLECT, [])
+            ->willReturn($this->createFallbackResult(false));
 
         $result = $this->observer->storeInventoryCheck('masked-cart-id', 1, 1, 'STORE01');
 

@@ -5,14 +5,16 @@ namespace Ls\Omni\Controller\Stock;
 
 use \Ls\Omni\Block\Stores\Stores;
 use \Ls\Omni\Helper\AbstractHelperOmni;
+use Ls\Omni\Helper\ItemHelper;
 use Ls\Omni\Helper\VendorSourcingHelper;
-use Ls\Omni\Model\VendorSourcing\ZeroStockEverywhereResolver;
+use Magento\Catalog\Model\Product;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Result\PageFactory;
+use Magento\Quote\Model\Quote\Item;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -26,7 +28,7 @@ class Store implements HttpPostActionInterface
      * @param PageFactory $resultPageFactory
      * @param AbstractHelperOmni $abstractHelperOmni
      * @param VendorSourcingHelper $vendorSourcingHelper
-     * @param ZeroStockEverywhereResolver $zeroStockResolver
+     * @param ItemHelper $itemHelper
      * @param LoggerInterface $logger
      */
     public function __construct(
@@ -35,7 +37,7 @@ class Store implements HttpPostActionInterface
         public PageFactory $resultPageFactory,
         public AbstractHelperOmni $abstractHelperOmni,
         public VendorSourcingHelper $vendorSourcingHelper,
-        public ZeroStockEverywhereResolver $zeroStockResolver,
+        public ItemHelper $itemHelper,
         public LoggerInterface $logger
     ) {
     }
@@ -49,112 +51,122 @@ class Store implements HttpPostActionInterface
     public function execute()
     {
         $result = $this->resultJsonFactory->create();
+
+        if (!$this->request->isAjax()) {
+            return $result;
+        }
+
         $stockHelper = $this->abstractHelperOmni->getStockHelper();
         $dataHelper = $this->abstractHelperOmni->getDataHelper();
         $checkoutSession = $this->abstractHelperOmni->getCheckoutSession();
 
-        if ($this->request->isAjax()) {
-            $selectedStore = $this->request->getParam('storeid');
-            $items = $checkoutSession->getQuote()->getAllVisibleItems();
-            $notAvailableNotice = __('Please check other stores or remove the not available item(s) from your ');
-            list($response, $stockCollection) = $stockHelper->getGivenItemsStockInGivenStore(
-                $items,
+        $selectedStore = (string)$this->request->getParam('storeid');
+        $items = $checkoutSession->getQuote()->getAllVisibleItems();
+
+        [$stockedItems, $vendorSourcedItems] = $this->partitionItems($items);
+
+        $stockCollection = [];
+        $lookupFailed = false;
+
+        // Ticket 89360 follow-up: no GetInventoryMultipleV2 call at all for vendor-sourcing-
+        // eligible (manage_stock=0) items - only items that are actually stock-managed go through
+        // the inventory lookup here.
+        if (!empty($stockedItems)) {
+            [$response, $partialCollection] = $stockHelper->getGivenItemsStockInGivenStore(
+                $stockedItems,
                 $selectedStore
             );
 
             if ($response && !empty($response->getInventorybufferout())) {
-                $stockCollection = $stockHelper->updateStockCollection($response, $stockCollection);
-                $stockCollection = $this->applyVendorSourcingStoreCheck(
-                    $stockCollection,
-                    $items,
-                    (string)$selectedStore,
-                    $stockHelper
-                );
-                $hours = $dataHelper->getStoreHours($selectedStore);
-                $resultPage = $this->resultPageFactory->create();
-                $storeHoursHtml = $resultPage->getLayout()->createBlock(Stores::class)
-                    ->setTemplate('Ls_Omni::stores/hours.phtml')
-                    ->setData(['hours' => $hours])
-                    ->toHtml();
-                $result = $result->setData(
-                    [
-                        'remarks' => $notAvailableNotice,
-                        'stocks' => $stockCollection,
-                        'storeHoursHtml' => $storeHoursHtml
-                    ]
-                );
+                $stockCollection = $stockHelper->updateStockCollection($response, $partialCollection);
             } else {
-                $notAvailableNotice = __('Oops! Unable to do stock lookup currently.');
-                $result = $result->setData(
-                    ['remarks' => $notAvailableNotice, 'stocks' => null, 'storeHoursHtml' => null]
-                );
+                $lookupFailed = true;
             }
         }
 
-        return $result;
+        if (!$lookupFailed && !empty($vendorSourcedItems)) {
+            $stockCollection = array_merge(
+                $stockCollection,
+                $this->buildVendorSourcedRows($vendorSourcedItems, $selectedStore)
+            );
+        }
+
+        if ($lookupFailed) {
+            return $result->setData([
+                'remarks' => __('Oops! Unable to do stock lookup currently.'),
+                'stocks' => null,
+                'storeHoursHtml' => null
+            ]);
+        }
+
+        $hours = $dataHelper->getStoreHours($selectedStore);
+        $resultPage = $this->resultPageFactory->create();
+        $storeHoursHtml = $resultPage->getLayout()->createBlock(Stores::class)
+            ->setTemplate('Ls_Omni::stores/hours.phtml')
+            ->setData(['hours' => $hours])
+            ->toHtml();
+
+        return $result->setData([
+            'remarks' => __('Please check other stores or remove the not available item(s) from your '),
+            'stocks' => $stockCollection,
+            'storeHoursHtml' => $storeHoursHtml
+        ]);
     }
 
     /**
-     * FR8 (simplified, single-store application, solution plan §7.3): for every item flagged
-     * isVendorSourced() that is zero-stock-everywhere, confirm the selected store is among its
-     * collect-type sourcing stores; if not, override that item's row to "not available" so this
-     * secondary, single-store ajax recheck agrees with {@see \Ls\Omni\Model\Checkout\DataProvider}'s
-     * candidate list (§7.2).
+     * Split the cart's quote items into those that need a regular inventory lookup versus those
+     * that are vendor-sourcing-eligible and need a sourcing-location lookup instead. Bundle items
+     * are kept in the stocked bucket unchanged (a bundle mixing vendor-sourced and ordinary
+     * children is not a scenario this feature is designed around elsewhere either) - only
+     * non-bundle items are partitioned by isVendorSourced().
      *
-     * @param array $stockCollection
-     * @param array $items
-     * @param string $selectedStore
-     * @param \Ls\Omni\Helper\StockHelper $stockHelper
-     * @return array
-     * @throws NoSuchEntityException
+     * @param Item[] $items
+     * @return array{0: Item[], 1: Item[]}
      */
-    private function applyVendorSourcingStoreCheck(
-        array $stockCollection,
-        array $items,
-        string $selectedStore,
-        $stockHelper
-    ): array {
-        $flaggedRows = [];
+    private function partitionItems(array $items): array
+    {
+        $stockedItems = [];
+        $vendorSourcedItems = [];
 
-        foreach ($stockCollection as $row) {
-            [$parent, $child] = $this->resolveParentAndChildProducts($row);
+        foreach ($items as $item) {
+            if ($item->getProductType() === \Magento\Catalog\Model\Product\Type::TYPE_BUNDLE) {
+                $stockedItems[] = $item;
+                continue;
+            }
+
+            [$parent, $child] = $this->resolveParentAndChildProducts($item);
 
             if ($parent && $this->vendorSourcingHelper->isVendorSourced($parent, $child)) {
-                $flaggedRows[] = $row;
+                $vendorSourcedItems[] = $item;
+            } else {
+                $stockedItems[] = $item;
             }
         }
 
-        if (empty($flaggedRows)) {
-            return $stockCollection;
-        }
+        return [$stockedItems, $vendorSourcedItems];
+    }
 
-        try {
-            [$allStoreResponse] = $stockHelper->getGivenItemsStockIgnoringManageStock($items);
-        } catch (\Throwable $e) {
-            $this->logger->error(
-                'Vendor sourcing store check stock lookup failed: ' . $e->getMessage()
-            );
+    /**
+     * For each vendor-sourcing-eligible item, look up its sourcing options directly (no inventory
+     * call at all) and build a stock-collection-shaped row: available if the selected store is
+     * among its collect-type sourcing stores, not available otherwise.
+     *
+     * @param Item[] $vendorSourcedItems
+     * @param string $selectedStore
+     * @return array
+     */
+    private function buildVendorSourcedRows(array $vendorSourcedItems, string $selectedStore): array
+    {
+        $rows = [];
 
-            // Fail closed: the all-store stock check could not be performed, leave every row
-            // untouched rather than crash the ajax endpoint (same as the empty($flaggedRows)
-            // early-return path above).
-            return $stockCollection;
-        }
-
-        $stockMap = $this->zeroStockResolver->resolve($allStoreResponse, $flaggedRows);
-
-        foreach ($stockCollection as &$row) {
-            $key = $row['item_id'] . '|' . $row['variant_id'];
-
-            if (!array_key_exists($key, $stockMap) || $stockMap[$key]) {
-                continue; // not a flagged row, or stock exists somewhere - leave as-is
-            }
-
-            [$parent, $child] = $this->resolveParentAndChildProducts($row);
+        foreach ($vendorSourcedItems as $item) {
+            [$parent, $child] = $this->resolveParentAndChildProducts($item);
 
             if (!$parent) {
                 continue;
             }
+
+            [$itemId, $variantId] = $this->resolveComparisonIds($item->getSku());
 
             try {
                 $options = $this->vendorSourcingHelper->getOptions(
@@ -165,8 +177,7 @@ class Store implements HttpPostActionInterface
                 $this->logger->error(
                     'Vendor sourcing store check options lookup failed: ' . $e->getMessage()
                 );
-
-                continue; // leave this row untouched rather than crash the ajax endpoint
+                $options = [];
             }
 
             $collectCodes = array_column(
@@ -174,33 +185,70 @@ class Store implements HttpPostActionInterface
                 'store_code'
             );
 
-            if (!in_array($selectedStore, $collectCodes, true)) {
-                $row['status'] = '0';
-                $row['display'] = __('This item is not available at the selected store and cannot be sourced from a vendor.');
-            }
-        }
-        unset($row);
+            $available = in_array($selectedStore, $collectCodes, true);
 
-        return $stockCollection;
+            // Distinguish "genuinely not sourceable from any vendor" (no collect-type stores at
+            // all) from "sourceable, just not at this particular store" (collect-type stores
+            // exist, just not the selected one) - the latter is a different, less alarming
+            // situation for the customer than the former, same distinction
+            // CheckoutFallbackService::wrongStoreBlockedVerdict() already makes for the
+            // equivalent case in the main checkout validation flow.
+            if ($available) {
+                $display = __('This item is available at the selected store and can be sourced from a vendor.');
+            } elseif (!empty($collectCodes)) {
+                $display = __(
+                    'This item cannot be sourced from a vendor at the selected store, but is available '
+                    . 'at another store. Please choose a different store.'
+                );
+            } else {
+                $display = __('This item is not available at the selected store and cannot be sourced from a vendor.');
+            }
+
+            $rows[] = [
+                'item_id' => $itemId,
+                'variant_id' => $variantId,
+                'name' => $item->getName(),
+                'qty' => $item->getQty(),
+                'status' => $available ? '1' : '0',
+                'display' => $display,
+                'quote_item' => $item,
+            ];
+        }
+
+        return $rows;
     }
 
     /**
-     * @param array $row
-     * @return array{0: ?\Magento\Catalog\Model\Product, 1: ?\Magento\Catalog\Model\Product}
+     * Resolve (item_id, variant_id) for a SKU via a local repository lookup
+     * (ItemHelper::getComparisonValues() - a DB query, not a Central API call), matching the same
+     * identity space an inventory-checked row would carry, without performing any inventory call.
+     *
+     * Injected directly (not reached via $this->abstractHelperOmni->getStockHelper()->itemHelper)
+     * because AbstractHelperOmni's own stockHelper dependency is wired as a \Proxy - Magento's
+     * generated Proxy classes only forward METHOD calls, not direct property access, so reaching
+     * through a Proxy's public property throws "must not be accessed before initialization".
+     *
+     * @param string $sku
+     * @return array{0: ?string, 1: ?string}
      */
-    private function resolveParentAndChildProducts(array $row): array
+    private function resolveComparisonIds(string $sku): array
     {
-        $quoteItem = $row['quote_item'] ?? null;
+        $comparisonValues = $this->itemHelper->getComparisonValues($sku);
 
-        if (!$quoteItem) {
-            return [null, null];
-        }
+        return $comparisonValues ? [$comparisonValues[0], $comparisonValues[1]] : [null, null];
+    }
 
-        $parent = $quoteItem->getProduct();
+    /**
+     * @param Item $item
+     * @return array{0: ?Product, 1: ?Product}
+     */
+    private function resolveParentAndChildProducts(Item $item): array
+    {
+        $parent = $item->getProduct();
         $child = null;
 
-        if ($quoteItem->getOptionByCode('simple_product')) {
-            $child = $quoteItem->getOptionByCode('simple_product')->getProduct();
+        if ($item->getOptionByCode('simple_product')) {
+            $child = $item->getOptionByCode('simple_product')->getProduct();
         }
 
         return [$parent, $child];

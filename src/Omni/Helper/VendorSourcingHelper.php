@@ -261,7 +261,11 @@ class VendorSourcingHelper
                     'store_name' => null,
                     'days' => $days,
                     'date' => $this->getDeliveryDate($days),
-                    'priority' => $row->getPriority()
+                    'priority' => $row->getPriority(),
+                    // Raw LeadTimeCalculation string as returned by Central, for round-tripping
+                    // onto CustomerOrderCreateCOLineV6::LEAD_TIME_CALCULATION verbatim - $days is a
+                    // parsed/display value, not what Central itself expects to receive back.
+                    'lead_time_calculation' => $row->getLeadtimecalculation()
                 ];
             }
         }

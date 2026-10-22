@@ -565,10 +565,25 @@ class OrderHelper extends AbstractHelperOmni
                     if (isset($vendorSourcedLines[$vendorSourcingKey])) {
                         $lineData[CustomerOrderCreateCOLineV6::VENDOR_SOURCING] = true;
 
-                        $sourcingLocation = $vendorSourcedLines[$vendorSourcingKey]['sourcing_location'] ?? null;
+                        $vendorLineData = $vendorSourcedLines[$vendorSourcingKey];
+                        $sourcingLocation = $vendorLineData['sourcing_location'] ?? null;
 
                         if ($sourcingLocation !== null) {
                             $lineData[CustomerOrderCreateCOLineV6::SOURCING_LOCATION] = $sourcingLocation;
+
+                            if (!$isClickCollect) {
+                                // Delivery lines: StoreNo should match the vendor-sourcing resolved
+                                // store, not the general web store id - that general id has no
+                                // bearing on which store/vendor relation is actually sourcing this
+                                // specific line.
+                                $lineData[CustomerOrderCreateCOLineV6::STORE_NO] = $sourcingLocation;
+                            }
+                        }
+
+                        $leadTimeCalculation = $vendorLineData['lead_time_calculation'] ?? null;
+
+                        if ($leadTimeCalculation !== null) {
+                            $lineData[CustomerOrderCreateCOLineV6::LEAD_TIME_CALCULATION] = $leadTimeCalculation;
                         }
                     }
 

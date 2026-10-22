@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ls\Omni\Test\Unit\Model\VendorSourcing;
 
 use Ls\Core\Model\LSR;
+use Ls\Omni\Helper\ItemHelper;
 use Ls\Omni\Helper\StockHelper;
 use Ls\Omni\Helper\VendorSourcingHelper;
 use Ls\Omni\Model\VendorSourcing\CheckoutFallbackResult;
@@ -64,9 +65,29 @@ class CheckoutFallbackServiceTest extends TestCase
             ->onlyMethods(['getOptions'])
             ->getMock();
         $this->stockHelper = $this->createMock(StockHelper::class);
+        // ItemHelper is a public typed property on AbstractHelperOmni (StockHelper's parent);
+        // since StockHelper's constructor is disabled by createMock(), it starts uninitialized -
+        // assign a mock directly so buildRowForEligibleItem()'s
+        // $this->stockHelper->itemHelper->getComparisonValues() call has something to hit.
+        $this->stockHelper->itemHelper = $this->createMock(ItemHelper::class);
         $this->zeroStockResolver = $this->createMock(ZeroStockEverywhereResolver::class);
         $this->lsr = $this->createMock(LSR::class);
         $this->logger = $this->createMock(LoggerInterface::class);
+    }
+
+    /**
+     * Stub ItemHelper::getComparisonValues() (the local DB/repository lookup
+     * buildRowForEligibleItem() uses instead of an inventory API call) for a given SKU.
+     *
+     * @param string $sku
+     * @param string $itemId
+     * @param string $variantId
+     */
+    private function stubComparisonValues(string $sku, string $itemId, string $variantId): void
+    {
+        $this->stockHelper->itemHelper->method('getComparisonValues')
+            ->with($sku)
+            ->willReturn([$itemId, $variantId, null, null, null, null]);
     }
 
     private function createService(): CheckoutFallbackService
@@ -306,9 +327,9 @@ class CheckoutFallbackServiceTest extends TestCase
     /**
      * Critical, explicitly-confirmed regression test (solution plan §15/R8): a cart with no
      * vendor-sourcing-flagged item must return immediately, with ZERO calls to the sourcing
-     * lookup (getOptions()) or the all-store stock check (getGivenItemsStockIgnoringManageStock()) -
-     * not merely an empty result, but genuinely zero added latency/calls for merchants not
-     * touching vendor sourcing at all (NFR2).
+     * lookup (getOptions()) or the local item identity lookup
+     * (ItemHelper::getComparisonValues()) - not merely an empty result, but genuinely zero added
+     * latency/calls for merchants not touching vendor sourcing at all (NFR2).
      */
     public function testEvaluateDeliveryWithNoFlaggedItemReturnsImmediatelyWithZeroCalls(): void
     {
@@ -316,7 +337,7 @@ class CheckoutFallbackServiceTest extends TestCase
         $item = $this->createQuoteItem(1, 'SKU-ORDINARY', 'Ordinary Product', $product);
 
         $this->vendorSourcingHelper->expects($this->never())->method('getOptions');
-        $this->stockHelper->expects($this->never())->method('getGivenItemsStockIgnoringManageStock');
+        $this->stockHelper->itemHelper->expects($this->never())->method('getComparisonValues');
 
         $result = $this->createService()->evaluateDelivery([$item]);
 
@@ -330,11 +351,9 @@ class CheckoutFallbackServiceTest extends TestCase
         $product = $this->createProduct('SKU-FLAGGED', true);
         $item = $this->createQuoteItem(1, 'SKU-FLAGGED', 'Flagged Product', $product);
 
-        $this->stockHelper->expects($this->once())
-            ->method('getGivenItemsStockIgnoringManageStock')
-            ->with([$item])
-            ->willReturn([null, [['item_id' => 'ITEM1', 'variant_id' => 'VAR1', 'qty' => 1.0, 'quote_item' => $item]]]);
-        $this->zeroStockResolver->method('resolve')->willReturn(['ITEM1|VAR1' => false]);
+        // manage_stock=0 is itself the eligibility signal now - no inventory API call at all,
+        // just the local item_id/variant_id lookup.
+        $this->stubComparisonValues('SKU-FLAGGED', 'ITEM1', 'VAR1');
 
         $shipOptions = [
             [
@@ -372,9 +391,7 @@ class CheckoutFallbackServiceTest extends TestCase
         $product = $this->createProduct('SKU-FLAGGED', true);
         $item = $this->createQuoteItem(1, 'SKU-FLAGGED', 'Flagged Product', $product);
 
-        $this->stockHelper->method('getGivenItemsStockIgnoringManageStock')
-            ->willReturn([null, [['item_id' => 'ITEM1', 'variant_id' => 'VAR1', 'qty' => 1.0, 'quote_item' => $item]]]);
-        $this->zeroStockResolver->method('resolve')->willReturn(['ITEM1|VAR1' => false]);
+        $this->stubComparisonValues('SKU-FLAGGED', 'ITEM1', 'VAR1');
         $this->vendorSourcingHelper->method('getOptions')->with('SKU-FLAGGED', null)->willReturn([]);
 
         $result = $this->createService()->evaluateDelivery([$item]);
@@ -383,22 +400,42 @@ class CheckoutFallbackServiceTest extends TestCase
         $this->assertSame('SKU-FLAGGED', $result->getBlockedVerdicts()[0]->getSku());
     }
 
-    public function testEvaluateDeliveryFlaggedItemWithStockSomewherePassesWithoutVerdict(): void
+    /**
+     * Edge-case regression test (ticket 89360 follow-up): buildRowForEligibleItem()'s local
+     * ItemHelper::getComparisonValues() lookup returning null (item not found in the local
+     * repository) must not crash evaluateDelivery() - item_id/variant_id simply resolve to null
+     * and the item still flows through to a verdict (sourced or blocked) via the sourcing lookup,
+     * same as any other eligible item.
+     */
+    public function testEvaluateDeliveryItemNotFoundInLocalRepositoryStillProducesVerdictWithNullIdentity(): void
     {
         $product = $this->createProduct('SKU-FLAGGED', true);
         $item = $this->createQuoteItem(1, 'SKU-FLAGGED', 'Flagged Product', $product);
 
-        $this->stockHelper->method('getGivenItemsStockIgnoringManageStock')
-            ->willReturn([null, [['item_id' => 'ITEM1', 'variant_id' => 'VAR1', 'qty' => 1.0, 'quote_item' => $item]]]);
-        $this->zeroStockResolver->method('resolve')->willReturn(['ITEM1|VAR1' => true]);
+        $this->stockHelper->itemHelper->method('getComparisonValues')
+            ->with('SKU-FLAGGED')
+            ->willReturn(null);
 
-        // Stock exists somewhere - delivery can fulfil normally, no sourcing lookup needed at all.
-        $this->vendorSourcingHelper->expects($this->never())->method('getOptions');
+        $shipOptions = [
+            [
+                'type' => VendorSourcingHelper::TYPE_SHIP,
+                'store_code' => null,
+                'store_name' => null,
+                'days' => 2,
+                'date' => '2026-10-21',
+                'priority' => 1,
+            ],
+        ];
+        $this->vendorSourcingHelper->method('getOptions')->with('SKU-FLAGGED', null)->willReturn($shipOptions);
 
         $result = $this->createService()->evaluateDelivery([$item]);
 
         $this->assertFalse($result->hasBlockedItems());
-        $this->assertSame([], $result->getVerdicts());
+        $verdicts = $result->getVerdicts();
+        $this->assertCount(1, $verdicts);
+        $this->assertSame(ItemSourcingVerdict::STATUS_VENDOR_SOURCED, $verdicts[0]->getStatus());
+        $this->assertNull($verdicts[0]->getItemId());
+        $this->assertNull($verdicts[0]->getVariantId());
     }
 
     /**
@@ -415,11 +452,13 @@ class CheckoutFallbackServiceTest extends TestCase
         $ordinaryProduct = $this->createProduct('SKU-ORDINARY', false);
         $ordinaryItem = $this->createQuoteItem(2, 'SKU-ORDINARY', 'Ordinary Zero Stock Product', $ordinaryProduct);
 
-        $this->stockHelper->expects($this->once())
-            ->method('getGivenItemsStockIgnoringManageStock')
-            ->with($this->callback(static fn (array $items): bool => $items === [$flaggedItem]))
-            ->willReturn([null, [['item_id' => 'ITEM1', 'variant_id' => 'VAR1', 'qty' => 1.0, 'quote_item' => $flaggedItem]]]);
-        $this->zeroStockResolver->method('resolve')->willReturn(['ITEM1|VAR1' => false]);
+        // The ordinary item is filtered out by getVendorSourcingEligibleItems() before
+        // buildRowForEligibleItem() ever runs, so the local lookup is only ever hit for the
+        // flagged item's SKU.
+        $this->stockHelper->itemHelper->expects($this->once())
+            ->method('getComparisonValues')
+            ->with('SKU-FLAGGED')
+            ->willReturn(['ITEM1', 'VAR1', null, null, null, null]);
 
         $shipOptions = [
             [
@@ -442,33 +481,6 @@ class CheckoutFallbackServiceTest extends TestCase
         foreach ($verdicts as $verdict) {
             $this->assertNotSame('SKU-ORDINARY', $verdict->getSku());
         }
-    }
-
-    /**
-     * Critical fail-closed regression test: when the all-store stock lookup throws inside
-     * evaluateDelivery(), the eligible item must get a BLOCKED verdict (not silently treated as
-     * sourced/fulfillable, and not an uncaught exception propagating out of this method).
-     */
-    public function testEvaluateDeliveryStockLookupThrowsReturnsBlockedVerdictAndLogsError(): void
-    {
-        $product = $this->createProduct('SKU-FLAGGED', true);
-        $item = $this->createQuoteItem(1, 'SKU-FLAGGED', 'Flagged Product', $product);
-
-        $this->stockHelper->expects($this->once())
-            ->method('getGivenItemsStockIgnoringManageStock')
-            ->with([$item])
-            ->willThrowException(new \Exception('SOAP call failed'));
-
-        $this->vendorSourcingHelper->expects($this->never())->method('getOptions');
-        $this->logger->expects($this->once())->method('error');
-
-        $result = $this->createService()->evaluateDelivery([$item]);
-
-        $this->assertTrue($result->hasBlockedItems());
-        $blocked = $result->getBlockedVerdicts();
-        $this->assertCount(1, $blocked);
-        $this->assertSame('SKU-FLAGGED', $blocked[0]->getSku());
-        $this->assertSame(ItemSourcingVerdict::STATUS_BLOCKED, $blocked[0]->getStatus());
     }
 
     // -------------------------------------------------------- resolveDisambiguation() ----
@@ -538,12 +550,9 @@ class CheckoutFallbackServiceTest extends TestCase
         // $stockCollection is empty - the gated manage_stock=0 exclusion this bug fix addresses.
         $stockCollection = [];
 
-        $this->stockHelper->expects($this->once())
-            ->method('getGivenItemsStockIgnoringManageStock')
-            ->with([$excludedItem])
-            ->willReturn([null, [['item_id' => 'ITEM2', 'variant_id' => 'VAR2', 'qty' => 1.0, 'quote_item' => $excludedItem]]]);
-
-        $this->zeroStockResolver->method('resolve')->willReturn(['ITEM2|VAR2' => false]);
+        // manage_stock=0 is itself the eligibility signal now - no inventory API call at all,
+        // just the local item_id/variant_id lookup via ItemHelper::getComparisonValues().
+        $this->stubComparisonValues('SKU-EXCLUDED', 'ITEM2', 'VAR2');
 
         $collectOptions = [
             [
@@ -582,9 +591,7 @@ class CheckoutFallbackServiceTest extends TestCase
         $product = $this->createProduct('SKU-EXCLUDED', true);
         $excludedItem = $this->createQuoteItem(2, 'SKU-EXCLUDED', 'Excluded Product', $product);
 
-        $this->stockHelper->method('getGivenItemsStockIgnoringManageStock')
-            ->willReturn([null, [['item_id' => 'ITEM2', 'variant_id' => 'VAR2', 'qty' => 1.0, 'quote_item' => $excludedItem]]]);
-        $this->zeroStockResolver->method('resolve')->willReturn(['ITEM2|VAR2' => false]);
+        $this->stubComparisonValues('SKU-EXCLUDED', 'ITEM2', 'VAR2');
         $this->vendorSourcingHelper->method('getOptions')->willReturn([]);
 
         $result = $this->createService()->evaluate([], VendorSourcingHelper::TYPE_COLLECT, [$excludedItem]);
@@ -594,31 +601,11 @@ class CheckoutFallbackServiceTest extends TestCase
     }
 
     /**
-     * An eligible item missing from $stockCollection that actually has stock somewhere must pass
-     * through without a verdict at all - same "absence = fine" convention as everywhere else.
-     */
-    public function testEvaluateQuoteItemsParamPassesEligibleItemWithStockSomewhereWithoutVerdict(): void
-    {
-        $this->enableVendorSourcing();
-
-        $product = $this->createProduct('SKU-EXCLUDED', true);
-        $excludedItem = $this->createQuoteItem(2, 'SKU-EXCLUDED', 'Excluded Product', $product);
-
-        $this->stockHelper->method('getGivenItemsStockIgnoringManageStock')
-            ->willReturn([null, [['item_id' => 'ITEM2', 'variant_id' => 'VAR2', 'qty' => 1.0, 'quote_item' => $excludedItem]]]);
-        $this->zeroStockResolver->method('resolve')->willReturn(['ITEM2|VAR2' => true]);
-
-        $this->vendorSourcingHelper->expects($this->never())->method('getOptions');
-
-        $result = $this->createService()->evaluate([], VendorSourcingHelper::TYPE_COLLECT, [$excludedItem]);
-
-        $this->assertFalse($result->hasBlockedItems());
-        $this->assertSame([], $result->getVerdicts());
-    }
-
-    /**
      * Dedup regression test: an item already represented in $stockCollection must NOT be
      * double-processed by the $quoteItems path, even though it is also vendor-sourcing-eligible.
+     * The local item_id/variant_id lookup still runs for every eligible item (that's how the dedup
+     * key is derived in the first place) but the sourcing lookup (getOptions()) and the
+     * $stockCollection-loop's own disambiguation (resolve()) must not run again for it.
      */
     public function testEvaluateQuoteItemsParamDoesNotDoubleProcessItemAlreadyInStockCollection(): void
     {
@@ -628,14 +615,14 @@ class CheckoutFallbackServiceTest extends TestCase
         $item = $this->createQuoteItem(1, 'SKU-1', 'Zero Stock Product', $product);
         $stockCollection = [$this->stockRow('ITEM1', 'VAR1', true, $item)]; // in stock, no verdict
 
-        $this->stockHelper->expects($this->once())
-            ->method('getGivenItemsStockIgnoringManageStock')
-            ->with([$item])
-            ->willReturn([null, [['item_id' => 'ITEM1', 'variant_id' => 'VAR1', 'qty' => 1.0, 'quote_item' => $item]]]);
+        // Resolves to the same item_id|variant_id key already present in $stockCollection.
+        $this->stockHelper->itemHelper->expects($this->once())
+            ->method('getComparisonValues')
+            ->with('SKU-1')
+            ->willReturn(['ITEM1', 'VAR1', null, null, null, null]);
 
-        // Every row returned by the ungated call is already present in $stockCollection (same
-        // item_id|variant_id) - resolve() must never be called since there is nothing left to
-        // disambiguate once the dedup filter runs.
+        // Nothing is pending for the main $stockCollection loop (the row is in stock) so resolve()
+        // must never be called, and the dedup filter means the sourcing lookup never runs either.
         $this->zeroStockResolver->expects($this->never())->method('resolve');
         $this->vendorSourcingHelper->expects($this->never())->method('getOptions');
 
@@ -647,7 +634,7 @@ class CheckoutFallbackServiceTest extends TestCase
 
     /**
      * No-op regression: when $quoteItems contains no vendor-sourcing-eligible item at all, the
-     * ungated stock check must never be called.
+     * local item_id/variant_id lookup must never be called.
      */
     public function testEvaluateQuoteItemsParamDoesNothingWhenNoEligibleItems(): void
     {
@@ -656,7 +643,7 @@ class CheckoutFallbackServiceTest extends TestCase
         $product = $this->createProduct('SKU-ORDINARY', false);
         $ordinaryItem = $this->createQuoteItem(3, 'SKU-ORDINARY', 'Ordinary Product', $product);
 
-        $this->stockHelper->expects($this->never())->method('getGivenItemsStockIgnoringManageStock');
+        $this->stockHelper->itemHelper->expects($this->never())->method('getComparisonValues');
 
         $result = $this->createService()->evaluate([], VendorSourcingHelper::TYPE_COLLECT, [$ordinaryItem]);
 
@@ -665,31 +652,32 @@ class CheckoutFallbackServiceTest extends TestCase
     }
 
     /**
-     * Fail-safe regression test: when the ungated stock lookup throws, this path must not crash
-     * checkout and must not fabricate a verdict - it logs and leaves the result exactly as the
-     * main $stockCollection loop produced it (no new blocking behaviour introduced by a lookup
-     * failure in this best-effort supplementary check).
+     * Edge-case regression test (ticket 89360 follow-up): buildRowForEligibleItem()'s local
+     * ItemHelper::getComparisonValues() lookup returning null (item not found in the local
+     * repository) must not crash evaluateItemsExcludedFromStockCollection() - item_id/variant_id
+     * simply resolve to null and the item still flows through to a verdict via the sourcing
+     * lookup, same as any other eligible item.
      */
-    public function testEvaluateQuoteItemsParamFailsClosedOnStockLookupFailure(): void
+    public function testEvaluateQuoteItemsParamItemNotFoundInLocalRepositoryStillProducesVerdictWithNullIdentity(): void
     {
         $this->enableVendorSourcing();
 
         $product = $this->createProduct('SKU-EXCLUDED', true);
         $excludedItem = $this->createQuoteItem(2, 'SKU-EXCLUDED', 'Excluded Product', $product);
 
-        $this->stockHelper->expects($this->once())
-            ->method('getGivenItemsStockIgnoringManageStock')
-            ->willThrowException(new \Exception('SOAP call failed'));
-
-        $this->logger->expects($this->once())->method('error');
+        $this->stockHelper->itemHelper->method('getComparisonValues')
+            ->with('SKU-EXCLUDED')
+            ->willReturn(null);
+        $this->vendorSourcingHelper->method('getOptions')->willReturn([]);
 
         $result = $this->createService()->evaluate([], VendorSourcingHelper::TYPE_COLLECT, [$excludedItem]);
 
-        // Fail closed, consistent with evaluateDelivery()'s own catch block: a lookup failure must
-        // not let this item silently proceed neither blocked nor flagged VendorSourcing=true.
         $this->assertTrue($result->hasBlockedItems());
-        $this->assertCount(1, $result->getVerdicts());
-        $this->assertSame('SKU-EXCLUDED', $result->getVerdicts()[0]->getSku());
+        $blocked = $result->getBlockedVerdicts();
+        $this->assertCount(1, $blocked);
+        $this->assertSame('SKU-EXCLUDED', $blocked[0]->getSku());
+        $this->assertNull($blocked[0]->getItemId());
+        $this->assertNull($blocked[0]->getVariantId());
     }
 
     // ---------------------------------------------------------- buildVendorSourcedLinesMap() ----
@@ -715,7 +703,11 @@ class CheckoutFallbackServiceTest extends TestCase
         $map = $this->createService()->buildVendorSourcedLinesMap([$item]);
 
         $this->assertSame(
-            ['ITEM1|VAR1' => ['vendor_sourcing' => true, 'sourcing_location' => 'S1']],
+            ['ITEM1|VAR1' => [
+                'vendor_sourcing' => true,
+                'sourcing_location' => 'S1',
+                'lead_time_calculation' => null,
+            ]],
             $map
         );
     }
@@ -774,7 +766,11 @@ class CheckoutFallbackServiceTest extends TestCase
         $map = $this->createService()->buildVendorSourcedLinesMap([$bundleParent]);
 
         $this->assertSame(
-            ['ITEM2|VAR2' => ['vendor_sourcing' => true, 'sourcing_location' => null]],
+            ['ITEM2|VAR2' => [
+                'vendor_sourcing' => true,
+                'sourcing_location' => null,
+                'lead_time_calculation' => null,
+            ]],
             $map
         );
     }

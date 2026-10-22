@@ -211,8 +211,8 @@
             <argument name="vendorSourcingHelper" xsi:type="object">
                 Ls\Omni\Helper\VendorSourcingHelper\Proxy
             </argument>
-            <argument name="zeroStockResolver" xsi:type="object">
-                Ls\Omni\Model\VendorSourcing\ZeroStockEverywhereResolver
+            <argument name="itemHelper" xsi:type="object">
+                Ls\Omni\Helper\ItemHelper\Proxy
             </argument>
         </arguments>
     </type>

@@ -133,52 +133,21 @@ class CheckoutFallbackService
             return;
         }
 
-        try {
-            [$allStoreResponse, $eligibleStockCollection] = $this->stockHelper->getGivenItemsStockIgnoringManageStock(
-                array_column($eligibleItems, 'item')
-            );
-        } catch (\Throwable $e) {
-            $this->logger->error(
-                'Vendor sourcing checkout fallback manage-stock-bypass lookup failed: ' . $e->getMessage()
-            );
-
-            // Fail closed, consistent with evaluateDelivery()'s catch block: a lookup failure must
-            // not let an item silently proceed neither blocked nor flagged VendorSourcing=true,
-            // which could otherwise reach LS Central as an unfulfillable ordinary line.
-            foreach ($eligibleItems as $eligible) {
-                $row = ['quote_item' => $eligible['item']];
-                $verdict = $this->genericBlockedVerdict($row, __(
-                    'This item could not be verified as available and cannot be sourced from a '
-                    . 'vendor at this time. Please try again.'
-                ));
-                $this->storeOnQuoteItem($row, $verdict);
-                $result->addVerdict($verdict);
-            }
-
-            return;
-        }
-
         $presentKeys = [];
         foreach ($stockCollection as $row) {
             $presentKeys[$row['item_id'] . '|' . $row['variant_id']] = true;
         }
 
-        $missingRows = array_values(array_filter(
-            $eligibleStockCollection,
-            static fn (array $row): bool => !isset($presentKeys[$row['item_id'] . '|' . $row['variant_id']])
-        ));
-
-        if (empty($missingRows)) {
-            return;
-        }
-
-        $stockMap = $this->zeroStockResolver->resolve($allStoreResponse, $missingRows);
-
-        foreach ($missingRows as $row) {
+        // manage_stock=0 (ticket 89358) is itself the eligibility signal for these items - no
+        // GetInventoryMultipleV2 call is made for them at all, unlike rows already present in
+        // $stockCollection (which came from the existing per-store managed-stock check). Go
+        // straight from isVendorSourced()=true to the sourcing lookup.
+        foreach ($eligibleItems as $eligible) {
+            $row = $this->buildRowForEligibleItem($eligible['item']);
             $key = $row['item_id'] . '|' . $row['variant_id'];
 
-            if ($stockMap[$key] ?? false) {
-                continue; // stock exists somewhere - no verdict needed
+            if (isset($presentKeys[$key])) {
+                continue; // already processed via the main per-store loop above
             }
 
             $options = $this->fetchOptionsForRow($row);
@@ -211,52 +180,12 @@ class CheckoutFallbackService
             return $result; // no-op - zero API calls, ordinary items untouched
         }
 
-        try {
-            [$allStoreResponse, $stockCollection] = $this->stockHelper->getGivenItemsStockIgnoringManageStock(
-                array_column($eligibleItems, 'item')
-            );
-        } catch (\Throwable $e) {
-            $this->logger->error(
-                'Vendor sourcing checkout fallback delivery stock lookup failed: ' . $e->getMessage()
-            );
+        // manage_stock=0 (ticket 89358) is itself the eligibility signal for these items - no
+        // GetInventoryMultipleV2 call is made at all, for classic or GraphQL checkout. Go straight
+        // from isVendorSourced()=true to the sourcing lookup.
+        foreach ($eligibleItems as $eligible) {
+            $row = $this->buildRowForEligibleItem($eligible['item']);
 
-            // Fail closed: the stock check could not be performed, so every eligible row in this
-            // batch is blocked rather than silently treated as sourced/fulfillable.
-            foreach ($eligibleItems as $eligible) {
-                $row = ['quote_item' => $eligible['item']];
-                $verdict = $this->genericBlockedVerdict($row, __(
-                    'This item could not be verified as available and cannot be sourced from a '
-                    . 'vendor for delivery at this time. Please try again.'
-                ));
-                $this->storeOnQuoteItem($row, $verdict);
-                $result->addVerdict($verdict);
-            }
-
-            return $result;
-        }
-
-        $stockMap = $this->zeroStockResolver->resolve($allStoreResponse, $stockCollection);
-
-        foreach ($stockCollection as $row) {
-            $key = $row['item_id'] . '|' . $row['variant_id'];
-
-            if ($stockMap[$key] ?? false) {
-                continue; // stock exists somewhere - delivery can fulfil normally, no verdict
-            }
-
-            $item = $row['quote_item'] ?? null;
-
-            if (!$item) {
-                $verdict = $this->genericBlockedVerdict($row, __(
-                    'This item is not available and cannot be sourced from a vendor for delivery.'
-                ));
-                $this->storeOnQuoteItem($row, $verdict);
-                $result->addVerdict($verdict);
-                continue;
-            }
-
-            // $item is guaranteed vendor-sourcing-eligible here - it only reached
-            // $stockCollection because it came from $eligibleItems above.
             $options = $this->fetchOptionsForRow($row);
             $shipOptions = $this->filterByType($options, VendorSourcingHelper::TYPE_SHIP);
 
@@ -269,6 +198,29 @@ class CheckoutFallbackService
         }
 
         return $result;
+    }
+
+    /**
+     * Build a stock-collection-row-shaped array for an item we deliberately do NOT perform an
+     * inventory check for (manage_stock=0 items need no GetInventoryMultipleV2 call at all -
+     * ticket 89360 follow-up fix). item_id/variant_id come from a local repository lookup
+     * (ItemHelper::getComparisonValues() - a DB query, not a Central API call), matching the
+     * same identity space an inventory-checked row would have carried.
+     *
+     * @param Item $item
+     * @return array
+     */
+    private function buildRowForEligibleItem(Item $item): array
+    {
+        $comparisonValues = $this->stockHelper->itemHelper->getComparisonValues($item->getSku());
+        [$itemId, $variantId] = $comparisonValues ?: [null, null];
+
+        return [
+            'item_id' => $itemId,
+            'variant_id' => $variantId,
+            'name' => $item->getName(),
+            'quote_item' => $item,
+        ];
     }
 
     /**
@@ -359,6 +311,7 @@ class CheckoutFallbackService
                 $map[$key] = [
                     'vendor_sourcing' => true,
                     'sourcing_location' => $verdict->getSuggestedStore()['store_code'] ?? null,
+                    'lead_time_calculation' => $verdict->getSuggestedStore()['lead_time_calculation'] ?? null,
                 ];
             }
         }
@@ -575,8 +528,10 @@ class CheckoutFallbackService
     }
 
     /**
-     * Vendor-sourced verdict - carries the relevant-type options and, for delivery, the
-     * highest-priority ship-type row as the suggested store (FR9).
+     * Vendor-sourced verdict - carries the relevant-type options and the highest-priority matched
+     * row (both fulfillment types now, not just delivery/ship - also used to carry StoreNo
+     * consistency and LeadTimeCalculation through to the order line, not just FR9's suggested
+     * store for delivery).
      *
      * @param array $row
      * @param array $typeOptions
@@ -587,9 +542,7 @@ class CheckoutFallbackService
     {
         [$quoteItemId, $sku, , $itemId, $variantId] = $this->rowIdentity($row);
 
-        $suggestedStore = $requiredType === VendorSourcingHelper::TYPE_SHIP
-            ? ($typeOptions[0] ?? null)
-            : null;
+        $resolvedOption = $typeOptions[0] ?? null;
 
         return new ItemSourcingVerdict(
             $quoteItemId,
@@ -597,7 +550,7 @@ class CheckoutFallbackService
             ItemSourcingVerdict::STATUS_VENDOR_SOURCED,
             $typeOptions,
             null,
-            $suggestedStore,
+            $resolvedOption,
             $itemId,
             $variantId
         );
