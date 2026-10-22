@@ -557,7 +557,7 @@ class OrderHelper extends AbstractHelperOmni
                             : $orderLine->getNetamount() + $orderLine->getTaxamount(),
                         CustomerOrderCreateCOLineV6::CLICK_AND_COLLECT => $isClickCollect,
                         CustomerOrderCreateCOLineV6::STORE_NO => $isClickCollect ? $order->getPickupStore() : $storeId,
-                        CustomerOrderCreateCOLineV6::EXTERNAL_ID => $id,
+                        CustomerOrderCreateCOLineV6::EXTERNAL_ID => $id
                     ];
 
                     $vendorSourcingKey = $orderLine->getNumber() . '|' . $orderLine->getVariantcode();
@@ -588,6 +588,12 @@ class OrderHelper extends AbstractHelperOmni
                     }
 
                     $customerOrderCoLine->addData($lineData);
+
+                    if ($this->lsr->getValidateTaxParameters($order)) {
+                        $customerOrderCoLine->addData([
+                            CustomerOrderCreateCOLineV6::VALIDATE_TAX_PARAMETER => 1
+                        ]);
+                    }
 
                     $customerOrderCoLines[] = $customerOrderCoLine;
                 }

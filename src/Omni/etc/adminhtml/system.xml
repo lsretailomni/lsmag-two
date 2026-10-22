@@ -529,6 +529,11 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Edit LS Central Order From Admin Sales->Orders Section</comment>
                 </field>
+                <field id="validate_tax_parameter" translate="label" type="select" sortOrder="17" showInWebsite="1" showInDefault="1" showInStore="1">
+                    <label>Validate Tax Parameter</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Set Validate Tax Parameter in Order Request to LS Central</comment>
+                </field>
             </group>
             <group id="ls_delivery_pickup_date_time"
                    translate="label"

@@ -82,6 +82,16 @@ class GeneralViewModel implements ArgumentInterface
     }
 
     /**
+     * Get configured OneSignal app id
+     *
+     * @return mixed
+     */
+    public function getAppId()
+    {
+        return $this->lsr->getAppId($this->lsr->getCurrentStoreId());
+    }
+
+    /**
      * Check if commerce is responding
      *
      * @return bool|null
