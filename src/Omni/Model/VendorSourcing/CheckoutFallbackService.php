@@ -52,10 +52,20 @@ class CheckoutFallbackService
      *                           empty by default so existing callers/tests that don't have a
      *                           quote handy (e.g. the GraphQL call path, which already omits the
      *                           $quote argument today) are unaffected.
+     * @param string|null $selectedStore the customer's actual selected/pickup store (bug fix):
+     *                                   Central can return several valid collect-type stores
+     *                                   sorted by its own priority ranking, which is NOT
+     *                                   necessarily the store the customer picked - needed so
+     *                                   sourcedVerdict() can match the correct option instead of
+     *                                   defaulting to Central's top-ranked one.
      * @return CheckoutFallbackResult
      */
-    public function evaluate(array $stockCollection, string $requiredType, array $quoteItems = []): CheckoutFallbackResult
-    {
+    public function evaluate(
+        array $stockCollection,
+        string $requiredType,
+        array $quoteItems = [],
+        ?string $selectedStore = null
+    ): CheckoutFallbackResult {
         $result = new CheckoutFallbackResult();
 
         $vendorSourcingEnabled = (bool)$this->lsr->getStoreConfig(
@@ -95,11 +105,17 @@ class CheckoutFallbackService
         }
 
         if (!empty($pendingDisambiguation)) {
-            $this->resolveDisambiguation($pendingDisambiguation, $result);
+            $this->resolveDisambiguation($pendingDisambiguation, $result, $selectedStore);
         }
 
         if ($vendorSourcingEnabled && !empty($quoteItems)) {
-            $this->evaluateItemsExcludedFromStockCollection($quoteItems, $stockCollection, $requiredType, $result);
+            $this->evaluateItemsExcludedFromStockCollection(
+                $quoteItems,
+                $stockCollection,
+                $requiredType,
+                $result,
+                $selectedStore
+            );
         }
 
         return $result;
@@ -120,12 +136,14 @@ class CheckoutFallbackService
      * @param array $stockCollection
      * @param string $requiredType
      * @param CheckoutFallbackResult $result
+     * @param string|null $selectedStore see evaluate()'s docblock
      */
     private function evaluateItemsExcludedFromStockCollection(
         array $quoteItems,
         array $stockCollection,
         string $requiredType,
-        CheckoutFallbackResult $result
+        CheckoutFallbackResult $result,
+        ?string $selectedStore = null
     ): void {
         $eligibleItems = $this->getVendorSourcingEligibleItems($quoteItems);
 
@@ -155,7 +173,7 @@ class CheckoutFallbackService
 
             $verdict = empty($typeOptions)
                 ? $this->blockedNotSourceableVerdict($row, $requiredType)
-                : $this->sourcedVerdict($row, $typeOptions, $requiredType);
+                : $this->sourcedVerdict($row, $typeOptions, $requiredType, $selectedStore);
 
             $this->storeOnQuoteItem($row, $verdict);
             $result->addVerdict($verdict);
@@ -229,9 +247,13 @@ class CheckoutFallbackService
      *
      * @param array $pendingDisambiguation array of [row, typeOptions] pairs
      * @param CheckoutFallbackResult $result
+     * @param string|null $selectedStore see evaluate()'s docblock
      */
-    private function resolveDisambiguation(array $pendingDisambiguation, CheckoutFallbackResult $result): void
-    {
+    private function resolveDisambiguation(
+        array $pendingDisambiguation,
+        CheckoutFallbackResult $result,
+        ?string $selectedStore = null
+    ): void {
         $items = [];
 
         foreach ($pendingDisambiguation as [$row, $typeOptions]) {
@@ -263,7 +285,7 @@ class CheckoutFallbackService
 
             $verdict = ($stockMap[$key] ?? false)
                 ? $this->wrongStoreBlockedVerdict($row)
-                : $this->sourcedVerdict($row, $typeOptions, VendorSourcingHelper::TYPE_COLLECT);
+                : $this->sourcedVerdict($row, $typeOptions, VendorSourcingHelper::TYPE_COLLECT, $selectedStore);
 
             $this->storeOnQuoteItem($row, $verdict);
             $result->addVerdict($verdict);
@@ -538,11 +560,34 @@ class CheckoutFallbackService
      * @param string $requiredType
      * @return ItemSourcingVerdict
      */
-    private function sourcedVerdict(array $row, array $typeOptions, string $requiredType): ItemSourcingVerdict
-    {
+    private function sourcedVerdict(
+        array $row,
+        array $typeOptions,
+        string $requiredType,
+        ?string $selectedStore = null
+    ): ItemSourcingVerdict {
         [$quoteItemId, $sku, , $itemId, $variantId] = $this->rowIdentity($row);
 
-        $resolvedOption = $typeOptions[0] ?? null;
+        // For collect-type (C&C), Central can return several valid pickup stores sorted by its
+        // own priority/lead-time ranking - that ranking is NOT the customer's actual choice. FR8's
+        // store intersection already guarantees the customer's selected pickup store is among
+        // these options, so match on it explicitly rather than blindly taking the top-ranked one
+        // (which was a real bug: SourcingLocation/LeadTimeCalculation ending up for whichever
+        // store Central ranked first, not the one the customer picked). Ship-type (delivery) has
+        // no customer selection to match against, so the highest-priority row is genuinely the
+        // right choice there.
+        $resolvedOption = null;
+
+        if ($requiredType === VendorSourcingHelper::TYPE_COLLECT && $selectedStore !== null) {
+            foreach ($typeOptions as $option) {
+                if ($option['store_code'] === $selectedStore) {
+                    $resolvedOption = $option;
+                    break;
+                }
+            }
+        }
+
+        $resolvedOption ??= $typeOptions[0] ?? null;
 
         return new ItemSourcingVerdict(
             $quoteItemId,

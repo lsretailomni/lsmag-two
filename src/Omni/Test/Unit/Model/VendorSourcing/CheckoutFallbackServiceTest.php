@@ -283,6 +283,59 @@ class CheckoutFallbackServiceTest extends TestCase
         $this->assertSame('VAR1', $verdicts[0]->getVariantId(), 'Sourced verdict must carry the row LS Central variant_id (ticket 89364)');
     }
 
+    /**
+     * Regression test for a real production bug: Central's COSourcingLocationListV4 response can
+     * return MULTIPLE valid collect-type stores, sorted by Central's own priority/lead-time
+     * ranking - that ranking is NOT the customer's actual pickup-store selection. The verdict's
+     * suggested store (and therefore order-line SourcingLocation/LeadTimeCalculation) must match
+     * the store the customer actually selected, not whichever one Central ranked first.
+     */
+    public function testEvaluateDisambiguationMatchesSelectedStoreNotCentralsTopRankedOption(): void
+    {
+        $this->enableVendorSourcing();
+
+        $product = $this->createProduct('SKU-1', true);
+        $item = $this->createQuoteItem(1, 'SKU-1', 'Zero Stock Product', $product);
+        $stockCollection = [$this->stockRow('ITEM1', 'VAR1', false, $item)];
+
+        // S0004 is Central's top-ranked (priority 1) option; S0001 is what the customer actually
+        // selected at checkout and is only priority 2.
+        $collectOptions = [
+            [
+                'type' => VendorSourcingHelper::TYPE_COLLECT,
+                'store_code' => 'S0004',
+                'store_name' => 'Store 4',
+                'days' => 1,
+                'date' => '2026-10-21',
+                'priority' => 1,
+                'lead_time_calculation' => '1D',
+            ],
+            [
+                'type' => VendorSourcingHelper::TYPE_COLLECT,
+                'store_code' => 'S0001',
+                'store_name' => 'Store 1',
+                'days' => 2,
+                'date' => '2026-10-22',
+                'priority' => 2,
+                'lead_time_calculation' => '2D',
+            ],
+        ];
+        $this->vendorSourcingHelper->method('getOptions')->with('SKU-1', null)->willReturn($collectOptions);
+
+        $this->stockHelper->method('getGivenItemsStockIgnoringManageStock')
+            ->willReturn([null, [['item_id' => 'ITEM1', 'variant_id' => 'VAR1', 'qty' => 1.0]]]);
+        $this->zeroStockResolver->method('resolve')->willReturn(['ITEM1|VAR1' => false]);
+
+        $result = $this->createService()->evaluate($stockCollection, VendorSourcingHelper::TYPE_COLLECT, [], 'S0001');
+
+        $verdicts = $result->getVerdicts();
+        $this->assertCount(1, $verdicts);
+        $this->assertSame(ItemSourcingVerdict::STATUS_VENDOR_SOURCED, $verdicts[0]->getStatus());
+        $suggestedStore = $verdicts[0]->getSuggestedStore();
+        $this->assertSame('S0001', $suggestedStore['store_code'], 'Must match the customer-selected store, not S0004 (Central\'s top-ranked option)');
+        $this->assertSame('2D', $suggestedStore['lead_time_calculation'], 'Lead time must be S0001\'s, not S0004\'s');
+    }
+
     public function testEvaluateDisambiguationFindsStockElsewhereBlocksWithWrongStoreMessage(): void
     {
         $this->enableVendorSourcing();

@@ -249,7 +249,8 @@ class DataAssignObserver implements ObserverInterface
                 $fallbackResult = $this->checkoutFallbackService->evaluate(
                     $stockCollection,
                     VendorSourcingHelper::TYPE_COLLECT,
-                    $quoteItems
+                    $quoteItems,
+                    (string)$storeId
                 );
 
                 if ($fallbackResult->hasBlockedItems()) {

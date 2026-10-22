@@ -725,7 +725,8 @@ class OrderHelper extends AbstractHelperOmni
             $this->checkoutFallbackService->evaluate(
                 $stockCollection,
                 VendorSourcingHelper::TYPE_COLLECT,
-                $quoteItems
+                $quoteItems,
+                (string)$quote->getPickupStore()
             );
         } else {
             $this->checkoutFallbackService->evaluateDelivery($quoteItems);
