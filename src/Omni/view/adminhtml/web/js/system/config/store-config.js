@@ -25,6 +25,10 @@ define([
         const api = {
             // Validates base URL input using Magento's validation library
             validateBaseUrl: function () {
+                // Base URL is only used (and visible) for SaaS; on-premise uses the web service URIs
+                if (centralTypeInput.val() !== '1') {
+                    return true;
+                }
                 baseUrlInput.validation();
                 return baseUrlInput.validation('isValid');
             },
@@ -146,6 +150,16 @@ define([
                 api.fetchHierarchy();
                 api.fetchStoreTenderTypes();
             }
+        });
+
+        // Enabling the module re-enables every field in the group, including those hidden by the
+        // central type dependency; re-run that dependency so they go back to disabled/ignored.
+        $('#ls_mag_ls_enable_enabled').on('change', function () {
+            setTimeout(function () {
+                if (centralTypeInput.length) {
+                    centralTypeInput[0].dispatchEvent(new Event('change', {bubbles: true}));
+                }
+            }, 0);
         });
 
         // When "Validate" button is clicked, fetch store data

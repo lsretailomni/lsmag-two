@@ -571,12 +571,14 @@ class Data extends AbstractHelperOmni
     public function omniPing($baseUrl = '', $connectionParams = [], $companyName = [])
     {
         $response = null;
+        $centralType = $connectionParams['centralType'] ??
+            $this->lsr->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $this->getScopeId());
         $testConnectionOperation = $this->createInstance(
             TestConnectionResponse::class,
             [
                 'baseUrl' => $baseUrl,
                 'connectionParams' => $connectionParams,
-                'companyName' => $companyName['company'] ?? ''
+                'companyName' => $centralType && !empty($companyName['company']) ? $companyName['company'] : ''
             ]
         );
 
@@ -599,12 +601,14 @@ class Data extends AbstractHelperOmni
     public function fetchWebStores($baseUrl = '', $connectionParams = [], $companyName = [])
     {
         $response = null;
+        $centralType = $connectionParams['centralType'] ??
+            $this->lsr->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $this->getScopeId());
         $webStoreOperation = $this->createInstance(
             Operation\GetStores_GetStores::class,
             [
                 'baseUrl' => $baseUrl,
                 'connectionParams' => $connectionParams,
-                'companyName' => $companyName['company'] ?? ''
+                'companyName' => $centralType && !empty($companyName['company']) ? $companyName['company'] : ''
             ]
         );
         $webStoreOperation->setOperationInput(
@@ -638,12 +642,14 @@ class Data extends AbstractHelperOmni
             LSR::SC_SERVICE_STORE,
             $this->getScopeId()
         ) : $storeId;
+        $centralType = $connectionParams['centralType'] ??
+            $this->lsr->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $this->getScopeId());
         $hierarchyOperation = $this->createInstance(
             HierarchyView::class,
             [
             'baseUrl' => $baseUrl,
             'connectionParams' => $connectionParams,
-            'companyName' => $companyName['company'] ?? ''
+            'companyName' => $centralType && !empty($companyName['company']) ? $companyName['company'] : ''
             ]
         );
         $hierarchyOperation->setOperationInput(
@@ -675,12 +681,14 @@ class Data extends AbstractHelperOmni
             LSR::SC_SERVICE_STORE,
             $this->getScopeId()
         ) : $storeId;
+        $centralType = $connectionParams['centralType'] ??
+            $this->lsr->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $this->getScopeId());
         $tenderTypeOperation = $this->createInstance(
             LSCTenderType::class,
             [
                 'baseUrl' => $baseUrl,
                 'connectionParams' => $connectionParams,
-                'companyName' => $companyName['company'] ?? ''
+                'companyName' => $centralType && !empty($companyName['company']) ? $companyName['company'] : ''
             ]
         );
         $tenderTypeOperation->setOperationInput(
@@ -1061,8 +1069,8 @@ class Data extends AbstractHelperOmni
         $storeTenderTypes     = [];
         $scopeId              = $this->lsr->getCurrentWebsiteId();
         $storeTenderTypeArray = $this->getTenderTypes($scopeId);
-        
-        if (!empty($storeTenderTypeArray)) {            
+
+        if (!empty($storeTenderTypeArray)) {
             foreach ($storeTenderTypeArray as $storeTenderType) {
                 $storeTenderTypes[$storeTenderType->getTenderTypeId()] = $storeTenderType->getName();
             }
