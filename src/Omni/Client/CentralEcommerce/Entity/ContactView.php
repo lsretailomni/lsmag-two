@@ -66,6 +66,7 @@ class ContactView extends AbstractModel
     public const CITY_SEARCH_INTERNAL = 'City Search Internal';
     public const POST_CODE_SEARCH_INTERNAL = 'Post Code Search Internal';
     public const DEFAULT_TOKEN = 'Default Token';
+    public const SYSTEMIDINT = 'SystemIdInt';
     public const SYSTEMID = '$systemId';
     public const SYSTEMCREATEDAT = 'SystemCreatedAt';
     public const SYSTEMCREATEDBY = 'SystemCreatedBy';
@@ -131,6 +132,7 @@ class ContactView extends AbstractModel
 	self::CITY_SEARCH_INTERNAL => 'city_search_internal',
 	self::POST_CODE_SEARCH_INTERNAL => 'post_code_search_internal',
 	self::DEFAULT_TOKEN => 'default_token',
+	self::SYSTEMIDINT => 'systemidint',
 	self::SYSTEMID => 'systemid',
 	self::SYSTEMCREATEDAT => 'systemcreatedat',
 	self::SYSTEMCREATEDBY => 'systemcreatedby',
@@ -695,6 +697,16 @@ class ContactView extends AbstractModel
     public function setDefaultToken(?int $value)
     {
         return $this->setData(self::DEFAULT_TOKEN, $value);
+    }
+
+    public function getSystemidint(): ?string
+    {
+        return $this->getData(self::SYSTEMIDINT);
+    }
+
+    public function setSystemidint(?string $value)
+    {
+        return $this->setData(self::SYSTEMIDINT, $value);
     }
 
     public function getSystemid(): ?string

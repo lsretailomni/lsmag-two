@@ -2501,6 +2501,7 @@ class ProductCreateTask
 
         $productV->setTypeId(Type::TYPE_SIMPLE);
         $productV->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
+        $this->inheritLeafAttributesFromParent($productV, $configProduct);
         $variantDimension1 = $value->getDescription2();
 
         $d1       = (($variantDimension1 != '' && $variantDimension1 != null) ? $variantDimension1 : '');
@@ -2527,6 +2528,9 @@ class ProductCreateTask
                 $this->webStoreId,
                 $this->getScopeId()
             );
+        }
+        if ($configProduct->getData(LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE)) {
+            $productV->setData(LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE, 1);
         }
         $productV = $this->replicationHelper->manageStock($productV, $item->getType());
         if ($value->getVariantId()) {
@@ -2566,6 +2570,23 @@ class ProductCreateTask
                 $unitOfMeasure
             );
             $this->logger->debug($e->getMessage());
+        }
+    }
+
+    /**
+     * Copy vendor sourcing and prepayment values from the configurable parent to a new child product
+     *
+     * @param mixed $child
+     * @param mixed $parent
+     * @return void
+     */
+    public function inheritLeafAttributesFromParent($child, $parent)
+    {
+        foreach ([LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE, LSR::LS_PREPAYMENT_ATTRIBUTE_CODE] as $attributeCode) {
+            $value = $parent->getData($attributeCode);
+            if ($value !== null) {
+                $child->setData($attributeCode, $value);
+            }
         }
     }
 
@@ -2695,6 +2716,7 @@ class ProductCreateTask
 
         $productV->setTypeId(Type::TYPE_SIMPLE);
         $productV->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
+        $this->inheritLeafAttributesFromParent($productV, $configProduct);
         if ($value) {
             $variantDimension1 = $value->getVariantDimension1();
             $variantDimension2 = $value->getVariantDimension2();
@@ -2764,6 +2786,9 @@ class ProductCreateTask
                 $this->webStoreId,
                 $this->getScopeId()
             );
+        }
+        if ($configProduct->getData(LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE)) {
+            $productV->setData(LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE, 1);
         }
         $productV = $this->replicationHelper->manageStock($productV, $item->getType());
         try {

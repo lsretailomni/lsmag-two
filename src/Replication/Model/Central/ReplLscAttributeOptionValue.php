@@ -59,6 +59,16 @@ class ReplLscAttributeOptionValue extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::OPTION_VALUE], $value);
     }
 
+    public function getImage(): ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::IMAGE]);
+    }
+
+    public function setImage(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::IMAGE], $value);
+    }
+
     public function getWeight(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::WEIGHT]);
@@ -117,6 +127,16 @@ class ReplLscAttributeOptionValue extends \Ls\Omni\Client\CentralEcommerce\Entit
     public function setLinkAttributeOptionSeq(?int $value)
     {
         return $this->setData(self::getDbColumnsMapping()[self::LINK_ATTRIBUTE_OPTION_SEQ], $value);
+    }
+
+    public function getSelected(): ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SELECTED]);
+    }
+
+    public function setSelected(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SELECTED], $value);
     }
 
     public function getSystemid(): ?string

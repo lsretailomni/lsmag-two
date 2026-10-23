@@ -265,6 +265,8 @@ class ReplicationHelper extends AbstractHelper
                 'item_unit_of_measure' => 'ItemUOM',
                 'sort_order' => 'SortOrder',
                 'validation_period_id' => 'ValidationPeriod',
+                'vendorsourcing' => 'VendorSourcing',
+                'prepayment' => 'Prepayment',
             ]
         ],
         'repl_lsc_barcodes' => [
@@ -2914,6 +2916,7 @@ class ReplicationHelper extends AbstractHelper
             ['field' => 'NodeId', 'value' => true, 'condition_type' => 'notnull'],
             ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
             ['field' => 'scope_id', 'value' => $store->getWebsiteId(), 'condition_type' => 'eq'],
+            ['field' => 'IsDeleted', 'value' => 0, 'condition_type' => 'eq'],
             [
                 'field'          => 'nav_id',
                 'value'          => $product->getData($attribute),
@@ -2923,7 +2926,15 @@ class ReplicationHelper extends AbstractHelper
         $criteria             = $this->buildCriteriaForDirect($filters);
         $hierarchyLeafs       = $this->replHierarchyLeafRepository->getList($criteria);
         $resultantCategoryIds = [];
+        $leafValues           = null;
         foreach ($hierarchyLeafs->getItems() as $hierarchyLeaf) {
+            $leafValues  = [
+                LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE => (int)(
+                    !empty($leafValues[LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE]) ||
+                    $hierarchyLeaf->getVendorSourcing()
+                ),
+                LSR::LS_PREPAYMENT_ATTRIBUTE_CODE      => (float)$hierarchyLeaf->getPrepayment()
+            ];
             $categoryIds = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId(), $store);
             if (!empty($categoryIds)) {
                 // @codingStandardsIgnoreLine
@@ -2935,6 +2946,11 @@ class ReplicationHelper extends AbstractHelper
             $hierarchyLeaf->setData('processed', 1);
             $hierarchyLeaf->setData('is_updated', 0);
             $this->replHierarchyLeafRepository->save($hierarchyLeaf);
+        }
+        if ($leafValues !== null &&
+            (!$isItemCategory || !$this->hasItemLevelHierarchyLeaf($product, $hierarchyCode, $store))
+        ) {
+            $this->updateVendorSourcingAndPrepayment($product, $leafValues, $store->getWebsiteId());
         }
         if (!empty($resultantCategoryIds)) {
             try {
@@ -2958,6 +2974,183 @@ class ReplicationHelper extends AbstractHelper
                 $this->_logger->info("Product deleted from admin configuration. Things will re-run again");
             }
         }
+    }
+
+    /**
+     * Check if the product has its own item level leaf in the configured hierarchy
+     *
+     * Item level leaf values take precedence over the item category level ones.
+     *
+     * @param mixed $product
+     * @param string $hierarchyCode
+     * @param mixed $store
+     * @return bool
+     */
+    public function hasItemLevelHierarchyLeaf($product, $hierarchyCode, $store)
+    {
+        $filters  = [
+            ['field' => 'NodeId', 'value' => true, 'condition_type' => 'notnull'],
+            ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $store->getWebsiteId(), 'condition_type' => 'eq'],
+            [
+                'field'          => 'Type',
+                'value'          => \Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyLeafType::ITEM_CATEGORY,
+                'condition_type' => 'neq'
+            ],
+            [
+                'field'          => 'nav_id',
+                'value'          => $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE),
+                'condition_type' => 'eq'
+            ]
+        ];
+        $criteria = $this->buildCriteriaForDirect($filters, 1);
+        return $this->replHierarchyLeafRepository->getList($criteria)->getTotalCount() > 0;
+    }
+
+    /**
+     * Recompute vendor sourcing / prepayment from the remaining active hierarchy leaves of a product
+     *
+     * Used after a hierarchy leaf is deleted, since assignProductToCategories() only reacts to leaves
+     * still present in the replicated feed and never resets the product when its last contributing
+     * leaf is removed. Unlike assignProductToCategories(), this always persists a value (0 when no
+     * active leaf remains) instead of skipping the update.
+     *
+     * @param mixed $product
+     * @param mixed $store
+     * @param bool $isItemCategory
+     * @return void
+     */
+    public function refreshVendorSourcingAndPrepayment($product, $store, $isItemCategory = false)
+    {
+        $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $store->getId());
+        if (empty($hierarchyCode)) {
+            return;
+        }
+        if ($isItemCategory && $this->hasItemLevelHierarchyLeaf($product, $hierarchyCode, $store)) {
+            return;
+        }
+        $attribute = $isItemCategory ? LSR::LS_ITEM_CATEGORY : LSR::LS_ITEM_ID_ATTRIBUTE_CODE;
+        $filters   = [
+            ['field' => 'NodeId', 'value' => true, 'condition_type' => 'notnull'],
+            ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $store->getWebsiteId(), 'condition_type' => 'eq'],
+            ['field' => 'IsDeleted', 'value' => 0, 'condition_type' => 'eq'],
+            [
+                'field'          => 'nav_id',
+                'value'          => $product->getData($attribute),
+                'condition_type' => 'eq'
+            ]
+        ];
+        $criteria = $this->buildCriteriaForDirect($filters);
+        $values   = [
+            LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE => 0,
+            LSR::LS_PREPAYMENT_ATTRIBUTE_CODE      => 0.0
+        ];
+        foreach ($this->replHierarchyLeafRepository->getList($criteria)->getItems() as $hierarchyLeaf) {
+            $values[LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE] = (int)(
+                $values[LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE] || $hierarchyLeaf->getVendorSourcing()
+            );
+            $values[LSR::LS_PREPAYMENT_ATTRIBUTE_CODE] = (float)$hierarchyLeaf->getPrepayment();
+        }
+        $this->updateVendorSourcingAndPrepayment($product, $values, $store->getWebsiteId());
+    }
+
+    /**
+     * Save vendor sourcing and prepayment values on the product and its simple children
+     *
+     * Vendor sourced items are not stock managed so that zero stock does not block them.
+     *
+     * @param mixed $product
+     * @param array $values
+     * @param int|string|null $scopeId
+     * @return void
+     */
+    public function updateVendorSourcingAndPrepayment($product, array $values, $scopeId = null)
+    {
+        $products = [$product];
+        if ($product->getTypeId() == Configurable::TYPE_CODE) {
+            // @codingStandardsIgnoreLine
+            $products = array_merge($products, $product->getTypeInstance()->getUsedProducts($product));
+        }
+        $itemId       = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+        $itemType     = $scopeId !== null ? $this->getInventoryType($itemId, $scopeId) : null;
+        $stockChanged = false;
+        foreach ($products as $target) {
+            try {
+                foreach ($values as $attributeCode => $value) {
+                    $target->setData($attributeCode, $value);
+                    $this->productResourceModel->saveAttribute($target, $attributeCode);
+                }
+                if (array_key_exists(LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE, $values)) {
+                    $stockChanged = $this->updateStockManagement($target, $itemType) || $stockChanged;
+                }
+            } catch (Exception $e) {
+                $this->_logger->info(
+                    sprintf(
+                        'Vendor sourcing / prepayment update failed for product %s: %s',
+                        $target->getSku(),
+                        $e->getMessage()
+                    )
+                );
+            }
+        }
+
+        if ($stockChanged && $scopeId !== null) {
+            $this->resetInventoryStatus($itemId, $scopeId);
+        }
+    }
+
+    /**
+     * Mark inventory status records of the given item for re-processing by the inventory sync
+     *
+     * @param string $itemId
+     * @param int|string $scopeId
+     * @return void
+     */
+    public function resetInventoryStatus($itemId, $scopeId)
+    {
+        $this->updateGivenTableDataGivenConditions(
+            $this->getGivenTableName('ls_replication_repl_inv_status'),
+            ['processed' => 0, 'is_updated' => 1],
+            ['ItemId = ?' => $itemId, 'scope_id = ?' => $scopeId]
+        );
+    }
+
+    /**
+     * Persist the manage stock setting of the product stock item based on item type and vendor sourcing
+     *
+     * @param mixed $product
+     * @param string|null $itemType
+     * @return bool true if the stock item was changed
+     */
+    public function updateStockManagement($product, $itemType)
+    {
+        $useConfigManageStock = (int)$this->manageStock($product, $itemType)
+            ->getStockData()['use_config_manage_stock'];
+        $criteria             = $this->criteriaInterfaceFactory->create();
+        $criteria->setScopeFilter($this->stockConfiguration->getDefaultScopeId());
+        $criteria->setProductsFilter($product->getId());
+        $stockItems = $this->stockItemRepository->getList($criteria)->getItems();
+        $stockItem  = reset($stockItems);
+
+        if (!$stockItem) {
+            return false;
+        }
+
+        if ((int)$stockItem->getData('use_config_manage_stock') === $useConfigManageStock &&
+            ($useConfigManageStock || (int)$stockItem->getData('manage_stock') === 0)
+        ) {
+            return false;
+        }
+
+        $stockItem->setUseConfigManageStock($useConfigManageStock);
+
+        if (!$useConfigManageStock) {
+            $stockItem->setManageStock(0);
+        }
+        $this->stockItemRepository->save($stockItem);
+
+        return true;
     }
 
     /**
@@ -4420,7 +4613,9 @@ class ReplicationHelper extends AbstractHelper
     {
         $useManageStock = 1;
 
-        if (!empty($type) && $type != ItemType::INVENTORY) {
+        if ((!empty($type) && $type != ItemType::INVENTORY) ||
+            $product->getData(LSR::LS_VENDOR_SOURCING_ATTRIBUTE_CODE)
+        ) {
             $useManageStock = 0;
         }
 

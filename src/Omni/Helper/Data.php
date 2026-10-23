@@ -1174,7 +1174,16 @@ class Data extends AbstractHelperOmni
     {
         // Shopping Cart validation for graphql
         if ($maskedCartId !== "") {
-            $this->getCartForUser->execute($maskedCartId, $userId, $scopeId);
+            // GetCartForUser::execute() is strictly typed (?int $customerId, int $storeId) -
+            // $userId/$scopeId can arrive here as numeric strings (e.g. Quote::getCustomerId()
+            // reading straight off a DB resultset) from non-GraphQL callers of this method (REST
+            // webapi checkout, frontend), causing a TypeError. Cast explicitly rather than rely on
+            // the caller to have done so.
+            $this->getCartForUser->execute(
+                $maskedCartId,
+                $userId !== null && $userId !== '' ? (int)$userId : null,
+                (int)$scopeId
+            );
 
             $cartId = $this->maskedQuoteIdToQuoteId->execute($maskedCartId);
             $quote  = $this->cartRepository->get($cartId);
@@ -1190,6 +1199,10 @@ class Data extends AbstractHelperOmni
             $items = $quote->getAllVisibleItems();
 
             list($response, $stockCollection) = $this->stockHelper->getGivenItemsStockInGivenStore($items, $storeId);
+
+            if (empty($stockCollection)) {
+                return [];
+            }
 
             if ($response) {
 //                if (is_object($response)) {

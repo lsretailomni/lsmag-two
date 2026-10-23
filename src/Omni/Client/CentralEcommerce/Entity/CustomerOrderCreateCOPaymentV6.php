@@ -62,6 +62,8 @@ class CustomerOrderCreateCOPaymentV6 extends \Magento\Catalog\Model\AbstractMode
 
     public const EFTCARD_TYPE = 'EFTCardType';
 
+    public const PTEJSON_CARRIER = 'PTEJsonCarrier';
+
     /**
      * @param ?string $DocumentID
      * @return $this
@@ -510,6 +512,24 @@ class CustomerOrderCreateCOPaymentV6 extends \Magento\Catalog\Model\AbstractMode
     public function getEftcardtype(): ?string
     {
         return $this->getData(self::EFTCARD_TYPE);
+    }
+
+    /**
+     * @param ?string $PTEJsonCarrier
+     * @return $this
+     */
+    public function setPtejsoncarrier(?string $PTEJsonCarrier)
+    {
+        $this->setData(self::PTEJSON_CARRIER, $PTEJsonCarrier);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getPtejsoncarrier(): ?string
+    {
+        return $this->getData(self::PTEJSON_CARRIER);
     }
 }
 

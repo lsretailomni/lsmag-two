@@ -74,6 +74,7 @@ class Vendor extends AbstractModel
     public const CREDITOR_NO = 'Creditor No.';
     public const ALLOW_MULTIPLE_POSTING_GROUPS = 'Allow Multiple Posting Groups';
     public const SELFBILLING_AGREEMENT = 'Self-Billing Agreement';
+    public const SELFBILLING_INVOICE_NOS = 'Self-Billing Invoice Nos.';
     public const PREFERRED_BANK_ACCOUNT_CODE = 'Preferred Bank Account Code';
     public const CASH_FLOW_PAYMENT_TERMS_CODE = 'Cash Flow Payment Terms Code';
     public const PRIMARY_CONTACT_NO = 'Primary Contact No.';
@@ -90,6 +91,7 @@ class Vendor extends AbstractModel
     public const PAYMENT_TERMS_ID = 'Payment Terms Id';
     public const PAYMENT_METHOD_ID = 'Payment Method Id';
     public const OVERRECEIPT_CODE = 'Over-Receipt Code';
+    public const RECEIPT_ON_INVOICE_POLICY = 'Receipt on Invoice Policy';
     public const LSC_RTC_FILTER_FIELD = 'LSC RTC Filter Field';
     public const LSC_ENABLE_FOR_REL_CALENDAR = 'LSC Enable for Rel. Calendar';
     public const LSC_RELEASE_CALENDAR_GROUP = 'LSC Release Calendar Group';
@@ -168,6 +170,7 @@ class Vendor extends AbstractModel
 	self::CREDITOR_NO => 'creditor_no',
 	self::ALLOW_MULTIPLE_POSTING_GROUPS => 'allow_multiple_posting_groups',
 	self::SELFBILLING_AGREEMENT => 'selfbilling_agreement',
+	self::SELFBILLING_INVOICE_NOS => 'selfbilling_invoice_nos',
 	self::PREFERRED_BANK_ACCOUNT_CODE => 'preferred_bank_account_code',
 	self::CASH_FLOW_PAYMENT_TERMS_CODE => 'cash_flow_payment_terms_code',
 	self::PRIMARY_CONTACT_NO => 'primary_contact_no',
@@ -184,6 +187,7 @@ class Vendor extends AbstractModel
 	self::PAYMENT_TERMS_ID => 'payment_terms_id',
 	self::PAYMENT_METHOD_ID => 'payment_method_id',
 	self::OVERRECEIPT_CODE => 'overreceipt_code',
+	self::RECEIPT_ON_INVOICE_POLICY => 'receipt_on_invoice_policy',
 	self::LSC_RTC_FILTER_FIELD => 'lsc_rtc_filter_field',
 	self::LSC_ENABLE_FOR_REL_CALENDAR => 'lsc_enable_for_rel_calendar',
 	self::LSC_RELEASE_CALENDAR_GROUP => 'lsc_release_calendar_group',
@@ -835,6 +839,16 @@ class Vendor extends AbstractModel
         return $this->setData(self::SELFBILLING_AGREEMENT, $value);
     }
 
+    public function getSelfBillingInvoiceNos(): ?string
+    {
+        return $this->getData(self::SELFBILLING_INVOICE_NOS);
+    }
+
+    public function setSelfBillingInvoiceNos(?string $value)
+    {
+        return $this->setData(self::SELFBILLING_INVOICE_NOS, $value);
+    }
+
     public function getPreferredBankAccountCode(): ?string
     {
         return $this->getData(self::PREFERRED_BANK_ACCOUNT_CODE);
@@ -993,6 +1007,16 @@ class Vendor extends AbstractModel
     public function setOverReceiptCode(?string $value)
     {
         return $this->setData(self::OVERRECEIPT_CODE, $value);
+    }
+
+    public function getReceiptOnInvoicePolicy(): ?int
+    {
+        return $this->getData(self::RECEIPT_ON_INVOICE_POLICY);
+    }
+
+    public function setReceiptOnInvoicePolicy(?int $value)
+    {
+        return $this->setData(self::RECEIPT_ON_INVOICE_POLICY, $value);
     }
 
     public function getLscRtcFilterField(): ?int

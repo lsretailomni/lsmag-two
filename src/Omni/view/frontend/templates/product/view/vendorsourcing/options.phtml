@@ -1,0 +1,28 @@
+<?php
+/** @var \Ls\Omni\Block\Product\View\VendorSourcing\Options $block */
+// @codingStandardsIgnoreFile
+$options = $block->getOptions();
+?>
+<?php if (!empty($options)) : ?>
+    <p class="ls-vendor-sourcing-intro">
+        <?= $block->escapeHtml(
+            __('This item is ordered from our supplier after you buy it, so these are the earliest dates.')
+        ) ?>
+    </p>
+    <table class="ls-vendor-sourcing-options">
+        <thead>
+            <tr>
+                <th scope="col"><?= $block->escapeHtml(__('Delivery method')) ?></th>
+                <th scope="col"><?= $block->escapeHtml(__('Earliest date')) ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($options as $option) : ?>
+                <tr>
+                    <td><?= $block->escapeHtml($block->getOptionText($option)) ?></td>
+                    <td><?= $block->escapeHtml($option['date']) ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>

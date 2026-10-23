@@ -5,7 +5,67 @@ namespace Ls\Omni\Helper;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
+use Laminas\Validator\EmailAddress as ValidateEmailAddress;
 use \Ls\Core\Model\LSR;
+use Ls\Omni\Model\Central\GuzzleClient;
+use Ls\Omni\Model\Central\TokenRequestService;
+use Ls\Omni\Model\VendorSourcing\CheckoutFallbackService;
+use \Ls\Replication\Api\ReplStoreRepositoryInterface;
+use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
+use \Ls\Replication\Logger\OmniLogger;
+use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory as ReplStoreCollection;
+use Magento\Bundle\Api\ProductLinkManagementInterface;
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Model\ProductFactory;
+use Magento\CatalogInventory\Api\StockRegistryInterface;
+use Magento\CatalogInventory\Model\Configuration;
+use Magento\CatalogInventory\Model\Stock\StockItemRepository;
+use Magento\Checkout\Model\Cart;
+use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable;
+use Magento\Customer\Api\AddressRepositoryInterface;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Api\Data\AddressInterfaceFactory;
+use Magento\Customer\Api\Data\GroupInterfaceFactory;
+use Magento\Customer\Api\Data\RegionInterfaceFactory;
+use Magento\Customer\Api\GroupRepositoryInterface;
+use Magento\Customer\Model\AccountConfirmation;
+use Magento\Customer\Model\Authentication;
+use Magento\Customer\Model\CustomerFactory;
+use Magento\Customer\Model\CustomerRegistry;
+use Magento\Customer\Model\ResourceModel\Customer;
+use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory as CustomerCollection;
+use Magento\Customer\Model\ResourceModel\Group\CollectionFactory as CustomerGroupCollection;
+use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Directory\Model\Country;
+use Magento\Directory\Model\CountryFactory;
+use Magento\Directory\Model\Currency;
+use Magento\Directory\Model\CurrencyFactory;
+use Magento\Directory\Model\RegionFactory;
+use Magento\Framework\Api\FilterBuilder;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Config\Storage\WriterInterface;
+use Magento\Framework\App\Helper\Context;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Encryption\EncryptorInterface;
+use Magento\Framework\Filesystem;
+use Magento\Framework\Filesystem\DirectoryList;
+use Magento\Framework\Filesystem\Driver\File;
+use Magento\Framework\Locale\ConfigInterface;
+use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\Pricing\Helper\Data as PriceHelper;
+use Magento\Framework\Registry;
+use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\Session\SessionManagerInterface;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
+use Magento\Quote\Model\ResourceModel\Quote;
+use Magento\Quote\Model\ResourceModel\Quote\Item;
+use Magento\QuoteGraphQl\Model\Cart\GetCartForUser;
+use Magento\Tax\Model\Config as TaxConfig;
+use Magento\Wishlist\Model\ResourceModel\Wishlist;
+use Magento\Wishlist\Model\WishlistFactory;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\LineType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
 use \Ls\Omni\Client\CentralEcommerce\Entity;
@@ -34,8 +94,10 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model;
 use Magento\Sales\Model\Order;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Useful helper functions for order
@@ -43,6 +105,260 @@ use Magento\Sales\Model\Order;
  */
 class OrderHelper extends AbstractHelperOmni
 {
+    /**
+     * OrderHelper's own constructor (ticket 89360 follow-up fix): declares every
+     * AbstractHelperOmni constructor parameter, in the same order, plus one additional
+     * dependency - checkoutFallbackService - that only prepareOrder() needs. Keeping
+     * checkoutFallbackService off AbstractHelperOmni's own constructor avoids a dependency
+     * cycle (CheckoutFallbackService -> StockHelper -> AbstractHelperOmni), since StockHelper
+     * (and 8 other helpers) also extend AbstractHelperOmni.
+     *
+     * @param Context $context
+     * @param BasketHelper $basketHelper
+     * @param CacheHelper $cacheHelper
+     * @param ContactHelper $contactHelper
+     * @param Data $dataHelper
+     * @param GiftCardHelper $giftCardHelper
+     * @param ItemHelper $itemHelper
+     * @param LoyaltyHelper $loyaltyHelper
+     * @param OrderHelper $orderHelper
+     * @param SessionHelper $sessionHelper
+     * @param StockHelper $stockHelper
+     * @param StoreHelper $storeHelper
+     * @param CustomerFactory $customerFactory
+     * @param CustomerSession $customerSession
+     * @param CheckoutSession $checkoutSession
+     * @param Filesystem $filesystem
+     * @param GroupRepositoryInterface $groupRepository
+     * @param LSR $lsr
+     * @param Currency $currencyHelper
+     * @param Cart $cart
+     * @param ProductRepositoryInterface $productRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param Configurable $catalogProductTypeConfigurable
+     * @param ProductFactory $productFactory
+     * @param Registry $registry
+     * @param SessionManagerInterface $session
+     * @param CartRepositoryInterface $quoteRepository
+     * @param Quote $quoteResourceModel
+     * @param CartRepositoryInterface $cartRepository
+     * @param DateTime $dateTime
+     * @param FilterBuilder $filterBuilder
+     * @param CustomerRepositoryInterface $customerRepository
+     * @param StoreManagerInterface $storeManager
+     * @param AddressInterfaceFactory $addressFactory
+     * @param RegionInterfaceFactory $regionFactory
+     * @param AddressRepositoryInterface $addressRepository
+     * @param CountryFactory $countryFactory
+     * @param CustomerGroupCollection $customerGroupColl
+     * @param GroupInterfaceFactory $groupInterfaceFactory
+     * @param Customer $customerResourceModel
+     * @param Country $country
+     * @param RegionFactory $region
+     * @param \Magento\Wishlist\Model\Wishlist $wishlist
+     * @param Wishlist $wishlistResourceModel
+     * @param WishlistFactory $wishlistFactory
+     * @param CustomerCollection $customerCollection
+     * @param EncryptorInterface $encryptorInterface
+     * @param ValidateEmailAddress $validateEmailAddress
+     * @param CustomerRegistry $customerRegistry
+     * @param Authentication $authentication
+     * @param AccountConfirmation $accountConfirmation
+     * @param ManagerInterface $messageManager
+     * @param TimezoneInterface $timezone
+     * @param \Magento\Framework\Event\ManagerInterface $eventManager
+     * @param Item $itemResourceModel
+     * @param CurrencyFactory $currencyFactory
+     * @param ProductLinkManagementInterface $productLinkManagement
+     * @param ReplStoreCollection $storeCollectionFactory
+     * @param Configuration $configuration
+     * @param StockItemRepository $stockItemRepository
+     * @param ReplStoreRepositoryInterface $storeRepository
+     * @param PriceHelper $priceHelper
+     * @param WriterInterface $configWriter
+     * @param DirectoryList $directoryList
+     * @param ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository
+     * @param GetCartForUser $getCartForUser
+     * @param MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId
+     * @param File $fileSystemDriver
+     * @param GuzzleClient $guzzleClient
+     * @param TokenRequestService $tokenRequestService
+     * @param RequestInterface $request
+     * @param OmniLogger $omniLogger
+     * @param Order $order
+     * @param OrderRepositoryInterface $orderRepository
+     * @param \Magento\Sales\Model\ResourceModel\Order $orderResourceModel
+     * @param Json $json
+     * @param ConfigInterface $config
+     * @param TaxConfig $taxConfig
+     * @param StockRegistryInterface $stockRegistry
+     * @param CheckoutFallbackService $checkoutFallbackService
+     */
+    public function __construct(
+        Context $context,
+        BasketHelper $basketHelper,
+        CacheHelper $cacheHelper,
+        ContactHelper $contactHelper,
+        Data $dataHelper,
+        GiftCardHelper $giftCardHelper,
+        ItemHelper $itemHelper,
+        LoyaltyHelper $loyaltyHelper,
+        OrderHelper $orderHelper,
+        SessionHelper $sessionHelper,
+        StockHelper $stockHelper,
+        StoreHelper $storeHelper,
+        CustomerFactory $customerFactory,
+        CustomerSession $customerSession,
+        CheckoutSession $checkoutSession,
+        Filesystem $filesystem,
+        GroupRepositoryInterface $groupRepository,
+        LSR $lsr,
+        Currency $currencyHelper,
+        Cart $cart,
+        ProductRepositoryInterface $productRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        Configurable $catalogProductTypeConfigurable,
+        ProductFactory $productFactory,
+        Registry $registry,
+        SessionManagerInterface $session,
+        CartRepositoryInterface $quoteRepository,
+        Quote $quoteResourceModel,
+        CartRepositoryInterface $cartRepository,
+        DateTime $dateTime,
+        FilterBuilder $filterBuilder,
+        CustomerRepositoryInterface $customerRepository,
+        StoreManagerInterface $storeManager,
+        AddressInterfaceFactory $addressFactory,
+        RegionInterfaceFactory $regionFactory,
+        AddressRepositoryInterface $addressRepository,
+        CountryFactory $countryFactory,
+        CustomerGroupCollection $customerGroupColl,
+        GroupInterfaceFactory $groupInterfaceFactory,
+        Customer $customerResourceModel,
+        Country $country,
+        RegionFactory $region,
+        \Magento\Wishlist\Model\Wishlist $wishlist,
+        Wishlist $wishlistResourceModel,
+        WishlistFactory $wishlistFactory,
+        CustomerCollection $customerCollection,
+        EncryptorInterface $encryptorInterface,
+        ValidateEmailAddress $validateEmailAddress,
+        CustomerRegistry $customerRegistry,
+        Authentication $authentication,
+        AccountConfirmation $accountConfirmation,
+        ManagerInterface $messageManager,
+        TimezoneInterface $timezone,
+        \Magento\Framework\Event\ManagerInterface $eventManager,
+        Item $itemResourceModel,
+        CurrencyFactory $currencyFactory,
+        ProductLinkManagementInterface $productLinkManagement,
+        ReplStoreCollection $storeCollectionFactory,
+        Configuration $configuration,
+        StockItemRepository $stockItemRepository,
+        ReplStoreRepositoryInterface $storeRepository,
+        PriceHelper $priceHelper,
+        WriterInterface $configWriter,
+        DirectoryList $directoryList,
+        ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
+        GetCartForUser $getCartForUser,
+        MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
+        File $fileSystemDriver,
+        GuzzleClient $guzzleClient,
+        TokenRequestService $tokenRequestService,
+        RequestInterface $request,
+        OmniLogger $omniLogger,
+        Order $order,
+        OrderRepositoryInterface $orderRepository,
+        \Magento\Sales\Model\ResourceModel\Order $orderResourceModel,
+        Json $json,
+        ConfigInterface $config,
+        TaxConfig $taxConfig,
+        StockRegistryInterface $stockRegistry,
+        public CheckoutFallbackService $checkoutFallbackService
+    ) {
+        parent::__construct(
+            $context,
+            $basketHelper,
+            $cacheHelper,
+            $contactHelper,
+            $dataHelper,
+            $giftCardHelper,
+            $itemHelper,
+            $loyaltyHelper,
+            $orderHelper,
+            $sessionHelper,
+            $stockHelper,
+            $storeHelper,
+            $customerFactory,
+            $customerSession,
+            $checkoutSession,
+            $filesystem,
+            $groupRepository,
+            $lsr,
+            $currencyHelper,
+            $cart,
+            $productRepository,
+            $searchCriteriaBuilder,
+            $catalogProductTypeConfigurable,
+            $productFactory,
+            $registry,
+            $session,
+            $quoteRepository,
+            $quoteResourceModel,
+            $cartRepository,
+            $dateTime,
+            $filterBuilder,
+            $customerRepository,
+            $storeManager,
+            $addressFactory,
+            $regionFactory,
+            $addressRepository,
+            $countryFactory,
+            $customerGroupColl,
+            $groupInterfaceFactory,
+            $customerResourceModel,
+            $country,
+            $region,
+            $wishlist,
+            $wishlistResourceModel,
+            $wishlistFactory,
+            $customerCollection,
+            $encryptorInterface,
+            $validateEmailAddress,
+            $customerRegistry,
+            $authentication,
+            $accountConfirmation,
+            $messageManager,
+            $timezone,
+            $eventManager,
+            $itemResourceModel,
+            $currencyFactory,
+            $productLinkManagement,
+            $storeCollectionFactory,
+            $configuration,
+            $stockItemRepository,
+            $storeRepository,
+            $priceHelper,
+            $configWriter,
+            $directoryList,
+            $replStoreTenderTypeRepository,
+            $getCartForUser,
+            $maskedQuoteIdToQuoteId,
+            $fileSystemDriver,
+            $guzzleClient,
+            $tokenRequestService,
+            $request,
+            $omniLogger,
+            $order,
+            $orderRepository,
+            $orderResourceModel,
+            $json,
+            $config,
+            $taxConfig,
+            $stockRegistry
+        );
+    }
+
     /**
      * @var array
      */
@@ -206,6 +522,13 @@ class OrderHelper extends AbstractHelperOmni
             $rootCustomerOrderCreate->setCustomerordercreatecoheaderv6($customerOrderCreateCoHeader);
             $customerOrderCoLines = [];
 
+            // Vendor-sourcing order-submission (ticket 89364, follow-on to 89360): keyed by LS
+            // Central "item_id|variant_id". Recomputed fresh off the order's quote every time
+            // prepareOrder() runs (bug fix, post-merge review, Bug B) - see
+            // resolveVendorSourcedLines()'s docblock for why a transient $order->getData(...)
+            // value is not reliable here.
+            $vendorSourcedLines = $this->resolveVendorSourcedLines($order);
+
             foreach ($oneListCalculateResponse->getMobiletransactionline() ?? [] as $id => $orderLine) {
                 if ($orderLine->getLinetype() == 0) {
 
@@ -215,7 +538,7 @@ class OrderHelper extends AbstractHelperOmni
                         CustomerOrderCreateCOLineV6::class
                     );
 
-                    $customerOrderCoLine->addData([
+                    $lineData = [
                         CustomerOrderCreateCOLineV6::LINE_NO => $orderLine->getLineno(),
                         CustomerOrderCreateCOLineV6::LINE_TYPE => $orderLine->getLinetype(),
                         CustomerOrderCreateCOLineV6::NUMBER => $orderLine->getNumber(),
@@ -235,7 +558,36 @@ class OrderHelper extends AbstractHelperOmni
                         CustomerOrderCreateCOLineV6::CLICK_AND_COLLECT => $isClickCollect,
                         CustomerOrderCreateCOLineV6::STORE_NO => $isClickCollect ? $order->getPickupStore() : $storeId,
                         CustomerOrderCreateCOLineV6::EXTERNAL_ID => $id
-                    ]);
+                    ];
+
+                    $vendorSourcingKey = $orderLine->getNumber() . '|' . $orderLine->getVariantcode();
+
+                    if (isset($vendorSourcedLines[$vendorSourcingKey])) {
+                        $lineData[CustomerOrderCreateCOLineV6::VENDOR_SOURCING] = true;
+
+                        $vendorLineData = $vendorSourcedLines[$vendorSourcingKey];
+                        $sourcingLocation = $vendorLineData['sourcing_location'] ?? null;
+
+                        if ($sourcingLocation !== null) {
+                            $lineData[CustomerOrderCreateCOLineV6::SOURCING_LOCATION] = $sourcingLocation;
+
+                            if (!$isClickCollect) {
+                                // Delivery lines: StoreNo should match the vendor-sourcing resolved
+                                // store, not the general web store id - that general id has no
+                                // bearing on which store/vendor relation is actually sourcing this
+                                // specific line.
+                                $lineData[CustomerOrderCreateCOLineV6::STORE_NO] = $sourcingLocation;
+                            }
+                        }
+
+                        $leadTimeCalculation = $vendorLineData['lead_time_calculation'] ?? null;
+
+                        if ($leadTimeCalculation !== null) {
+                            $lineData[CustomerOrderCreateCOLineV6::LEAD_TIME_CALCULATION] = $leadTimeCalculation;
+                        }
+                    }
+
+                    $customerOrderCoLine->addData($lineData);
 
                     if ($this->lsr->getValidateTaxParameters($order)) {
                         $customerOrderCoLine->addData([
@@ -307,6 +659,86 @@ class OrderHelper extends AbstractHelperOmni
         }
 
         return $rootCustomerOrderCreate;
+    }
+
+    /**
+     * Vendor-sourcing order-submission (ticket 89364, follow-on to 89360, Bug B fix - post-merge
+     * review): recompute the per-item vendor-sourcing determination FRESH off the order's quote,
+     * every time prepareOrder() runs, instead of depending on transient Order-level
+     * 'ls_vendor_sourced_lines' data set earlier by DataAssignObserver::execute().
+     *
+     * That transient approach relied on DataAssignObserver's in-memory $order object surviving
+     * through to this call - true for the synchronous 'sales_order_place_after' event, but NOT
+     * true for OrderObserver's other two registered events ('checkout_onepage_controller_success_
+     * action', 'adyen_payment_process_resulturl_after' - see src/Omni/etc/webapi_rest/events.xml,
+     * src/Omni/etc/frontend/events.xml), both of which fire on a SEPARATE HTTP request with the
+     * Order reloaded from the database, silently losing anything set via setData() earlier. This
+     * silently broke vendor sourcing for online/redirect payment methods.
+     *
+     * Re-reading a stashed verdict is not an option either: a freshly-loaded quote's items don't
+     * carry CheckoutFallbackService::QUOTE_ITEM_VERDICT_KEY any more than the Order carries
+     * 'ls_vendor_sourced_lines' - that too was only ever setData() on the specific in-memory
+     * Quote\Item instances DataAssignObserver::execute() touched. So this method actually RE-RUNS
+     * the same evaluate()/evaluateDelivery() determination against the freshly-loaded quote's
+     * items - an accepted, deliberate tradeoff (idempotent, same data, no behaviour difference)
+     * rather than threading fragile state across an unreliable request boundary.
+     *
+     * @param Model\Order $order
+     * @return array<string, array{vendor_sourcing: bool, sourcing_location: ?string}>
+     */
+    private function resolveVendorSourcedLines(Model\Order $order): array
+    {
+        $quoteId = $order->getQuoteId();
+
+        if (empty($quoteId)) {
+            return [];
+        }
+
+        try {
+            $quote = $this->quoteRepository->get((int)$quoteId);
+        } catch (NoSuchEntityException $e) {
+            return [];
+        }
+
+        $quoteItems = $quote->getAllVisibleItems();
+
+        if (empty($quoteItems)) {
+            return [];
+        }
+
+        $shippingAddress = $quote->getShippingAddress();
+
+        if ($shippingAddress && $shippingAddress->getShippingMethod() == "clickandcollect_clickandcollect") {
+            [$stockResponse, $stockCollection] = $this->stockHelper->getGivenItemsStockInGivenStore(
+                $quoteItems,
+                (string)$quote->getPickupStore()
+            );
+
+            if ($stockResponse) {
+                $stockCollection = $this->stockHelper->updateStockCollection($stockResponse, $stockCollection);
+            } else {
+                // $stockResponse is null whenever every item in the cart is excluded from this
+                // gated per-store call (ticket 89358: manage_stock=0 for vendor-sourced items) -
+                // this is always the case for a cart made up entirely of vendor-sourced items, not
+                // just a lookup failure. Don't feed the raw, status-less $stockCollection into
+                // evaluate()'s main loop (every row would look like zero-stock by omission, wrongly
+                // triggering getOptions() for ordinary items too) - pass an empty collection
+                // instead. evaluate()'s own $quoteItems-driven fallback still independently
+                // discovers and resolves the vendor-sourcing-eligible items regardless.
+                $stockCollection = [];
+            }
+
+            $this->checkoutFallbackService->evaluate(
+                $stockCollection,
+                VendorSourcingHelper::TYPE_COLLECT,
+                $quoteItems,
+                (string)$quote->getPickupStore()
+            );
+        } else {
+            $this->checkoutFallbackService->evaluateDelivery($quoteItems);
+        }
+
+        return $this->checkoutFallbackService->buildVendorSourcedLinesMap($quoteItems);
     }
 
     /**

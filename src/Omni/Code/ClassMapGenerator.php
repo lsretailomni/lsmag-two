@@ -4,13 +4,72 @@ declare(strict_types=1);
 namespace Ls\Omni\Code;
 
 use Laminas\Code\Generator\MethodGenerator;
+use \Ls\Omni\Service\Metadata;
 
 class ClassMapGenerator extends AbstractOmniGenerator
 {
     /**
+     * Restrictions that never get an entity class
+     */
+    public const RESTRICTION_BLACKLIST = [
+        'char',
+        'duration',
+        'guid',
+        'StreamBody',
+        //'NotificationStatus', 'OrderQueueStatusFilterType',
+    ];
+
+    /**
      * @var array
      */
     public array $customClassMap;
+
+    /**
+     * Entries of the separately published codeunits, WSDL type name => fully qualified class name
+     *
+     * @var array
+     */
+    public array $additionalEntries = [];
+
+    /**
+     * Build the class map entries of the given metadata (entities and restrictions)
+     *
+     * Used for the codeunits that have their own WSDL, so their types are mapped like the OmniWrapper ones.
+     *
+     * @param Metadata $metadata
+     * @return array WSDL type name => fully qualified class name
+     */
+    public function buildEntries(Metadata $metadata): array
+    {
+        $entries = [];
+
+        foreach ($metadata->getEntities() as $entityName => $entity) {
+            $entries[$entityName] = self::fqn(
+                $this->baseNamespace,
+                'Entity',
+                preg_replace('/[-._]/', '', $entity->getElement()->getType())
+            );
+        }
+
+        foreach ($metadata->getRestrictions() as $restrictionName => $restriction) {
+            if (!in_array($restrictionName, self::RESTRICTION_BLACKLIST)) {
+                $entries[$restrictionName] = self::fqn($this->baseNamespace, 'Entity', 'Enum', $restrictionName);
+            }
+        }
+
+        return $entries;
+    }
+
+    /**
+     * Add the class map entries of a separately published codeunit
+     *
+     * @param array $entries WSDL type name => fully qualified class name
+     * @return void
+     */
+    public function addEntries(array $entries)
+    {
+        $this->additionalEntries = array_merge($this->additionalEntries, $entries);
+    }
 
     /**
      * Get custom class map
@@ -60,13 +119,7 @@ class ClassMapGenerator extends AbstractOmniGenerator
         }
 
         // Define a blacklist of restrictions to exclude from the class map.
-        $restrictionBlacklist = [
-            'char',
-            'duration',
-            'guid',
-            'StreamBody',
-            //'NotificationStatus', 'OrderQueueStatusFilterType',
-        ];
+        $restrictionBlacklist = self::RESTRICTION_BLACKLIST;
 
         // Loop through all restrictions in the metadata and add them to the class map if not blacklisted.
         foreach ($this->metadata->getRestrictions() as $restrictionName => $restriction) {
@@ -91,6 +144,11 @@ class ClassMapGenerator extends AbstractOmniGenerator
             $fqn = str_replace('\\', '\\\\', $fqn);
 
             $classMapBody .= sprintf("\t\t'%1\$s' => '%2\$s',\n", $unsanitizedName, $fqn);
+        }
+
+        // Types of the separately published codeunits (see Service::ADDITIONAL_CODE_UNITS).
+        foreach ($this->additionalEntries as $typeName => $fqn) {
+            $classMapBody .= sprintf("\t\t'%1\$s' => '%2\$s',\n", $typeName, str_replace('\\', '\\\\', $fqn));
         }
 
         // Create the 'getClassMap' method for the class map generation.

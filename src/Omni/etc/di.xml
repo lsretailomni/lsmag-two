@@ -185,6 +185,37 @@
             <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
         </arguments>
     </type>
+    <!-- Ticket 89360: vendor-sourcing checkout fallback -->
+    <type name="Ls\Omni\Observer\DataAssignObserver">
+        <arguments>
+            <argument name="checkoutFallbackService" xsi:type="object">
+                Ls\Omni\Model\VendorSourcing\CheckoutFallbackService\Proxy
+            </argument>
+        </arguments>
+    </type>
+    <type name="Ls\Omni\Model\Checkout\DataProvider">
+        <arguments>
+            <argument name="vendorSourcingHelper" xsi:type="object">
+                Ls\Omni\Helper\VendorSourcingHelper\Proxy
+            </argument>
+            <argument name="zeroStockResolver" xsi:type="object">
+                Ls\Omni\Model\VendorSourcing\ZeroStockEverywhereResolver
+            </argument>
+            <argument name="pickupStoreIntersectionFilter" xsi:type="object">
+                Ls\Omni\Model\VendorSourcing\PickupStoreIntersectionFilter
+            </argument>
+        </arguments>
+    </type>
+    <type name="Ls\Omni\Controller\Stock\Store">
+        <arguments>
+            <argument name="vendorSourcingHelper" xsi:type="object">
+                Ls\Omni\Helper\VendorSourcingHelper\Proxy
+            </argument>
+            <argument name="itemHelper" xsi:type="object">
+                Ls\Omni\Helper\ItemHelper\Proxy
+            </argument>
+        </arguments>
+    </type>
     <type name="Ls\Omni\Model\Checkout\CouponsProvider">
         <arguments>
             <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
@@ -282,6 +313,15 @@
         <arguments>
             <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
             <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
+            <!-- Ticket 89360: vendor-sourcing checkout fallback - OrderHelper::prepareOrder() is -->
+            <!-- the only AbstractHelperOmni subclass that needs CheckoutFallbackService; declared -->
+            <!-- on OrderHelper's own constructor (not AbstractHelperOmni's) to avoid a dependency -->
+            <!-- cycle (CheckoutFallbackService -> StockHelper -> AbstractHelperOmni). Proxy because -->
+            <!-- OrderHelper is constructed for every order placement, and CheckoutFallbackService's -->
+            <!-- own dependency graph (including VendorSourcingHelper) is worth deferring. -->
+            <argument name="checkoutFallbackService" xsi:type="object">
+                Ls\Omni\Model\VendorSourcing\CheckoutFallbackService\Proxy
+            </argument>
         </arguments>
     </type>
     <type name="Ls\Omni\Observer\WishlistObserver">

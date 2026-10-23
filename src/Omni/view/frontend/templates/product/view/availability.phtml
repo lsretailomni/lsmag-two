@@ -6,7 +6,7 @@ use Magento\Framework\View\Element\Template;
 /** @var $block Template */
 $viewModel = $block->getViewModel();
 ?>
-<?php if ($viewModel->isValid()) : ?>
+<?php if ($viewModel->isValid() && !$viewModel->isVendorSourced()) : ?>
     <div class="availability-link-container">
         <a href="javascript:void()" name="checkavailability"
            class="checkavailability"><?php echo __('Check Availability in Stores') ?></a>

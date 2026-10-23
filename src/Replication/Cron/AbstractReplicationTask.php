@@ -109,6 +109,9 @@ abstract class AbstractReplicationTask
         'ls_mag/replication/repl_inv_status'
     ];
 
+    /** @var array Configured hierarchy code per scope id */
+    private $configuredHierarchyCodes = [];
+
     /** @var null */
     public $properties = null;
     /** @var integer */
@@ -255,6 +258,37 @@ abstract class AbstractReplicationTask
     }
 
     /**
+     * Check whether the source is a deleted hierarchy leaf of a hierarchy that is not replicated into Magento
+     *
+     * Central reports deletions for every hierarchy, but Magento only uses the configured one, so such
+     * rows are never stored.
+     *
+     * @param mixed $source
+     * @param string $confPath
+     * @return bool
+     */
+    protected function isDeletedLeafOfOtherHierarchy($source, $confPath)
+    {
+        if ($confPath != ReplLscHierarchynodeslinkviewTask::CONFIG_PATH || !$source->getIsDeleted()) {
+            return false;
+        }
+
+        $scopeId = $source->getScopeId();
+        if (!array_key_exists($scopeId, $this->configuredHierarchyCodes)) {
+            $this->configuredHierarchyCodes[$scopeId] = $this->getLsrModel()->getConfigValueFromDb(
+                LSR::SC_REPLICATION_HIERARCHY_CODE,
+                $this->defaultScope,
+                $scopeId
+            );
+        }
+        $configuredCode = $this->configuredHierarchyCodes[$scopeId];
+
+        return !empty($configuredCode) &&
+            $source->getData(\Ls\Omni\Client\CentralEcommerce\Entity\HierarchyNodesLinkView::HIERARCHY_CODE)
+            != $configuredCode;
+    }
+
+    /**
      * Save new source or update already existing source.
      *
      * Dispatcher: config-specific source formatting is applied once, then eligible rows are
@@ -268,6 +302,10 @@ abstract class AbstractReplicationTask
     public function saveSource($properties, $source)
     {
         $confPath = $this->getConfigPath();
+
+        if ($this->isDeletedLeafOfOtherHierarchy($source, $confPath)) {
+            return;
+        }
 
         // Apply config-specific source formatting exactly once, before the batch/ORM split, so a
         // batched row and a possible ORM replay of it never double-apply the transform.

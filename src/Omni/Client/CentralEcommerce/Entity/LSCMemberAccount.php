@@ -19,6 +19,7 @@ class LSCMemberAccount extends AbstractModel
     public const LINKED_TO_CUSTOMER_NO = 'Linked To Customer No.';
     public const CLUB_CODE = 'Club Code';
     public const SCHEME_CODE = 'Scheme Code';
+    public const BALANCEINT = 'BalanceInt';
     public const STATUS = 'Status';
     public const ACCOUNT_TYPE = 'Account Type';
 
@@ -31,6 +32,7 @@ class LSCMemberAccount extends AbstractModel
 	self::LINKED_TO_CUSTOMER_NO => 'linked_to_customer_no',
 	self::CLUB_CODE => 'club_code',
 	self::SCHEME_CODE => 'scheme_code',
+	self::BALANCEINT => 'balanceint',
 	self::STATUS => 'status',
 	self::ACCOUNT_TYPE => 'account_type',
     ];
@@ -119,6 +121,16 @@ class LSCMemberAccount extends AbstractModel
     public function setSchemeCode(?string $value)
     {
         return $this->setData(self::SCHEME_CODE, $value);
+    }
+
+    public function getBalanceint(): ?float
+    {
+        return $this->getData(self::BALANCEINT);
+    }
+
+    public function setBalanceint(?float $value)
+    {
+        return $this->setData(self::BALANCEINT, $value);
     }
 
     public function getStatus(): ?int

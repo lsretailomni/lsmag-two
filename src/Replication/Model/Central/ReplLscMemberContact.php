@@ -569,6 +569,16 @@ class ReplLscMemberContact extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCMe
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
+    public function getSystemidint(): ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMIDINT]);
+    }
+
+    public function setSystemidint(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMIDINT], $value);
+    }
+
     public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);

@@ -228,6 +228,10 @@ interface ReplLscMemberContactInterface
 
     public function setSystemcreatedby(?string $value);
 
+    public function getSystemidint(): ?string;
+
+    public function setSystemidint(?string $value);
+
     public function getSystemmodifiedat(): ?string;
 
     public function setSystemmodifiedat(?string $value);

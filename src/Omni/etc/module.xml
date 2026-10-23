@@ -7,6 +7,8 @@
             <module name="Magento_Tax"/>
             <module name="Magento_SalesRule"/>
             <module name="Ls_Core"/>
+            <module name="Magento_Catalog"/>
+            <module name="Magento_ConfigurableProduct"/>
         </sequence>
     </module>
 </config>

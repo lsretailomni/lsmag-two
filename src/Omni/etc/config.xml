@@ -15,6 +15,9 @@
                 <heart_beat_timeout>120</heart_beat_timeout>
                 <ls_central_timezone>UTC</ls_central_timezone>
             </service>
+            <one_list>
+                <vendor_sourcing_options>1</vendor_sourcing_options>
+            </one_list>
             <return_policy>
                 <show_return_policy>0</show_return_policy>
             </return_policy>

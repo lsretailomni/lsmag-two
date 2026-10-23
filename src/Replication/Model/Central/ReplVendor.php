@@ -659,6 +659,16 @@ class ReplVendor extends \Ls\Omni\Client\CentralEcommerce\Entity\Vendor implemen
         return $this->setData(self::getDbColumnsMapping()[self::SELFBILLING_AGREEMENT], $value);
     }
 
+    public function getSelfBillingInvoiceNos(): ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SELFBILLING_INVOICE_NOS]);
+    }
+
+    public function setSelfBillingInvoiceNos(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SELFBILLING_INVOICE_NOS], $value);
+    }
+
     public function getPreferredBankAccountCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PREFERRED_BANK_ACCOUNT_CODE]);
@@ -817,6 +827,16 @@ class ReplVendor extends \Ls\Omni\Client\CentralEcommerce\Entity\Vendor implemen
     public function setOverReceiptCode(?string $value)
     {
         return $this->setData(self::getDbColumnsMapping()[self::OVERRECEIPT_CODE], $value);
+    }
+
+    public function getReceiptOnInvoicePolicy(): ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::RECEIPT_ON_INVOICE_POLICY]);
+    }
+
+    public function setReceiptOnInvoicePolicy(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::RECEIPT_ON_INVOICE_POLICY], $value);
     }
 
     public function getLscRtcFilterField(): ?int

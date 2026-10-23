@@ -272,3 +272,17 @@ Title,Title
 Stores,Stores
 "Check Gift Card Balance","Check Gift Card Balance",
 "An error occurred please refresh and try again.","An error occurred please refresh and try again."
+"In stock at supplier","In stock at supplier"
+"Delivery & collection options","Delivery & collection options"
+"Home delivery: ready to ship in %1 day","Home delivery: ready to ship in %1 day"
+"Home delivery: ready to ship in %1 days","Home delivery: ready to ship in %1 days"
+"Home delivery: ready to ship today","Home delivery: ready to ship today"
+"Collect from %1: ready in %2 day","Collect from %1: ready in %2 day"
+"Collect from %1: ready in %2 days","Collect from %1: ready in %2 days"
+"Collect from %1: ready today","Collect from %1: ready today"
+"Earliest date","Earliest date"
+"Delivery method","Delivery method"
+"This item is ordered from our supplier after you buy it, so these are the earliest dates.","This item is ordered from our supplier after you buy it, so these are the earliest dates."
+"Delivery and collection options are currently not available. Please try again later.","Delivery and collection options are currently not available. Please try again later."
+"Vendor Sourcing Options","Vendor Sourcing Options"
+"Show a Delivery & collection options link on the product detail page for vendor-sourced products","Show a Delivery & collection options link on the product detail page for vendor-sourced products"

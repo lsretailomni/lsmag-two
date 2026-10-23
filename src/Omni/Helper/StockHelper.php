@@ -85,14 +85,100 @@ class StockHelper extends AbstractHelperOmni
                             $parentProductSku,
                             $childProductSku,
                             $child->getName(),
-                            $itemQty
+                            $itemQty,
+                            $child
                         );
                     }
                 }
             }
         }
 
+        if (empty($stockItems)) {
+            return [null, $stockCollection];
+        }
+
         return [$this->getAllItemsStockInSingleStore($storeId, $stockItems), $stockCollection];
+    }
+
+    /**
+     * Same as {@see self::getGivenItemsStockInGivenStore()} but WITHOUT the per-item
+     * use_config_manage_stock gate (ticket 89360 post-merge review, Bug A): once vendor-sourced
+     * products get manage_stock=0 (ticket 89358, "bypass the three stock gates for vendor-sourced
+     * items"), getGivenItemsStockInGivenStore() silently excludes them from its returned
+     * $stockCollection altogether - never even a status=0 row - because every item/child is
+     * gated behind getUseConfigManageStock() being true. This method mirrors that method's exact
+     * loop (bundle-child expansion, getComparisonValues(), UOM qty adjustment,
+     * mergeStockCollection() with $child threaded) but always includes every item/child
+     * unconditionally, so callers that specifically need to check vendor-sourcing-flagged items
+     * regardless of their manage_stock setting can still see them.
+     *
+     * @param array $items
+     * @param string $storeId
+     * @return array{0: null|RootGetInventoryMultipleOut, 1: array}
+     * @throws NoSuchEntityException
+     */
+    public function getGivenItemsStockIgnoringManageStock(array $items, string $storeId = ''): array
+    {
+        $stockCollection = $stockItems = [];
+
+        foreach ($items as &$item) {
+            $children = [];
+            if ($item->getProductType() == Type::TYPE_BUNDLE) {
+                $children = $item->getChildren();
+            } else {
+                $children[] = $item;
+            }
+
+            foreach ($children as $child) {
+                $itemQty = $item->getQty();
+                list($parentProductSku, $childProductSku, , , $uomQty) = $this->itemHelper->getComparisonValues(
+                    $child->getSku()
+                );
+
+                if (!empty($uomQty)) {
+                    $itemQty = $itemQty * $uomQty;
+                }
+
+                $stockItems[] = ['parent' => $parentProductSku, 'child' => $childProductSku];
+                $this->mergeStockCollection(
+                    $stockCollection,
+                    $parentProductSku,
+                    $childProductSku,
+                    $child->getName(),
+                    $itemQty,
+                    $child
+                );
+            }
+        }
+
+        if (empty($stockItems)) {
+            // Intentional divergence from getGivenItemsStockInGivenStore(), which has no equivalent
+            // guard: this method is only ever called with vendor-sourcing-eligible items already
+            // filtered by the caller, so an empty $items array means there is nothing to check -
+            // skip the SOAP call rather than issuing a pointless request.
+            return [null, $stockCollection];
+        }
+
+        return [$this->getAllItemsStockInSingleStore($storeId, $stockItems), $stockCollection];
+    }
+
+    /**
+     * Check if the stock of the given sku is managed
+     *
+     * Items with manage stock disabled at stock item level (e.g. vendor sourced) are exempt from stock validation.
+     *
+     * @param string $sku
+     * @return bool
+     */
+    public function isStockManaged(string $sku): bool
+    {
+        try {
+            $product = $this->productRepository->get($sku);
+
+            return (bool)$this->stockRegistry->getStockItem($product->getId())->getUseConfigManageStock();
+        } catch (\Exception $e) {
+            return true;
+        }
     }
 
     /**
@@ -103,14 +189,27 @@ class StockHelper extends AbstractHelperOmni
      * @param $childProductSku
      * @param $name
      * @param $qty
+     * @param $quoteItem the originating quote item (bundle child or the item itself), stored
+     *                   under the 'quote_item' key so downstream consumers (CheckoutFallbackService,
+     *                   ZeroStockEverywhereResolver, PickupStoreIntersectionFilter) can resolve a
+     *                   stock-collection row back to its Quote\Item without a second lookup
      */
-    public function mergeStockCollection(&$stockCollection, $parentProductSku, $childProductSku, $name, $qty)
-    {
+    public function mergeStockCollection(
+        &$stockCollection,
+        $parentProductSku,
+        $childProductSku,
+        $name,
+        $qty,
+        $quoteItem = null
+    ) {
         $found = false;
 
         foreach ($stockCollection as &$stock) {
             if ($stock['item_id'] == $parentProductSku && $stock['variant_id'] == $childProductSku) {
                 $stock['qty'] = $stock['qty'] + $qty;
+                if ($quoteItem !== null) {
+                    $stock['quote_item'] = $quoteItem;
+                }
                 $found        = true;
                 break;
             }
@@ -121,7 +220,8 @@ class StockHelper extends AbstractHelperOmni
                 'item_id'    => $parentProductSku,
                 'variant_id' => $childProductSku,
                 'name'       => $name,
-                'qty'        => $qty
+                'qty'        => $qty,
+                'quote_item' => $quoteItem
             ];
         }
     }
@@ -321,7 +421,8 @@ class StockHelper extends AbstractHelperOmni
                 }
 
                 if ($this->lsr->inventoryLookupBeforeAddToCartEnabled() &&
-                    $this->lsr->getBasketIntegrationOnFrontend()
+                    $this->lsr->getBasketIntegrationOnFrontend() &&
+                    $this->isStockManaged($child->getSku())
                 ) {
                     $uomQty = $child->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
 

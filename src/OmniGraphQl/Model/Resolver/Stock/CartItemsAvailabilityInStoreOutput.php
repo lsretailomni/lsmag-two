@@ -45,7 +45,7 @@ class CartItemsAvailabilityInStoreOutput implements ResolverInterface
         $userId          = $context->getUserId();
         $stockCollection = $this->helper->fetchCartAndReturnStock($maskedCartId, $userId, $scopeId, $storeId);
 
-        if (!$stockCollection) {
+        if ($stockCollection === null) {
             throw new LocalizedException(__('Oops! Unable to do stock lookup currently.'));
         }
 

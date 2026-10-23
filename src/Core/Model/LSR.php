@@ -253,6 +253,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_CART_CHECK_INVENTORY = 'ls_mag/one_list/availability_check';
     const SC_CART_CHECK_INVENTORY_FROM_SOURCING_LOCATION = 'ls_mag/one_list/sourcing_location';
     const SC_CART_PRODUCT_AVAILABILITY = 'ls_mag/one_list/product_availability';
+    const SC_CART_VENDOR_SOURCING_OPTIONS = 'ls_mag/one_list/vendor_sourcing_options';
     const SC_CART_DISPLAY_STORES = 'ls_mag/one_list/display_stores';
     const SC_CART_UPDATE_INVENTORY = 'ls_mag/one_list/update_inventory';
     const SC_CART_GUEST_CHECKOUT_EMAIL = 'ls_mag/one_list/guest_checkout_email';
@@ -547,6 +548,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     const LS_TARIFF_NO_ATTRIBUTE_CODE = 'lsr_tariff_no';
     const LS_TARIFF_NO_ATTRIBUTE_LABEL = 'Tariff No';
+
+    const LS_VENDOR_SOURCING_ATTRIBUTE_CODE = 'lsr_vendor_sourcing';
+    const LS_VENDOR_SOURCING_ATTRIBUTE_LABEL = 'Vendor Sourcing';
+
+    const LS_PREPAYMENT_ATTRIBUTE_CODE = 'lsr_prepayment';
+    const LS_PREPAYMENT_ATTRIBUTE_LABEL = 'Prepayment';
 
     const LS_ITEM_CATEGORY = 'lsr_item_category';
     const LS_ITEM_CATEGORY_LABEL = 'Item Category';

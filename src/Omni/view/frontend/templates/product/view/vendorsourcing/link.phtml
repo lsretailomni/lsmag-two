@@ -1,0 +1,21 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+// @codingStandardsIgnoreFile
+/** @var \Ls\Omni\ViewModel\GeneralViewModel $viewModel */
+$viewModel = $block->getViewModel();
+?>
+<?php if ($viewModel->isVendorSourced()) : ?>
+    <div class="vendor-sourcing-link-container">
+        <a href="#" class="ls-vendor-sourcing-link" role="button"><?= $block->escapeHtml(__('Delivery & collection options')) ?></a>
+    </div>
+    <div id="ls-vendor-sourcing-popup" style="display: none;"></div>
+    <script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "lsomni/vendor-sourcing": {
+                "ajaxUrl": "<?= $block->escapeJs($block->getUrl('omni/ajax/vendorsourcingoptions')) ?>"
+            }
+        }
+    }
+    </script>
+<?php endif; ?>

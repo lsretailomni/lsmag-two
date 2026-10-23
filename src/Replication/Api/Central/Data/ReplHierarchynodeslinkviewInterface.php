@@ -64,6 +64,14 @@ interface ReplHierarchynodeslinkviewInterface
 
     public function setStatus(?int $value);
 
+    public function getVendorsourcing(): ?bool;
+
+    public function setVendorsourcing(?bool $value);
+
+    public function getPrepayment(): ?float;
+
+    public function setPrepayment(?float $value);
+
     public function setProcessed(?bool $processed);
 
     public function getProcessed(): ?bool;

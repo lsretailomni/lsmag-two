@@ -539,6 +539,7 @@ class ClassMap
         		'HierarchyNodesView' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\HierarchyNodesView',
         		'LSC Retail Image Link' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\LSCRetailImageLink',
         		'LSC Store Inventory Worksheet' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\LSCStoreInventoryWorksheet',
+        		'LSC Inventory Management Setup' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\LSCInventoryManagementSetup',
         		'LSC Inventory Menus' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\LSCInventoryMenus',
         		'LSC Inventory Menu Lines' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\LSCInventoryMenuLines',
         		'LSC Inventory Lookup Table' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\LSCInventoryLookupTable',
@@ -583,7 +584,7 @@ class ClassMap
         		'Tenant Media' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\TenantMedia',
         		'GetImage_GetImage' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\GetImage_GetImage',
         		'Item' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\Item',
-        		'LSC Item Status Link' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\LSCItemStatusLink',
+        		'LSC Item Status Link 2' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\LSCItemStatusLink2',
         		'LSC Item/Special Group Link' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\LSCItemSpecialGroupLink',
         		'LSC Item Section Location' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\LSCItemSectionLocation',
         		'LSC Section Shelf' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\LSCSectionShelf',
@@ -622,6 +623,12 @@ class ClassMap
         		'LSC Rtl Calendar Group Linking' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\LSCRtlCalendarGroupLinking',
         		'GetStores_GetStores' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\GetStores_GetStores',
         		'TestConnectionResponse' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\TestConnectionResponse',
+        		'COSourcingLocationsV4' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\COSourcingLocationsV4',
+        		'CustomerOrderHeaderV4' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\CustomerOrderHeaderV4',
+        		'CustomerOrderLineV4' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\CustomerOrderLineV4',
+        		'RootCOSourcingLocationListV4In' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\RootCOSourcingLocationListV4In',
+        		'COSourcingLocationListV4' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\COSourcingLocationListV4',
+        		'COSourcingLocationListV4_Result' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\COSourcingLocationListV4Result',
         ];
     }
 }

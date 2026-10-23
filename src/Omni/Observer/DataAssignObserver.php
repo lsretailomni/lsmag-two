@@ -8,6 +8,9 @@ use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\GiftCardHelper;
 use \Ls\Omni\Helper\StoreHelper;
 use \Ls\Omni\Helper\BasketHelper;
+use Ls\Omni\Helper\VendorSourcingHelper;
+use Ls\Omni\Model\VendorSourcing\CheckoutFallbackService;
+use Ls\Omni\Model\VendorSourcing\ItemSourcingVerdict;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
@@ -19,7 +22,10 @@ use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
 use Magento\Framework\Phrase;
 use Magento\Framework\App\Request\Http;
+use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
 use Magento\Quote\Model\QuoteIdToMaskedQuoteIdInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class for assigning and validating different extension attribute values
@@ -34,6 +40,10 @@ class DataAssignObserver implements ObserverInterface
      * @param LSR $lsr
      * @param QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId
      * @param CheckoutSession $checkoutSession
+     * @param CheckoutFallbackService $checkoutFallbackService
+     * @param MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId
+     * @param CartRepositoryInterface $cartRepository
+     * @param LoggerInterface $logger
      */
     public function __construct(
         public Data $helper,
@@ -43,7 +53,11 @@ class DataAssignObserver implements ObserverInterface
         public LSR $lsr,
         public GiftCardHelper $giftCardHelper,
         public QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId,
-        public CheckoutSession $checkoutSession
+        public CheckoutSession $checkoutSession,
+        public CheckoutFallbackService $checkoutFallbackService,
+        public MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
+        public CartRepositoryInterface $cartRepository,
+        public LoggerInterface $logger
     ) {
     }
 
@@ -88,8 +102,14 @@ class DataAssignObserver implements ObserverInterface
                 $quote->getStoreId(),
                 $quote->getPickupStore()
             );
-        } elseif ($quote->getPayment()->getMethod() == "ls_payment_method_pay_at_store") {
-            $errorMessage = __('Pay at Store is not supported. Please select a different payment method.');
+        } else {
+            if ($quote->getPayment()->getMethod() == "ls_payment_method_pay_at_store") {
+                $errorMessage = __('Pay at Store is not supported. Please select a different payment method.');
+            }
+
+            if (!$errorMessage) {
+                $errorMessage = $this->validateDeliveryOrder($quote);
+            }
         }
 
         if ($errorMessage) {
@@ -119,6 +139,17 @@ class DataAssignObserver implements ObserverInterface
 
         // Unified entry column (gift cards + vouchers in one JSON column)
         $order->setLsPosDataEntries($quote->getLsPosDataEntries());
+
+        // Vendor-sourcing order-submission (ticket 89364, follow-on to 89360): the per-item
+        // verdicts produced above (evaluate()/evaluateDelivery(), via the checks in
+        // validateClickAndCollectOrder()/validateDeliveryOrder()) are no longer stamped onto the
+        // Order here as transient 'ls_vendor_sourced_lines' data - that approach did not survive
+        // OrderObserver's other two registered events (checkout_onepage_controller_success_action,
+        // adyen_payment_process_resulturl_after), both of which reload the Order from the database
+        // on a separate HTTP request, silently losing this data for online/redirect payment
+        // methods (bug fix, post-merge review, Bug B). OrderHelper::prepareOrder() now recomputes
+        // the determination fresh off the order's quote every time it runs instead - see that
+        // method and CheckoutFallbackService::buildVendorSourcedLinesMap().
 
         return $this;
     }
@@ -168,7 +199,7 @@ class DataAssignObserver implements ObserverInterface
      * @param $scopeId
      * @param $storeId
      * @param null $quote
-     * @return Phrase
+     * @return Phrase|null
      * @throws NoSuchEntityException
      * @throws GraphQlAuthorizationException
      * @throws GraphQlInputException
@@ -176,7 +207,6 @@ class DataAssignObserver implements ObserverInterface
      */
     public function storeInventoryCheck($maskedCartId, $userId, $scopeId, $storeId, $quote = null)
     {
-        $message = null;
         if (empty($storeId)) {
             return __('Please select a store to proceed.');
         }
@@ -188,20 +218,131 @@ class DataAssignObserver implements ObserverInterface
             $storeId,
             $quote
         );
+
         if (empty($this->checkoutSession->getNoManageStock())) {
-            if (!$stockCollection) {
-                $message = __('Oops! Unable to do stock lookup currently.');
+            // Only a genuine null (fetchCartAndReturnStock() couldn't perform the lookup at all)
+            // is a failure here - an empty array means there was simply nothing left needing a
+            // per-store check (e.g. a cart that is entirely vendor-sourced/unmanaged items once
+            // ticket 89358's manage_stock=0 gating lands), which is a legitimate "nothing to
+            // block on" outcome, not an error (bug fix, post-merge review, Bug A). This matches
+            // the same fix independently made on 89358/89359 for this exact line.
+            if ($stockCollection === null) {
+                return __('Oops! Unable to do stock lookup currently.');
             }
-            if ($stockCollection) {
-                foreach ($stockCollection as $stock) {
-                    if (!$stock['status']) {
-                        $message = __('Unable to use selected shipping method since some or all of the cart items are not available in selected store.');
-                    }
+
+            // Bug A fix (post-merge review, "C&C trigger gap"): once vendor-sourced products get
+            // manage_stock=0 (ticket 89358), they are silently excluded from $stockCollection
+            // altogether by StockHelper::getGivenItemsStockInGivenStore()'s per-item gate - never
+            // even a status=0 row - so hasZeroStockRow($stockCollection) alone would never see
+            // them and evaluate() would never run for an all-vendor-sourced (or vendor-sourced +
+            // all-in-stock) cart. Passing the quote's items through lets evaluate() independently
+            // re-discover and evaluate such items via the ungated stock check. $quote is only
+            // passed on the non-GraphQL call path today (see validateClickAndCollectOrder()),
+            // which deliberately doesn't trust a caller-supplied quote reference on the GraphQL
+            // path - resolve it the same trusted way fetchCartAndReturnStock() does internally
+            // (via $maskedCartId), so this fix also applies to GraphQL, not just the frontend.
+            $quoteItems = $quote
+                ? $quote->getAllVisibleItems()
+                : $this->resolveQuoteItemsFromMaskedCartId($maskedCartId);
+
+            if ($this->hasZeroStockRow($stockCollection) || !empty($quoteItems)) {
+                $fallbackResult = $this->checkoutFallbackService->evaluate(
+                    $stockCollection,
+                    VendorSourcingHelper::TYPE_COLLECT,
+                    $quoteItems,
+                    (string)$storeId
+                );
+
+                if ($fallbackResult->hasBlockedItems()) {
+                    return $this->buildBlockedStockMessage($fallbackResult->getBlockedVerdicts());
                 }
             }
         }
 
-        return $message;
+        return null;
+    }
+
+    /**
+     * Validate delivery/flatrate orders for vendor-sourcing fallback (FR7/FR9).
+     * No-ops immediately (zero extra calls) if the cart contains no vendor-sourcing-eligible item.
+     *
+     * @param $quote
+     * @return Phrase|null
+     */
+    public function validateDeliveryOrder($quote)
+    {
+        $items = $quote->getAllVisibleItems();
+
+        $fallbackResult = $this->checkoutFallbackService->evaluateDelivery($items);
+
+        if ($fallbackResult->hasBlockedItems()) {
+            return $this->buildBlockedStockMessage($fallbackResult->getBlockedVerdicts());
+        }
+
+        return null;
+    }
+
+    /**
+     * Whether any row in the given stock collection is out of stock
+     *
+     * @param array $stockCollection
+     * @return bool
+     */
+    private function hasZeroStockRow(array $stockCollection): bool
+    {
+        foreach ($stockCollection as $stock) {
+            if (!$stock['status']) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Resolve a quote's visible items from a masked cart id via the same trusted,
+     * server-side resolution {@see Data::fetchCartAndReturnStock()} uses internally - used for
+     * the GraphQL call path, which deliberately doesn't pass a caller-supplied $quote reference.
+     * Fails closed to an empty array (no additional vendor-sourcing items discovered beyond what
+     * $stockCollection already carries) rather than let a resolution failure abort checkout.
+     *
+     * @param string $maskedCartId
+     * @return array
+     */
+    private function resolveQuoteItemsFromMaskedCartId(string $maskedCartId): array
+    {
+        if (empty($maskedCartId)) {
+            return [];
+        }
+
+        try {
+            $quoteId = $this->maskedQuoteIdToQuoteId->execute($maskedCartId);
+            $quote = $this->cartRepository->get($quoteId);
+
+            return $quote->getAllVisibleItems();
+        } catch (\Throwable $e) {
+            $this->logger->error(
+                'Unable to resolve quote items for vendor sourcing check: ' . $e->getMessage()
+            );
+
+            return [];
+        }
+    }
+
+    /**
+     * Combine the per-item blocked verdict messages into a single Phrase
+     *
+     * @param ItemSourcingVerdict[] $blockedVerdicts
+     * @return Phrase
+     */
+    private function buildBlockedStockMessage(array $blockedVerdicts): Phrase
+    {
+        $messages = array_map(
+            static fn (ItemSourcingVerdict $verdict): string => (string)$verdict->getMessage(),
+            $blockedVerdicts
+        );
+
+        return __(implode("\n", $messages));
     }
 
     /**

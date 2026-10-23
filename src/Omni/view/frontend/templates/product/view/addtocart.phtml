@@ -34,6 +34,7 @@ $viewModel = $block->getViewModel();
             <div class="actions">
                 <?php if ($isEnableCheck) : ?>
                     <?= $block->getBlockHtml('ls.omni.product.availability'); ?>
+                    <?= $block->getBlockHtml('ls.omni.product.vendor.sourcing'); ?>
                 <?php endif; ?>
                 <button type="submit"
                         title="<?= /* @escapeNotVerified */
