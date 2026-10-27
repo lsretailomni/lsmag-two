@@ -67,6 +67,12 @@ $cols = $checkIsShipment ? 3 : 5;
             <?php if (!empty($discountInfo)): ?>
                 <p class="mt-1"><strong><?= /* @noEscape */ $discountInfo[0] ?></strong></p>
             <?php endif; ?>
+            <?php if ($estimatedDeliveryTime = $block->getEstimatedDeliveryTime()): ?>
+                <div class="estimated-delivery-time text-sm flex mt-1">
+                    <span><?= $escaper->escapeHtml(__('Estimated Delivery Time')) ?>:</span>
+                    <span class="ml-1"><?= $escaper->escapeHtml($estimatedDeliveryTime) ?></span>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -116,6 +122,11 @@ $cols = $checkIsShipment ? 3 : 5;
         <p class="lg:sr-only font-medium"><?= $escaper->escapeHtml(__('Qty')) ?></p>
         <div class="text-right lg:text-left">
             <?= /* @noEscape */ $block->getFormattedQty($_item->getQuantity()) ?>
+            <?php if (($quantityReceived = $block->getQuantityReceived()) !== null): ?>
+                <p class="qty-received text-sm mt-1">
+                    <?= $escaper->escapeHtml(__('Received')) ?>: <?= $escaper->escapeHtml($quantityReceived) ?>
+                </p>
+            <?php endif; ?>
         </div>
     </div>
 

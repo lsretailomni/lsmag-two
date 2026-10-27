@@ -55,6 +55,12 @@ $_item->getItemId() ?>">
         <?php if (!empty($discountInfo)): ?>
             <p><strong><?= /* @noEscape */ $discountInfo[0]; ?></strong></p>
         <?php endif; ?>
+        <?php if ($estimatedDeliveryTime = $block->getEstimatedDeliveryTime()): ?>
+            <p class="estimated-delivery-time">
+                <strong><?= $escaper->escapeHtml(__('Estimated Delivery Time')) ?>:</strong>
+                <?= $escaper->escapeHtml($estimatedDeliveryTime) ?>
+            </p>
+        <?php endif; ?>
     </td>
     <td class="col sku" data-th="<?= /* @noEscape */ __('SKU') ?>"><?= /* @noEscape */ $sku ?></td>
     <?php if (!$checkIsShipment): ?>
@@ -100,6 +106,11 @@ $_item->getItemId() ?>">
     <?php endif; ?>
     <td class="col qty" data-th="<?= /* @noEscape */ __('Qty') ?>">
         <?= /* @noEscape */ $block->getFormattedQty($_item->getQuantity()); ?>
+        <?php if (($quantityReceived = $block->getQuantityReceived()) !== null): ?>
+            <p class="qty-received">
+                <?= $escaper->escapeHtml(__('Received')) ?>: <?= $escaper->escapeHtml($quantityReceived) ?>
+            </p>
+        <?php endif; ?>
     </td>
     <?php if (!$checkIsShipment): ?>
         <td class="col subtotal" data-th="<?= /* @noEscape */ __('Subtotal') ?>">
