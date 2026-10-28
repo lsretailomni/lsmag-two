@@ -51,6 +51,8 @@
     <!-- hiding payment method on order total zero -->
     <event name="payment_method_is_active">
         <observer name="Ls_Omni_Payment_Method_Is_Active" instance="Ls\Omni\Observer\HidePaymentMethods"/>
+        <!-- must stay after HidePaymentMethods: vendor sourced items force online prepayment -->
+        <observer name="Ls_Omni_Vendor_Sourced_Prepayment" instance="Ls\Omni\Observer\EnforcePrepaymentForVendorSourcedItems"/>
     </event>
     <!-- Adding onesignal js file -->
     <event name="layout_load_before">

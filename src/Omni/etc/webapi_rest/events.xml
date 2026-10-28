@@ -4,6 +4,8 @@
     <!-- hiding payment method on order total zero -->
     <event name="payment_method_is_active">
         <observer name="Ls_Omni_Payment_Method_Is_Active" instance="Ls\Omni\Observer\HidePaymentMethods"/>
+        <!-- must stay after HidePaymentMethods: vendor sourced items force online prepayment -->
+        <observer name="Ls_Omni_Vendor_Sourced_Prepayment" instance="Ls\Omni\Observer\EnforcePrepaymentForVendorSourcedItems"/>
     </event>
     <event name="sales_quote_product_add_after">
         <observer name="CartObserver" instance="Ls\Omni\Observer\CartObserver"/>
