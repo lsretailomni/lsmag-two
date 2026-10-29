@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Ls\Customer\Block\Order\Item\Custom;
 
+use \Ls\Omni\Client\CentralEcommerce\Entity\LSCMemberSalesDocLine;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Model\VendorSourcing\LeadTimeParser;
@@ -19,10 +20,6 @@ use Magento\Tax\Model\Config as TaxConfig;
 
 class Renderer extends DefaultRenderer
 {
-    private const LEAD_TIME_KEY = 'Lead Time';
-
-    private const QUANTITY_RECEIVED_KEY = 'Quantity Received';
-
     /**
      * @var string
      */
@@ -152,8 +149,8 @@ class Renderer extends DefaultRenderer
     {
         $item = $this->getItem();
 
-        if (trim((string)$item->getData(self::LEAD_TIME_KEY)) !== '' ||
-            (float)$item->getData(self::QUANTITY_RECEIVED_KEY) > 0
+        if (trim((string)$item->getData(LSCMemberSalesDocLine::LEAD_TIME)) !== '' ||
+            (float)$item->getData(LSCMemberSalesDocLine::QUANTITY_RECEIVED) > 0
         ) {
             return $item;
         }
@@ -187,7 +184,8 @@ class Renderer extends DefaultRenderer
      */
     public function getEstimatedDeliveryTime()
     {
-        $days = (new LeadTimeParser())->parse((string)$this->getSourcingLine()->getData(self::LEAD_TIME_KEY));
+        $leadTime = (string)$this->getSourcingLine()->getData(LSCMemberSalesDocLine::LEAD_TIME);
+        $days = (new LeadTimeParser())->parse($leadTime);
 
         if (!$days) {
             return null;
@@ -204,9 +202,9 @@ class Renderer extends DefaultRenderer
     public function getQuantityReceived()
     {
         $item     = $this->getSourcingLine();
-        $received = (float)$item->getData(self::QUANTITY_RECEIVED_KEY);
+        $received = (float)$item->getData(LSCMemberSalesDocLine::QUANTITY_RECEIVED);
 
-        if ($received <= 0 && trim((string)$item->getData(self::LEAD_TIME_KEY)) === '') {
+        if ($received <= 0 && trim((string)$item->getData(LSCMemberSalesDocLine::LEAD_TIME)) === '') {
             return null;
         }
 
