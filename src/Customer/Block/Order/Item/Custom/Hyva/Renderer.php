@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace Ls\Customer\Block\Order\Item\Custom\Hyva;
 
-use Ls\Omni\Client\CentralEcommerce\Entity\LSCMemberSalesDocLine;
-use Ls\Omni\Helper\ItemHelper;
-use Ls\Omni\Helper\OrderHelper;
-use Ls\Omni\Model\VendorSourcing\LeadTimeParser;
+use \Ls\Omni\Client\CentralEcommerce\Entity\LSCMemberSalesDocLine;
+use \Ls\Omni\Helper\ItemHelper;
+use \Ls\Omni\Helper\OrderHelper;
+use \Ls\Omni\Model\VendorSourcing\LeadTimeParser;
 use Magento\Catalog\Model\Product\OptionFactory;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
