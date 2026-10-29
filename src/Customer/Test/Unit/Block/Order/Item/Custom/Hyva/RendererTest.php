@@ -193,8 +193,8 @@ class RendererTest extends TestCase
             LSCMemberSalesDocLine::NUMBER => $number,
             LSCMemberSalesDocLine::VARIANT_CODE => '',
             LSCMemberSalesDocLine::UNIT_OF_MEASURE => 'PCS',
-            'Lead Time' => $leadTime,
-            'Quantity Received' => $quantityReceived
+            LSCMemberSalesDocLine::LEAD_TIME => $leadTime,
+            LSCMemberSalesDocLine::QUANTITY_RECEIVED => $quantityReceived
         ]);
 
         return $line;

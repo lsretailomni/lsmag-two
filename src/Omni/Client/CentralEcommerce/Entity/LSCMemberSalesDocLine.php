@@ -25,6 +25,7 @@ class LSCMemberSalesDocLine extends AbstractModel
     public const ENTRY_TYPE = 'Entry Type';
     public const EXTERNAL_ID = 'External ID';
     public const IMAGE_ID = 'Image Id';
+    public const LEAD_TIME = 'Lead Time';
     public const LINE_NO = 'Line No.';
     public const NET_AMOUNT = 'Net Amount';
     public const NET_PRICE = 'Net Price';
@@ -34,6 +35,7 @@ class LSCMemberSalesDocLine extends AbstractModel
     public const POS_TERMINAL_NO = 'POS Terminal No.';
     public const PRICE = 'Price';
     public const QUANTITY = 'Quantity';
+    public const QUANTITY_RECEIVED = 'Quantity Received';
     public const STORE_NAME = 'Store Name';
     public const STORE_NO = 'Store No.';
     public const TRANSACTION_NO = 'Transaction No.';
@@ -57,6 +59,7 @@ class LSCMemberSalesDocLine extends AbstractModel
 	self::ENTRY_TYPE => 'entry_type',
 	self::EXTERNAL_ID => 'external_id',
 	self::IMAGE_ID => 'image_id',
+	self::LEAD_TIME => 'lead_time',
 	self::LINE_NO => 'line_no',
 	self::NET_AMOUNT => 'net_amount',
 	self::NET_PRICE => 'net_price',
@@ -66,6 +69,7 @@ class LSCMemberSalesDocLine extends AbstractModel
 	self::POS_TERMINAL_NO => 'pos_terminal_no',
 	self::PRICE => 'price',
 	self::QUANTITY => 'quantity',
+	self::QUANTITY_RECEIVED => 'quantity_received',
 	self::STORE_NAME => 'store_name',
 	self::STORE_NO => 'store_no',
 	self::TRANSACTION_NO => 'transaction_no',
@@ -221,6 +225,16 @@ class LSCMemberSalesDocLine extends AbstractModel
         return $this->setData(self::IMAGE_ID, $value);
     }
 
+    public function getLeadTime(): ?string
+    {
+        return $this->getData(self::LEAD_TIME);
+    }
+
+    public function setLeadTime(?string $value)
+    {
+        return $this->setData(self::LEAD_TIME, $value);
+    }
+
     public function getLineNo(): ?int
     {
         return $this->getData(self::LINE_NO);
@@ -309,6 +323,16 @@ class LSCMemberSalesDocLine extends AbstractModel
     public function setQuantity(?float $value)
     {
         return $this->setData(self::QUANTITY, $value);
+    }
+
+    public function getQuantityReceived(): ?float
+    {
+        return $this->getData(self::QUANTITY_RECEIVED);
+    }
+
+    public function setQuantityReceived(?float $value)
+    {
+        return $this->setData(self::QUANTITY_RECEIVED, $value);
     }
 
     public function getStoreName(): ?string
