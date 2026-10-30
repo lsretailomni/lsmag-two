@@ -34,7 +34,7 @@ class ZeroStockEverywhereResolver
                 continue;
             }
 
-            foreach ($allStoreResponse->getInventorybufferout() as $bufferRow) {
+            foreach ($allStoreResponse->getInventorybufferout() ?? [] as $bufferRow) {
                 if ($bufferRow->getNumber() == $row['item_id'] &&
                     $bufferRow->getVariant() == $row['variant_id'] &&
                     ceil($bufferRow->getInventory()) >= $row['qty']
