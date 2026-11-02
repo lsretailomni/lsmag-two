@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace Ls\Customer\Block\Order\Item\Custom;
 
+use \Ls\Omni\Client\CentralEcommerce\Entity\LSCMemberSalesDocLine;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\OrderHelper;
+use \Ls\Omni\Model\VendorSourcing\LeadTimeParser;
 use Magento\Catalog\Model\Product\OptionFactory;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -132,6 +134,81 @@ class Renderer extends DefaultRenderer
     public function getItem()
     {
         return $this->getData('item');
+    }
+
+    /**
+     * Get the line holding the Central lead time / received qty for the current item
+     *
+     * Once an order is completed Central returns the posted receipt line (no lead time) next to the
+     * original customer order line (which carries it), so fall back to the same product's line of
+     * the other document, matched by position among lines of the same product.
+     *
+     * @return DataObject
+     */
+    private function getSourcingLine()
+    {
+        $item = $this->getItem();
+
+        if (trim((string)$item->getData(LSCMemberSalesDocLine::LEAD_TIME)) !== '' ||
+            (float)$item->getData(LSCMemberSalesDocLine::QUANTITY_RECEIVED) > 0
+        ) {
+            return $item;
+        }
+
+        $order = $this->orderHelper->getOrder(true);
+        $lines = $order ? $order->getLscMemberSalesDocLine() : [];
+        $lines = is_array($lines) ? $lines : ($lines ? [$lines] : []);
+        $matches = static fn ($line, $sameDocument) => $line->getEntryType() == 0 &&
+            $line->getNumber() == $item->getNumber() &&
+            $line->getVariantCode() == $item->getVariantCode() &&
+            $line->getUnitOfMeasure() == $item->getUnitOfMeasure() &&
+            ($line->getDocumentId() == $item->getDocumentId()) === $sameDocument;
+
+        $position = 0;
+        foreach (array_filter($lines, fn ($line) => $matches($line, true)) as $line) {
+            if ($line === $item || $line->getLineNo() == $item->getLineNo()) {
+                break;
+            }
+            $position++;
+        }
+
+        $others = array_values(array_filter($lines, fn ($line) => $matches($line, false)));
+
+        return $others[$position] ?? $item;
+    }
+
+    /**
+     * Get the estimated delivery time of the order line, derived from the Central lead time
+     *
+     * @return Phrase|null
+     */
+    public function getEstimatedDeliveryTime()
+    {
+        $leadTime = (string)$this->getSourcingLine()->getData(LSCMemberSalesDocLine::LEAD_TIME);
+        $days = (new LeadTimeParser())->parse($leadTime);
+
+        if (!$days) {
+            return null;
+        }
+
+        return $days === 1 ? __('1 day') : __('%1 days', $days);
+    }
+
+    /**
+     * Get the received quantity of the order line, only for lines that have a lead time or received qty
+     *
+     * @return string|null
+     */
+    public function getQuantityReceived()
+    {
+        $item     = $this->getSourcingLine();
+        $received = (float)$item->getData(LSCMemberSalesDocLine::QUANTITY_RECEIVED);
+
+        if ($received <= 0 && trim((string)$item->getData(LSCMemberSalesDocLine::LEAD_TIME)) === '') {
+            return null;
+        }
+
+        return $this->getFormattedQty($received);
     }
 
     /**
