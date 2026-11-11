@@ -381,7 +381,7 @@ class DataProvider implements ConfigProviderInterface
      */
     public function filterClickAndCollectStores(&$response, array $clickNCollectStoresIds)
     {
-        $inventoryRecords = $response->getInventorybufferout();
+        $inventoryRecords = $response->getInventorybufferout() ?? [];
 
         foreach ($inventoryRecords as $index => $item) {
             if ($item && !in_array($item->getStore(), $clickNCollectStoresIds)) {
@@ -489,7 +489,7 @@ class DataProvider implements ConfigProviderInterface
 
         if ($response) {
             foreach ($normalRows as $row) {
-                foreach ($response->getInventorybufferout() as $responseItem) {
+                foreach ($response->getInventorybufferout() ?? [] as $responseItem) {
                     if ($responseItem->getNumber() == $row['item_id'] &&
                         $responseItem->getVariant() == $row['variant_id'] &&
                         ceil($responseItem->getInventory()) < $row['qty']
@@ -525,7 +525,7 @@ class DataProvider implements ConfigProviderInterface
      */
     public function removeAllOccurrenceOfGivenStore(&$response, string $storeId)
     {
-        $inventoryRecords = $response->getInventorybufferout();
+        $inventoryRecords = $response->getInventorybufferout() ?? [];
 
         foreach ($inventoryRecords as $index => $responseItem) {
             if ($responseItem->getStore() == $storeId) {
@@ -546,7 +546,7 @@ class DataProvider implements ConfigProviderInterface
     {
         $responseItems = [];
 
-        foreach ($response->getInventorybufferout() as $responseItem) {
+        foreach ($response->getInventorybufferout() ?? [] as $responseItem) {
             $responseItems[] = $responseItem->getStore();
         }
 
