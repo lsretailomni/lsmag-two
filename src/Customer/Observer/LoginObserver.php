@@ -62,7 +62,15 @@ class LoginObserver extends AbstractOmniObserver
                     }
                     if ($result instanceof RootMemberLogon) {
                         if ($isEmail === false && !$search) {
-                            $search = $this->contactHelper->search(current($result->getMembercontact())->getEMail());
+                            $search = $this->contactHelper->getCentralCustomerByUsername($username);
+                            if (!$search) {
+                                $centralEmail = current($result->getMembercontact())->getEMail();
+                                $search = $centralEmail ? $this->contactHelper->search($centralEmail) : null;
+                            }
+                        }
+                        if (!$search || !$search->getLscMemberContact()) {
+                            $errorMessage = __('Sorry! Unable to retrieve your account details. Please try again.');
+                            return $this->handleErrorMessage($observer, $errorMessage);
                         }
                         $this->contactHelper->processCustomerLogin($search, $login, $isEmail);
                     } else {
