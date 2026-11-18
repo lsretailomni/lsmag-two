@@ -87,29 +87,31 @@ class LoyaltyHelper extends AbstractHelperOmni
             $this->_logger->error($e->getMessage());
         }
         if (!empty($response) && $response->getResponseCode() == '0000') {
-            $this->cacheHelper->persistContentInCache(
-                $cacheId,
-                [
-                    "image"        => $response->getRecords()[0]->getTenantMedia()->getContent(),
-                    "format"       => $response->getRecords()[0]->getTenantMedia()->getMimeType(),
-                    "width"        => $response->getRecords()[0]->getTenantMedia()->getWidth(),
-                    "height"       => $response->getRecords()[0]->getTenantMedia()->getHeight(),
-                    "description"  => $response->getRecords()[0]->getTenantMedia()->getDescription(),
-                    "location"     => "",
-                    "locationType" => ""
-                ],
-                [Type::CACHE_TAG],
-                604800
-            );
-            return [
-                "image"        => $response->getRecords()[0]->getTenantMedia()->getContent(),
-                "format"       => $response->getRecords()[0]->getTenantMedia()->getMimeType(),
-                "width"        => $response->getRecords()[0]->getTenantMedia()->getWidth(),
-                "height"       => $response->getRecords()[0]->getTenantMedia()->getHeight(),
-                "description"  => $response->getRecords()[0]->getTenantMedia()->getDescription(),
+            $records     = $response->getRecords();
+            $tenantMedia = !empty($records) ? $records[0]->getTenantMedia() : null;
+
+            if ($tenantMedia === null) {
+                $this->_logger->debug("No tenant media found for image " . $cacheId);
+                return [];
+            }
+
+            $imageData = [
+                "image"        => $tenantMedia->getContent(),
+                "format"       => $tenantMedia->getMimeType(),
+                "width"        => $tenantMedia->getWidth(),
+                "height"       => $tenantMedia->getHeight(),
+                "description"  => $tenantMedia->getDescription(),
                 "location"     => "",
                 "locationType" => ""
             ];
+
+            $this->cacheHelper->persistContentInCache(
+                $cacheId,
+                $imageData,
+                [Type::CACHE_TAG],
+                604800
+            );
+            return $imageData;
         }
         return [];
     }
