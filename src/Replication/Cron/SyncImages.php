@@ -393,7 +393,10 @@ class SyncImages extends ProductCreateTask
             } else {
                 $existingFilePath    = array_search($hash, $this->imageHashes);
 
-                if ($filePath != $existingFilePath && $this->imageExists($existingFilePath)) {
+                if ($existingFilePath !== false
+                    && $filePath != $existingFilePath
+                    && $this->imageExists($existingFilePath)
+                ) {
                     $this->updateMediaPaths('catalog_product_entity_varchar', $existingFilePath, $filePath);
                     $this->updateMediaPaths('catalog_product_entity_media_gallery', $existingFilePath, $filePath);
 
@@ -470,6 +473,9 @@ class SyncImages extends ProductCreateTask
         $connection                     = $this->resourceConnection->getConnection();
         $catalogEntityMediaGalleryValue = $this->resourceConnection
             ->getTableName($tableName);
+        $entityIdColumn                 = $this->replicationHelper->getEntityIdColumnName(
+            $catalogEntityMediaGalleryValue
+        );
         try {
             $connection->startSetup();
 
@@ -477,7 +483,7 @@ class SyncImages extends ProductCreateTask
                 $catalogEntityMediaGalleryValue,
                 [
                     'value_id NOT IN (?)' => $mediaEntries,
-                    'entity_id = (?)' => $productId
+                    "$entityIdColumn = (?)" => $productId
                 ]
             );
             $connection->endSetup();
