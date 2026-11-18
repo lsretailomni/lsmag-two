@@ -480,7 +480,7 @@ class SyncImages extends ProductCreateTask
                 $catalogEntityMediaGalleryValue,
                 [
                     'value_id NOT IN (?)' => $mediaEntries,
-                    'entity_id = (?)' => $productId
+                    'row_id = (?)' => $productId
                 ]
             );
             $connection->endSetup();
