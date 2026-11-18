@@ -125,6 +125,12 @@ class ReplicationHelper extends AbstractHelper
         ],
         'catalog_category_entity'         => [
             'entity_id' => 'row_id'
+        ],
+        'catalog_product_entity_media_gallery_value_to_entity' => [
+            'entity_id' => 'row_id'
+        ],
+        'catalog_product_entity_media_gallery_value' => [
+            'entity_id' => 'row_id'
         ]
     ];
 
@@ -2193,6 +2199,26 @@ class ReplicationHelper extends AbstractHelper
         }
 
         return $whereClause;
+    }
+
+    /**
+     * Get the entity identifier column name for a given table, accounting for
+     * Commerce/Enterprise tables that key off row_id instead of entity_id
+     *
+     * @param string $tableName already-prefixed table name
+     * @return string
+     */
+    public function getEntityIdColumnName($tableName)
+    {
+        $columnsMapping = $this->getMappingColumns();
+
+        if ($this->productMetadata->getEdition() != ProductMetadata::EDITION_NAME &&
+            isset($columnsMapping[$tableName]['entity_id'])
+        ) {
+            return $columnsMapping[$tableName]['entity_id'];
+        }
+
+        return 'entity_id';
     }
 
     /**

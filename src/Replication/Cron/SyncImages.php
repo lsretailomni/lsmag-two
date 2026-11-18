@@ -473,6 +473,9 @@ class SyncImages extends ProductCreateTask
         $connection                     = $this->resourceConnection->getConnection();
         $catalogEntityMediaGalleryValue = $this->resourceConnection
             ->getTableName($tableName);
+        $entityIdColumn                 = $this->replicationHelper->getEntityIdColumnName(
+            $catalogEntityMediaGalleryValue
+        );
         try {
             $connection->startSetup();
 
@@ -480,7 +483,7 @@ class SyncImages extends ProductCreateTask
                 $catalogEntityMediaGalleryValue,
                 [
                     'value_id NOT IN (?)' => $mediaEntries,
-                    'row_id = (?)' => $productId
+                    "$entityIdColumn = (?)" => $productId
                 ]
             );
             $connection->endSetup();
