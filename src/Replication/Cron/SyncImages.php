@@ -393,7 +393,10 @@ class SyncImages extends ProductCreateTask
             } else {
                 $existingFilePath    = array_search($hash, $this->imageHashes);
 
-                if ($filePath != $existingFilePath && $this->imageExists($existingFilePath)) {
+                if ($existingFilePath !== false
+                    && $filePath != $existingFilePath
+                    && $this->imageExists($existingFilePath)
+                ) {
                     $this->updateMediaPaths('catalog_product_entity_varchar', $existingFilePath, $filePath);
                     $this->updateMediaPaths('catalog_product_entity_media_gallery', $existingFilePath, $filePath);
 
