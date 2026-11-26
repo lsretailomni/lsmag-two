@@ -14,6 +14,11 @@ use Ls\Omni\Exception\InvalidEnumException;
 class HierarchyLeaf extends HierarchyPoint
 {
     /**
+     * @property ArrayOfUnitOfMeasure $ItemUOMs
+     */
+    protected $ItemUOMs = null;
+
+    /**
      * @property ArrayOfItemModifier $Modifiers
      */
     protected $Modifiers = null;
@@ -37,6 +42,11 @@ class HierarchyLeaf extends HierarchyPoint
      * @property int $DealLineNo
      */
     protected $DealLineNo = null;
+
+    /**
+     * @property string $DisplayPrompt
+     */
+    protected $DisplayPrompt = null;
 
     /**
      * @property string $ItemNo
@@ -89,9 +99,22 @@ class HierarchyLeaf extends HierarchyPoint
     protected $Type = null;
 
     /**
-     * @property string $VariantCode
+     * @param ArrayOfUnitOfMeasure $ItemUOMs
+     * @return $this
      */
-    protected $VariantCode = null;
+    public function setItemUOMs($ItemUOMs)
+    {
+        $this->ItemUOMs = $ItemUOMs;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfUnitOfMeasure
+     */
+    public function getItemUOMs()
+    {
+        return $this->ItemUOMs;
+    }
 
     /**
      * @param ArrayOfItemModifier $Modifiers
@@ -181,6 +204,24 @@ class HierarchyLeaf extends HierarchyPoint
     public function getDealLineNo()
     {
         return $this->DealLineNo;
+    }
+
+    /**
+     * @param string $DisplayPrompt
+     * @return $this
+     */
+    public function setDisplayPrompt($DisplayPrompt)
+    {
+        $this->DisplayPrompt = $DisplayPrompt;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisplayPrompt()
+    {
+        return $this->DisplayPrompt;
     }
 
     /**
@@ -371,24 +412,6 @@ class HierarchyLeaf extends HierarchyPoint
     public function getType()
     {
         return $this->Type;
-    }
-
-    /**
-     * @param string $VariantCode
-     * @return $this
-     */
-    public function setVariantCode($VariantCode)
-    {
-        $this->VariantCode = $VariantCode;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getVariantCode()
-    {
-        return $this->VariantCode;
     }
 }
 

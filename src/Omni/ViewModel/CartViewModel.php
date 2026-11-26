@@ -65,13 +65,45 @@ class CartViewModel implements ArgumentInterface
      * Get Item row total
      *
      * @param $item
+     * @param bool|null $inclTax Force tax-inclusive (true) or tax-exclusive (false) amounts;
+     *                           null (default) follows the "Display Cart Subtotal" tax config.
      * @return string
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
-    public function getItemRowTotal($item)
+    public function getItemRowTotal($item, $inclTax = null)
     {
-        return $this->basketHelper->getItemRowTotal($item);
+        return $this->basketHelper->getItemRowTotal($item, $inclTax);
+    }
+
+    /**
+     * Whether cart item price/subtotal should be displayed including tax
+     *
+     * @return bool
+     */
+    public function isCartItemPriceInclTax(): bool
+    {
+        return $this->basketHelper->isCartItemPriceInclTax();
+    }
+
+    /**
+     * Whether cart item price/subtotal should be displayed excluding tax
+     *
+     * @return bool
+     */
+    public function isCartItemPriceExclTax(): bool
+    {
+        return $this->basketHelper->isCartItemPriceExclTax();
+    }
+
+    /**
+     * Whether cart item price/subtotal should be displayed both including and excluding tax
+     *
+     * @return bool
+     */
+    public function isCartItemPriceBothTax(): bool
+    {
+        return $this->basketHelper->isCartItemPriceBothTax();
     }
 
     /**
@@ -91,13 +123,15 @@ class CartViewModel implements ArgumentInterface
      * Get Item price including custom options price
      *
      * @param $item
+     * @param bool|null $inclTax Force tax-inclusive (true) or tax-exclusive (false) amounts;
+     *                           null (default) follows the "Display Cart Subtotal" tax config.
      * @return string
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
-    public function getItemPriceIncludeCustomOptions($item)
+    public function getItemPriceIncludeCustomOptions($item, $inclTax = null)
     {
-        return $this->basketHelper->getPrice($item);
+        return $this->basketHelper->getPrice($item, $inclTax);
     }
 
     /**

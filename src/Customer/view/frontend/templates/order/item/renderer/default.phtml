@@ -60,14 +60,34 @@ if (!empty($discountInfo)) {
     </td>
     <td class="col price" data-th="<?= $escaper->escapeHtml(__('Price')) ?>">
         <?php if ($line && !empty($line->getDiscountAmount()) && $line->getDiscountAmount() > 0) : ?>
-            <?= $viewModel->getFormattedPrice($line->getAmount()); ?>
-            <div class="lsdiscountprice2">
-                <span><?= $viewModel->getFormattedPrice($line->getPrice() * $_item->getQtyOrdered()); ?></span></div>
+            <?php if ($viewModel->isDisplaySalesPricesInclTax() || $viewModel->isDisplaySalesPricesBoth()): ?>
+                <span class="price-including-tax" data-label="<?= $escaper->escapeHtml(__('Incl. Tax')) ?>">
+                    <?= $viewModel->getFormattedPrice($line->getAmount()); ?>
+                    <div class="lsdiscountprice2">
+                        <span><?= $viewModel->getFormattedPrice($line->getPrice() * $_item->getQtyOrdered()); ?></span></div>
+                </span>
+            <?php endif; ?>
+            <?php if ($viewModel->isDisplaySalesPricesExclTax() || $viewModel->isDisplaySalesPricesBoth()): ?>
+                <span class="price-excluding-tax" data-label="<?= $escaper->escapeHtml(__('Excl. Tax')) ?>">
+                    <?= $viewModel->getFormattedPrice($line->getNetAmount()); ?>
+                    <div class="lsdiscountprice2">
+                        <span><?= $viewModel->getFormattedPrice($line->getNetPrice() * $_item->getQtyOrdered()); ?></span></div>
+                </span>
+            <?php endif; ?>
             <div class="lsdiscountamount">
                 <?= '(' . __('Save') . ' ' . $viewModel->getFormattedPrice($line->getDiscountAmount()) . ')'; ?>
             </div>
         <?php else: ?>
-            <?= $viewModel->getFormattedPrice($block->getItem()->getPrice()) ?>
+            <?php if ($viewModel->isDisplaySalesPricesInclTax() || $viewModel->isDisplaySalesPricesBoth()): ?>
+                <span class="price-including-tax" data-label="<?= $escaper->escapeHtml(__('Incl. Tax')) ?>">
+                    <?= $viewModel->getFormattedPrice($block->getItem()->getRowTotalInclTax()) ?>
+                </span>
+            <?php endif; ?>
+            <?php if ($viewModel->isDisplaySalesPricesExclTax() || $viewModel->isDisplaySalesPricesBoth()): ?>
+                <span class="price-excluding-tax" data-label="<?= $escaper->escapeHtml(__('Excl. Tax')) ?>">
+                    <?= $viewModel->getFormattedPrice($block->getItem()->getRowTotal()) ?>
+                </span>
+            <?php endif; ?>
         <?php endif; ?>
     </td>
     <td class="col qty" data-th="<?= $escaper->escapeHtml(__('Qty')) ?>">
@@ -82,9 +102,27 @@ if (!empty($discountInfo)) {
     </td>
     <td class="col subtotal" data-th="<?= $escaper->escapeHtml(__('Subtotal')) ?>">
         <?php if($line) : ?>
-            <?= $viewModel->getFormattedPrice($line->getAmount()) ?>
+            <?php if ($viewModel->isDisplaySalesSubtotalInclTax() || $viewModel->isDisplaySalesSubtotalBoth()): ?>
+                <span class="price-including-tax" data-label="<?= $escaper->escapeHtml(__('Incl. Tax')) ?>">
+                    <?= $viewModel->getFormattedPrice($line->getAmount()) ?>
+                </span>
+            <?php endif; ?>
+            <?php if ($viewModel->isDisplaySalesSubtotalExclTax() || $viewModel->isDisplaySalesSubtotalBoth()): ?>
+                <span class="price-excluding-tax" data-label="<?= $escaper->escapeHtml(__('Excl. Tax')) ?>">
+                    <?= $viewModel->getFormattedPrice($line->getNetAmount()) ?>
+                </span>
+            <?php endif; ?>
         <?php else : ?>
-        <?= $viewModel->getFormattedPrice($block->getItem()->getRowTotal()) ?>
+            <?php if ($viewModel->isDisplaySalesSubtotalInclTax() || $viewModel->isDisplaySalesSubtotalBoth()): ?>
+                <span class="price-including-tax" data-label="<?= $escaper->escapeHtml(__('Incl. Tax')) ?>">
+                    <?= $viewModel->getFormattedPrice($block->getItem()->getRowTotalInclTax()) ?>
+                </span>
+            <?php endif; ?>
+            <?php if ($viewModel->isDisplaySalesSubtotalExclTax() || $viewModel->isDisplaySalesSubtotalBoth()): ?>
+                <span class="price-excluding-tax" data-label="<?= $escaper->escapeHtml(__('Excl. Tax')) ?>">
+                    <?= $viewModel->getFormattedPrice($block->getItem()->getRowTotal()) ?>
+                </span>
+            <?php endif; ?>
         <?php endif; ?>
     </td>
 </tr>

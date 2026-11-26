@@ -92,6 +92,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     const SC_REPLICATION_DEFAULT_STOP_FPC_PURGE = 'ls_mag/replication/stop_fpc_purge_on_index';
     const SC_REPLICATION_DEFAULT_BATCHSIZE = 'ls_mag/replication/default_batch_size';
+    const SC_REPLICATION_BATCH_UPSERT_ENABLED = 'ls_mag/replication/batch_upsert_enabled';
     const SC_REPLICATION_PRODUCT_BATCHSIZE = 'ls_mag/replication/product_batch_size';
     const SC_REPLICATION_PRODUCT_ATTRIBUTE_BATCH_SIZE = 'ls_mag/replication/product_attribute_batch_size';
     const SC_REPLICATION_DISCOUNT_BATCH_SIZE = 'ls_mag/replication/discount_batch_size';
@@ -103,6 +104,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_PRODUCT_ASSIGNMENT_TO_CATEGORY_BATCH_SIZE =
         'ls_mag/replication/product_assignment_to_category_batch_size';
     const SC_REPLICATION_ALL_STORES_ITEMS = 'ls_mag/replication/replicate_all_stores_items';
+    const SC_REPLICATION_USE_SALES_PRICE = 'ls_mag/replication/use_sales_price';
     const SC_REPLICATION_MANUAL_CRON_GRID_DEFAULT_WEBSITE = 'ls_mag/replication/manual_cron_grid_default_website';
     const SC_REPLICATION_IDENTICAL_TABLE_WEB_SERVICE_LIST = 'ls_mag/replication/identical_table_web_service_list';
     const SC_REPLICATION_ATTRIBUTE_SETS_MECHANISM = 'ls_mag/replication/attribute_sets_mechanism';
@@ -426,6 +428,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_CUSTOMER_INTEGRATION_ACTIVE = 'ls_mag/standalone_integration/customer';
     const LS_BASKET_INTEGRATION_ACTIVE = 'ls_mag/standalone_integration/basket';
     const LS_ORDER_INTEGRATION_ACTIVE = 'ls_mag/standalone_integration/order';
+    const LS_ADMIN_ORDER_CUSTOM_PRICE_ACTIVE = 'ls_mag/standalone_integration/admin_order_custom_price';
     //Basket Calculation
     const LS_PLACE_TO_SYNC_BASKET_CALCULATION = 'ls_mag/ls_basket_calculation/place_to_sync';
     const LS_BASKET_CALCULATION_SHIP_TO_PARAMS = 'ls_mag/ls_basket_calculation/ship_to_params';
@@ -1168,6 +1171,22 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * Returns whether admin-created orders should bypass OneList price calculation
+     * and send Magento's own (possibly custom) item prices to LS Central instead.
+     *
+     * Deliberately uses the store-scoped getStoreConfig() helper (not the non-scoped
+     * scopeConfig->getValue() pattern used by getOrderIntegrationOnFrontend()), since this field is
+     * store-view scoped.
+     *
+     * @param int|bool $storeId
+     * @return bool
+     */
+    public function isAdminOrderCustomPriceActive($storeId = false): bool
+    {
+        return (bool)$this->getStoreConfig(self::LS_ADMIN_ORDER_CUSTOM_PRICE_ACTIVE, $storeId);
+    }
+
+    /**
      * Returns configured value for fpc purge
      *
      * @return bool
@@ -1235,6 +1254,22 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             self::LSR_DISCOUNT_VALIDATION_ACTIVE,
             $this->storeManager->getStore()->getId()
         );
+    }
+
+    /**
+     * Whether price replication should use the legacy sales-price unique key.
+     *
+     * @param int|bool $scopeId
+     * @param string $scopeType
+     * @return bool
+     */
+    public function isUseSalesPriceEnabled($scopeId = false, $scopeType = ScopeInterface::SCOPE_WEBSITES)
+    {
+        if ($scopeId) {
+            return $this->scopeConfig->isSetFlag(self::SC_REPLICATION_USE_SALES_PRICE, $scopeType, $scopeId);
+        }
+
+        return $this->scopeConfig->isSetFlag(self::SC_REPLICATION_USE_SALES_PRICE);
     }
 
     /**

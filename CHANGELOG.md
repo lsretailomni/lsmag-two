@@ -1,6 +1,23 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.12.0] - 2026-11-26
+
+### Added
+- Added support for tips in hospitality orders, allowing tips to be included as part of the order payment process. [79841](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/79841)
+- Added support for custom price from Magento admin while creating order from Magento admin. [85191](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/85191)
+- Added support for batch based upsert in flat replication based on a config. [84182](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/84182)
+
+### Changed
+- Changed price replication to follow the LS Central price waterfall. [84363](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/84363)
+
+### Bugs/Fixes
+- Fixed cart prices to display as tax-exclusive where the store is configured to show prices excluding tax (standard retail stores). [88392](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/88392)
+- Fixed PHP 8.2+ deprecation warnings caused by new fields returned by the Commerce Service. [86231](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/86231)
+- Fixed issues in SyncItemUpdates cron. [82958](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/82958)
+- Fixed processing of deleted price replication records from Central. [82767](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/82767)
+- Fixed issues linked with multicurrency. [80540](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/80540)
+
 ## [2.11.0] - 2026-04-20
 
 ### Added

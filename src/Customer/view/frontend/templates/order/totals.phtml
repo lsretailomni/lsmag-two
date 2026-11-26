@@ -7,16 +7,50 @@ use \Ls\Customer\Block\Order\Totals;
  * @var Escaper $escaper
  */
 ?>
-<tr class="subtotal">
-    <th colspan="4" class="mark" scope="row">
-        <?= $escaper->escapeHtml(__('Subtotal (Inc.Tax)')) ?>
-    </th>
-    <td class="amount" data-th="<?= $escaper->escapeHtml(__('Subtotal (Inc.Tax)')) ?>">
-        <span class="price">
-            <?= $escaper->escapeHtml($block->getFormattedPrice($block->getSubtotal())); ?>
-        </span>
-    </td>
-</tr>
+<?php if ($block->isDisplaySalesSubtotalBoth()): ?>
+    <tr class="subtotal excl">
+        <th colspan="4" class="mark" scope="row">
+            <?= $escaper->escapeHtml(__('Subtotal (Excl. Tax)')) ?>
+        </th>
+        <td class="amount" data-th="<?= $escaper->escapeHtml(__('Subtotal (Excl. Tax)')) ?>">
+            <span class="price">
+                <?= $escaper->escapeHtml($block->getFormattedPrice($block->getTotalNetAmount())); ?>
+            </span>
+        </td>
+    </tr>
+    <tr class="subtotal incl">
+        <th colspan="4" class="mark" scope="row">
+            <?= $escaper->escapeHtml(__('Subtotal (Incl. Tax)')) ?>
+        </th>
+        <td class="amount" data-th="<?= $escaper->escapeHtml(__('Subtotal (Incl. Tax)')) ?>">
+            <span class="price">
+                <?= $escaper->escapeHtml($block->getFormattedPrice($block->getSubtotal())); ?>
+            </span>
+        </td>
+    </tr>
+<?php elseif ($block->isDisplaySalesSubtotalExclTax()): ?>
+    <tr class="subtotal">
+        <th colspan="4" class="mark" scope="row">
+            <?= $escaper->escapeHtml(__('Subtotal')) ?>
+        </th>
+        <td class="amount" data-th="<?= $escaper->escapeHtml(__('Subtotal')) ?>">
+            <span class="price">
+                <?= $escaper->escapeHtml($block->getFormattedPrice($block->getTotalNetAmount())); ?>
+            </span>
+        </td>
+    </tr>
+<?php else: ?>
+    <tr class="subtotal">
+        <th colspan="4" class="mark" scope="row">
+            <?= $escaper->escapeHtml(__('Subtotal')) ?>
+        </th>
+        <td class="amount" data-th="<?= $escaper->escapeHtml(__('Subtotal')) ?>">
+            <span class="price">
+                <?= $escaper->escapeHtml($block->getFormattedPrice($block->getSubtotal())); ?>
+            </span>
+        </td>
+    </tr>
+<?php endif; ?>
 
 <?php if (!empty($block->getTotalDiscount()) && $block->getTotalDiscount() > 0): ?>
     <tr class="discount">

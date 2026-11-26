@@ -230,7 +230,7 @@ class ViewTest extends TestCase
         $orderTotalsLabelsPaths = [
             'subtotal' => [
                 "//tr[contains(@class, 'subtotal')]",
-                sprintf("//th[contains(text(), '%s')]", __('Subtotal (Inc.Tax)'))
+                sprintf("//th[contains(text(), '%s')]", __('Subtotal'))
             ],
             'shipping' => [
                 "//tr[contains(@class, 'shipping')]",

@@ -215,94 +215,94 @@ class WishlistObserverTest extends AbstractIntegrationTest
         $this->assertFalse($found, 'Removed item should not exist in CS wishlist');
     }
 
-//    #[
-//        AppArea('frontend'),
-//        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
-//        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
-//        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
-//        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
-//        Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
-//        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
-//        DataFixture(
-//            CustomerFixture::class,
-//            [
-//                'lsr_username' => AbstractIntegrationTest::USERNAME,
-//                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
-//                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
-//                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
-//            ],
-//            as: 'customer'
-//        ),
-//        DataFixture(
-//            CreateSimpleProductFixture::class,
-//            [LSR::LS_ITEM_ID_ATTRIBUTE_CODE => '40180'],
-//            as: 'p1'
-//        ),
-//        DataFixture(
-//            WishlistWithItemFixture::class,
-//            [
-//                'customer' => '$customer$',
-//                'product_id'  => '$p1.id$',
-//            ],
-//            as: 'wishlist'
-//        )
-//    ]
-//    /**
-//     * Test updating wishlist item quantity syncs to CS.
-//     */
-//    public function testUpdateWishlistItemQtyInOmni(): void
-//    {
-//        $customer = $this->fixtures->get('customer');
-//        $product = $this->fixtures->get('p1');
-//        $wishlist = $this->fixtures->get('wishlist');
-//        $this->customerId = $customer->getId();
-//
-//        $this->customerSession->setData('customer_id', $customer->getId());
-//        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
-//
-//        $loginResult = $this->contactHelper->login(
-//            AbstractIntegrationTest::USERNAME,
-//            AbstractIntegrationTest::PASSWORD
-//        );
-//        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $loginResult);
-//
-//        // Fetch the wishlist item created by fixture
-//        $wishlistItems = $wishlist->getItemCollection()->getItems();
-//        $wishlistItem = reset($wishlistItems);
-//
-//        $this->assertNotEmpty($wishlistItem, 'Wishlist item should exist before update');
-//
-//        $this->requestInterface->setMethod(HttpRequest::METHOD_POST);
-//        $this->requestInterface->setParams([
-//            'form_key' => $this->formKey->getFormKey(),
-//            'qty' => [$wishlistItem->getId() => 2],
-//        ]);
-//        $this->requestInterface->setRequestUri('wishlist/index/update/');
-//        $this->frontController->dispatch($this->requestInterface);
-//
-//        $response = $this->contactHelper->getOneListGetByCardId($customer->getLsrCardid());
-//        $result = $response ? $response->getResult() : null;
-//        $this->oneLists = $result->getOneList();
-//        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
-//
-//        $oneListItems = $result->getOneList()[0]->getItems()->getOneListItem();
-//        $this->assertNotEmpty($oneListItems, 'CS wishlist should have items after update');
-//
-//        $updatedItem = null;
-//
-//        foreach ((array)$oneListItems as $oneListItem) {
-//            if ($oneListItem->getItemId() == $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE) &&
-//                $oneListItem->getVariantId() == $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE) &&
-//                $oneListItem->getQuantity() == 2
-//            ) {
-//                $updatedItem = $oneListItem;
-//                break;
-//            }
-//        }
-//
-//        $this->assertNotNull($updatedItem, 'Updated item should exist in CS wishlist');
-//        $this->assertEquals(2, (int)$updatedItem->getQuantity(), 'Item quantity should be updated to 2 in CS');
-//    }
+    #[
+        AppArea('frontend'),
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
+        DataFixture(
+            CustomerFixture::class,
+            [
+                'lsr_username' => AbstractIntegrationTest::USERNAME,
+                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
+                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
+                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
+            ],
+            as: 'customer'
+        ),
+        DataFixture(
+            CreateSimpleProductFixture::class,
+            [LSR::LS_ITEM_ID_ATTRIBUTE_CODE => '40180'],
+            as: 'p1'
+        ),
+        DataFixture(
+            WishlistWithItemFixture::class,
+            [
+                'customer' => '$customer$',
+                'product_id'  => '$p1.id$',
+            ],
+            as: 'wishlist'
+        )
+    ]
+    /**
+     * Test updating wishlist item quantity syncs to CS.
+     */
+    public function testUpdateWishlistItemQtyInOmni(): void
+    {
+        $customer = $this->fixtures->get('customer');
+        $product = $this->fixtures->get('p1');
+        $wishlist = $this->fixtures->get('wishlist');
+        $this->customerId = $customer->getId();
+
+        $this->customerSession->setData('customer_id', $customer->getId());
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
+
+        $loginResult = $this->contactHelper->login(
+            AbstractIntegrationTest::USERNAME,
+            AbstractIntegrationTest::PASSWORD
+        );
+        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $loginResult);
+
+        // Fetch the wishlist item created by fixture
+        $wishlistItems = $wishlist->getItemCollection()->getItems();
+        $wishlistItem = reset($wishlistItems);
+
+        $this->assertNotEmpty($wishlistItem, 'Wishlist item should exist before update');
+
+        $this->requestInterface->setMethod(HttpRequest::METHOD_POST);
+        $this->requestInterface->setParams([
+            'form_key' => $this->formKey->getFormKey(),
+            'qty' => [$wishlistItem->getId() => 2],
+        ]);
+        $this->requestInterface->setRequestUri('wishlist/index/update/');
+        $this->frontController->dispatch($this->requestInterface);
+
+        $response = $this->contactHelper->getOneListGetByCardId($customer->getLsrCardid());
+        $result = $response ? $response->getResult() : null;
+        $this->oneLists = $result->getOneList();
+        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
+
+        $oneListItems = $result->getOneList()[0]->getItems()->getOneListItem();
+        $this->assertNotEmpty($oneListItems, 'CS wishlist should have items after update');
+
+        $updatedItem = null;
+
+        foreach ((array)$oneListItems as $oneListItem) {
+            if ($oneListItem->getItemId() == $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE) &&
+                $oneListItem->getVariantId() == $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE) &&
+                $oneListItem->getQuantity() == 2
+            ) {
+                $updatedItem = $oneListItem;
+                break;
+            }
+        }
+
+        $this->assertNotNull($updatedItem, 'Updated item should exist in CS wishlist');
+        $this->assertEquals(2, (int)$updatedItem->getQuantity(), 'Item quantity should be updated to 2 in CS');
+    }
 
     public function tearDown(): void
     {

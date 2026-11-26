@@ -814,8 +814,8 @@ class LoyaltyHelper extends AbstractHelperOmni
      */
     public function getLsPointsDiscount($pointsSpent, $format = false)
     {
-        $loyPointRate = $this->getPointRate(null, 'LOY');
-        $currentCurrencyPointRate = $this->getPointRate();
+        $loyPointRate = $this->getPointRate(null, 'LOY', true);
+        $currentCurrencyPointRate = $this->getPointRate(null, null, true);
 
         if (!$currentCurrencyPointRate) {
             return 0;

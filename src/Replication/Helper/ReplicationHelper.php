@@ -208,11 +208,8 @@ class ReplicationHelper extends AbstractHelper
         ],
         "ls_mag/replication/repl_loy_vendor_item_mapping"    => ["NavManufacturerId", "NavProductId", "scope_id"],
         "ls_mag/replication/repl_price"                      => [
-            "ItemId",
-            "VariantId",
+            "LineNumber",
             "StoreId",
-            "QtyPerUnitOfMeasure",
-            "UnitOfMeasure",
             "PriceListCode",
             "scope_id"
         ],
@@ -255,6 +252,22 @@ class ReplicationHelper extends AbstractHelper
         ],
         "ls_mag/replication/repl_hierarchy_hosp_deal_line"  => ["DealNo", "DealLineNo", "LineNo", "scope_id"],
 
+    ];
+
+    /** @var string repl_price job-code config path (kept in sync with ReplEcommBasePricesTask::CONFIG_PATH) */
+    private const REPL_PRICE_CONFIG_PATH = 'ls_mag/replication/repl_price';
+
+    /** @var array Legacy sales-price unique key for repl_price (pre-#82767), selectable via config */
+    public const PRICE_SALES_UNIQUE_FIELD_ARRAY = [
+        self::REPL_PRICE_CONFIG_PATH => [
+            "ItemId",
+            "VariantId",
+            "StoreId",
+            "QtyPerUnitOfMeasure",
+            "UnitOfMeasure",
+            "PriceListCode",
+            "scope_id"
+        ],
     ];
 
     public $connection;
@@ -1807,9 +1820,10 @@ class ReplicationHelper extends AbstractHelper
      * Apply join for lsr_item_id and item category custom attribute
      *
      * @param mixed $collection
-     * @param mixed $mainTableAlias
-     * @param mixed $mainTableItemIdColumn
+     * @param string $mainTableAlias
+     * @param string $mainTableItemIdColumn
      * @param array $groupColumns
+     * @param bool $isItemCategory
      * @return void
      * @throws LocalizedException
      */
@@ -1829,22 +1843,32 @@ class ReplicationHelper extends AbstractHelper
             'catalog_product',
             LSR::LS_ITEM_CATEGORY
         )->getId();
-        $itemCategoryClause      = '';
-        $itemIdClause            = " AND $itemIdTableAlias.attribute_id = $itemAttributeId";
+
         if ($isItemCategory) {
-            $itemCategoryClause .= " OR $itemIdTableAlias.attribute_id = $itemCategoryAttributeId";
+            // Type-aware join: match attribute_id based on the Type column value
+            $joinCondition =
+                "$mainTableAlias.$mainTableItemIdColumn = $itemIdTableAlias.value" .
+                " AND (" .
+                "($mainTableAlias.Type = 'Item' AND $itemIdTableAlias.attribute_id = $itemAttributeId)" .
+                " OR " .
+                "($mainTableAlias.Type = 'ItemCategory' AND $itemIdTableAlias.attribute_id = $itemCategoryAttributeId)" .
+                ")";
+        } else {
+            // Standard join: only match item attribute_id
+            $joinCondition =
+                "$mainTableAlias.$mainTableItemIdColumn = $itemIdTableAlias.value" .
+                " AND $itemIdTableAlias.attribute_id = $itemAttributeId";
         }
-        $itemCategoryClause =
-            $collection->getSelect()->joinInner(
-                [self::ITEM_ID_TABLE_ALIAS => $this->getGivenTableName('catalog_product_entity_varchar')],
-                $this->magentoEditionSpecificJoinWhereClause(
-                    "$mainTableAlias.$mainTableItemIdColumn = $itemIdTableAlias.value" .
-                    $itemIdClause . $itemCategoryClause,
-                    $this->getGivenTableName('catalog_product_entity_varchar'),
-                    [$itemIdTableAlias]
-                ),
-                []
-            );
+
+        $collection->getSelect()->joinInner(
+            [self::ITEM_ID_TABLE_ALIAS => $this->getGivenTableName('catalog_product_entity_varchar')],
+            $this->magentoEditionSpecificJoinWhereClause(
+                $joinCondition,
+                $this->getGivenTableName('catalog_product_entity_varchar'),
+                [$itemIdTableAlias]
+            ),
+            []
+        );
 
         foreach ($groupColumns as $groupColumn) {
             $collection->getSelect()->group("$mainTableAlias.$groupColumn");
@@ -3179,15 +3203,23 @@ class ReplicationHelper extends AbstractHelper
     /**
      * Get uom code given description
      *
+     * Optionally scope the reverse lookup by scope_id so that, in a multi-website LS Central
+     * setup where two scopes define different UOM codes sharing the same description text, the
+     * correct scope's code is resolved (mirrors getUomDescriptionGivenCodeAndScopeId()).
+     *
      * @param string $description
+     * @param string|int|null $scopeId
      * @return string
      */
-    public function getUomCodeGivenDescription($description)
+    public function getUomCodeGivenDescription($description, $scopeId = null)
     {
         $uomCode           = '';
         $filters           = [
             ['field' => 'description', 'value' => $description, 'condition_type' => 'eq']
         ];
+        if ($scopeId !== null) {
+            $filters[] = ['field' => 'scope_id', 'value' => $scopeId, 'condition_type' => 'eq'];
+        }
         $searchCriteria    = $this->buildCriteriaForDirect($filters, -1);
         $replUnitOfMeasure = $this->replUnitOfMeasureRepository->getList($searchCriteria);
 
@@ -4066,5 +4098,36 @@ class ReplicationHelper extends AbstractHelper
         $query = $collection->getSelect()->__toString();
 
         return $collection;
+    }
+
+    /**
+     * Return the effective unique-field array for a job code, honoring the use_sales_price config
+     * for repl_price. All other job codes keep the existing delete/non-delete selection unchanged.
+     *
+     * @param string $configPath
+     * @param bool $isDeleted
+     * @param string $scope
+     * @param int|bool $scopeId
+     * @return array
+     */
+    public function getUniqueFieldArray(
+        $configPath,
+        $isDeleted = false,
+        $scope = ScopeInterface::SCOPE_WEBSITES,
+        $scopeId = false
+    ) {
+        if ($configPath === self::REPL_PRICE_CONFIG_PATH
+            && $this->lsr->isUseSalesPriceEnabled($scopeId, $scope)
+        ) {
+            return self::PRICE_SALES_UNIQUE_FIELD_ARRAY[$configPath];
+        }
+
+        if ($isDeleted
+            && array_key_exists($configPath, self::DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY)
+        ) {
+            return self::DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY[$configPath];
+        }
+
+        return self::JOB_CODE_UNIQUE_FIELD_ARRAY[$configPath];
     }
 }

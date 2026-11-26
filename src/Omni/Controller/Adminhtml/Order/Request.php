@@ -104,7 +104,11 @@ class Request extends Action
 
         if ($this->lsr->isLSR($order->getStoreId())) {
             try {
-                $oneListCalculation = $this->basketHelper->formulateCentralOrderRequestFromMagentoOrder($order);
+                if ($this->lsr->isAdminOrderCustomPriceActive($order->getStoreId())) {
+                    $oneListCalculation = $this->basketHelper->buildOrderFromMagentoOrderItems($order);
+                } else {
+                    $oneListCalculation = $this->basketHelper->calculateOneListFromOrder($order);
+                }
                 $documentId         = null;
                 if (!empty($oneListCalculation)) {
                     if ($order->getRelationParentId()) {

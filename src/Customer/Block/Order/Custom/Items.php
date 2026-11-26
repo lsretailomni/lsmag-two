@@ -72,7 +72,6 @@ class Items extends AbstractItems
         }
 
         $orderLines = $order->getLines()->getSalesEntryLine();
-        $options = [];
         $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $this->getOrder());
         foreach ($orderLines as $key => $line) {
             foreach ($orderLines as $orderLine) {
@@ -82,12 +81,11 @@ class Items extends AbstractItems
                     $line->setAmount($line->getAmount() + $orderLine->getAmount());
                 }
             }
-            if ($line->getParentLine() !=0) {
+            if ($line->getItemId() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID) ||
+                $line->getParentLine() != 0 ||
+                $line->getLineType() !== 'Item'
+            ) {
                 unset($orderLines[$key]);
-            }
-            if ($line->getItemId() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
-                unset($orderLines[$key]);
-                break;
             }
         }
         return $orderLines;

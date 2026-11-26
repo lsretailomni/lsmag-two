@@ -31,6 +31,16 @@ class HierarchyPoint extends Entity
     protected $ParentNode = null;
 
     /**
+     * @property string $UnitOfMeasure
+     */
+    protected $UnitOfMeasure = null;
+
+    /**
+     * @property string $VariantCode
+     */
+    protected $VariantCode = null;
+
+    /**
      * @param string $Description
      * @return $this
      */
@@ -100,6 +110,42 @@ class HierarchyPoint extends Entity
     public function getParentNode()
     {
         return $this->ParentNode;
+    }
+
+    /**
+     * @param string $UnitOfMeasure
+     * @return $this
+     */
+    public function setUnitOfMeasure($UnitOfMeasure)
+    {
+        $this->UnitOfMeasure = $UnitOfMeasure;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnitOfMeasure()
+    {
+        return $this->UnitOfMeasure;
+    }
+
+    /**
+     * @param string $VariantCode
+     * @return $this
+     */
+    public function setVariantCode($VariantCode)
+    {
+        $this->VariantCode = $VariantCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVariantCode()
+    {
+        return $this->VariantCode;
     }
 }
 

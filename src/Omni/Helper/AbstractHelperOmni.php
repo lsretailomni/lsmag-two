@@ -31,6 +31,8 @@ use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
 use Magento\Quote\Model\ResourceModel\Quote;
 use Magento\Quote\Model\ResourceModel\Quote\Item;
 use Magento\QuoteGraphQl\Model\Cart\GetCartForUser;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Tax\Model\Config as TaxConfig;
 
 /**
  * Abstract Helper for merging common data members and member functions
@@ -78,6 +80,8 @@ class AbstractHelperOmni extends AbstractHelper
      * @param GetCartForUser $getCartForUser
      * @param MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId
      * @param File $fileSystemDriver
+     * @param StoreManagerInterface $storeManager
+     * @param TaxConfig $taxConfig
      */
     public function __construct(
         Context $context,
@@ -119,7 +123,9 @@ class AbstractHelperOmni extends AbstractHelper
         public ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
         public GetCartForUser $getCartForUser,
         public MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
-        public File $fileSystemDriver
+        public File $fileSystemDriver,
+        public StoreManagerInterface $storeManager,
+        public TaxConfig $taxConfig
     ) {
         parent::__construct($context);
         $this->initialize();

@@ -11,6 +11,16 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 class UnitOfMeasure extends Entity
 {
     /**
+     * @property int $DealLine
+     */
+    protected $DealLine = null;
+
+    /**
+     * @property int $DealModLine
+     */
+    protected $DealModLine = null;
+
+    /**
      * @property int $Decimals
      */
     protected $Decimals = null;
@@ -39,6 +49,42 @@ class UnitOfMeasure extends Entity
      * @property string $ShortDescription
      */
     protected $ShortDescription = null;
+
+    /**
+     * @param int $DealLine
+     * @return $this
+     */
+    public function setDealLine($DealLine)
+    {
+        $this->DealLine = $DealLine;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDealLine()
+    {
+        return $this->DealLine;
+    }
+
+    /**
+     * @param int $DealModLine
+     * @return $this
+     */
+    public function setDealModLine($DealModLine)
+    {
+        $this->DealModLine = $DealModLine;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDealModLine()
+    {
+        return $this->DealModLine;
+    }
 
     /**
      * @param int $Decimals

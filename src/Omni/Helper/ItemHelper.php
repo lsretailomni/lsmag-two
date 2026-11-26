@@ -424,6 +424,33 @@ class ItemHelper extends AbstractHelper
     }
 
     /**
+     * Populate base-currency and tax-inclusive display fields directly from each item's own
+     * price, for admin order-create quotes where OneList calculation is bypassed (custom price
+     * active). Magento's own tax engine is disabled while LSR is active
+     * (Ls\Omni\Model\Sales\Total\Quote\Subtotal::aroundCollect), so these fields would otherwise
+     * never be populated.
+     *
+     * @param \Magento\Quote\Model\Quote $quote
+     */
+    public function setBaseCurrencyFieldsFromItemPrice($quote)
+    {
+        foreach ($quote->getAllVisibleItems() as $quoteItem) {
+            $unitPrice = $quoteItem->getCalculationPrice();
+            $quoteItem->setBasePrice($this->convertToBaseCurrency($unitPrice))
+                ->setPriceInclTax($unitPrice)
+                ->setBasePriceInclTax($this->convertToBaseCurrency($unitPrice))
+                ->setRowTotalInclTax($quoteItem->getRowTotal());
+            $quoteItem->getProduct()->setIsSuperMode(true);
+            try {
+                // @codingStandardsIgnoreLine
+                $this->itemResourceModel->save($quoteItem);
+            } catch (LocalizedException $e) {
+                $this->_logger->critical("Error saving SKU:-" . $quoteItem->getSku() . " - " . $e->getMessage());
+            }
+        }
+    }
+
+    /**
      * This function is overriding in hospitality module
      *
      * Compare one_list lines with quote_item items and set correct prices
@@ -460,7 +487,7 @@ class ItemHelper extends AbstractHelper
                         $child->getItemId() == $line->getId() :
                         $this->isSameItem($child, $line)
                     ) {
-                        $unitPrice = $line->getAmount() / $line->getQuantity();
+                        $unitPrice = $line->getNetPrice();
                         $this->setRelatedAmountsAgainstGivenQuoteItem($line, $child, $unitPrice, $type);
                         unset($orderLines[$index]);
                         break;
@@ -547,7 +574,8 @@ class ItemHelper extends AbstractHelper
      *
      * @param $line
      * @param $quoteItem
-     * @param $unitPrice
+     * @param $unitPrice Tax-exclusive per-unit price (e.g. OrderLine::getNetPrice()) — the
+     *                   tax-inclusive counterpart is sourced internally from $line->getPrice()
      * @param int $type
      * @throws NoSuchEntityException
      */
@@ -555,6 +583,7 @@ class ItemHelper extends AbstractHelper
     {
         $customPrice = $amount = $taxAmount = $netAmount = $lsDiscountAmount = null;
         $itemQty     = $quoteItem->getQty();
+        $unitPriceInclTax = $line->getPrice();
 
         if ($quoteItem->getParentItem() &&
             $quoteItem->getParentItem()->getProductType() == Type::TYPE_BUNDLE
@@ -592,8 +621,8 @@ class ItemHelper extends AbstractHelper
             ->setOriginalCustomPrice($customPrice)
             ->setTaxAmount($taxAmount)
             ->setBaseTaxAmount($this->convertToBaseCurrency($taxAmount))
-            ->setPriceInclTax($unitPrice)
-            ->setBasePriceInclTax($this->convertToBaseCurrency($unitPrice))
+            ->setPriceInclTax($unitPriceInclTax)
+            ->setBasePriceInclTax($this->convertToBaseCurrency($unitPriceInclTax))
             ->setLsDiscountAmount($lsDiscountAmount)
             ->setRowTotal($type == 1 ? $netAmount : $rowTotal)
             ->setBaseRowTotal(
@@ -605,6 +634,10 @@ class ItemHelper extends AbstractHelper
                 $type == 1 ? $this->convertToBaseCurrency($amount) :
                     $this->convertToBaseCurrency($rowTotalIncTax)
             );
+
+        if ($type == 2) {
+            $quoteItem->setBasePrice($this->convertToBaseCurrency($unitPrice));
+        }
     }
 
     /**
@@ -869,8 +902,6 @@ class ItemHelper extends AbstractHelper
             $typeId  = $product->getTypeId();
             if (in_array($typeId, [
                 Type::TYPE_VIRTUAL,
-                Configurable::TYPE_CODE,
-                Grouped::TYPE_CODE,
                 \Magento\Downloadable\Model\Product\Type::TYPE_DOWNLOADABLE
             ], true)) {
                 $orderLine->setServiceItem(true);
